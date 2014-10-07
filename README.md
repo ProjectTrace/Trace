@@ -1,6 +1,6 @@
 Trace
 =====
 
-University of Washington, HCDE department.
+_FizzLab, HCDE Department_
 
-HCDE Trace test
+_University of Washington_

@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sample_background">
+
+    <!-- The primary full-screen view -->
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/sample_string"
+        android:textColor="@color/sample_text"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+</FrameLayout>

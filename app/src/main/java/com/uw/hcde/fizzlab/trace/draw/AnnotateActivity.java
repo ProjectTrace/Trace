@@ -34,7 +34,7 @@ public class AnnotateActivity extends Activity {
         mButtonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button clear clicked");
+                Log.d(TAG, "Button done clicked");
             }
         });
     }

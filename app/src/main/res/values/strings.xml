@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Trace</string>
+    <!-- Activity label -->
+    <string name="label_app_name">Trace</string>
+    <string name="label_activity_draw">Draw</string>
+    <string name="label_activity_walk">Walk</string>
+    <string name="label_activity_profile">You</string>
+
+    <!-- Draw screen -->
+    <string name="label_back">&lt; Back</string>
+    <string name="label_clear">Clear</string>
+    <string name="label_annotate">Annotate</string>
 
 </resources>

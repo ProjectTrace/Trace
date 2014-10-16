@@ -14,10 +14,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
             android:paddingBottom="6dp"
             android:paddingTop="12dp"
-            android:text="@string/title_walk"
-            android:textSize="25sp" />
+            android:text="@string/choose_duration"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/draw_button_back"

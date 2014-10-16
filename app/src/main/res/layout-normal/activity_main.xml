@@ -1,17 +1,47 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sample_background">
+    android:background="@color/main_screen_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <!-- The primary full-screen view -->
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/sample_string"
-        android:textColor="@color/sample_text"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/app_logo" />
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/main_button_draw"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/button_draw" />
+
+        <ImageView
+            android:id="@+id/main_button_walk"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_toRightOf="@id/main_button_draw"
+            android:adjustViewBounds="true"
+            android:src="@drawable/button_walk" />
+
+        <ImageView
+            android:id="@+id/main_button_you"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="75.5dp"
+            android:layout_marginTop="131dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/button_you" />
+
+    </RelativeLayout>
+
+</LinearLayout>

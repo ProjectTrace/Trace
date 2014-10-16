@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/draw_screen_background">
+    android:background="@color/main_screen_background">
 
     <!-- Navigation bar -->
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:paddingBottom="6dp"
-            android:text="@string/title_draw"
+            android:text="@string/title_walk"
             android:textSize="25sp" />
 
         <TextView
@@ -36,35 +36,6 @@
             android:layout_alignBottom="@id/draw_title"
             android:alpha="0.3"
             android:background="@color/solid_black" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="20dp">
-
-        <TextView
-            android:id="@+id/draw_button_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:clickable="true"
-            android:paddingLeft="15dp"
-            android:text="@string/clear"
-            android:textColor="@drawable/text_clickable" />
-
-        <TextView
-            android:id="@+id/draw_button_annotate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:paddingRight="15dp"
-            android:text="@string/annotate"
-            android:textColor="@drawable/text_clickable" />
-
 
     </RelativeLayout>
 

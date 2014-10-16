@@ -3,21 +3,13 @@
 
     <!-- Base application theme -->
     <style name="AppTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen">
-
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/solid_white</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-
     </style>
 
     <!-- Text theme -->
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <!-- Button theme-->
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/solid_white</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 

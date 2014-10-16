@@ -2,14 +2,17 @@
 <resources>
 
     <!-- Activity label -->
-    <string name="label_app_name">Trace</string>
-    <string name="label_activity_draw">Draw</string>
-    <string name="label_activity_walk">Walk</string>
-    <string name="label_activity_profile">You</string>
+    <string name="app_name">Trace</string>
+    <string name="title_draw">Draw</string>
+    <string name="title_walk">Walk</string>
+    <string name="title_you">You</string>
 
     <!-- Draw screen -->
-    <string name="label_back">&lt; Back</string>
-    <string name="label_clear">Clear</string>
-    <string name="label_annotate">Annotate</string>
+    <string name="back">&lt; Back</string>
+    <string name="clear">Clear</string>
+    <string name="annotate">Annotate</string>
+
+    <!-- Walk screen -->
+    <string name="choose_duration">Choose Duration</string>
 
 </resources>

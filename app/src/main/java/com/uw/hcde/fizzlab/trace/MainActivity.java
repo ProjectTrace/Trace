@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.draw.DrawActivity;
+import com.uw.hcde.fizzlab.trace.profile.ProfileActivity;
+import com.uw.hcde.fizzlab.trace.walk.WalkActivity;
 
 
 /**
@@ -27,9 +28,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mButtonDraw = findViewById(R.id.main_button_draw);
-        mButtonWalk = findViewById(R.id.main_button_walk);
-        mButtonYou = findViewById(R.id.main_button_you);
+        mButtonDraw = findViewById(R.id.button_draw);
+        mButtonWalk = findViewById(R.id.button_walk);
+        mButtonYou = findViewById(R.id.button_you);
 
         setupListener();
     }
@@ -51,6 +52,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button walk clicked");
+                Intent intent = new Intent(MainActivity.this, WalkActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -58,8 +61,9 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button you clicked");
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
-
 }

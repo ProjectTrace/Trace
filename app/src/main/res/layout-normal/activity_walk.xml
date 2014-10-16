@@ -4,40 +4,12 @@
     android:background="@color/main_screen_background">
 
     <!-- Navigation bar -->
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <include layout="@layout/navigation_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <TextView
-            android:id="@+id/draw_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:paddingBottom="6dp"
-            android:paddingTop="12dp"
-            android:text="@string/choose_duration"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/draw_button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/draw_title"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:clickable="true"
-            android:text="@string/back"
-            android:textColor="@drawable/text_clickable" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignBottom="@id/draw_title"
-            android:alpha="0.3"
-            android:background="@color/solid_black" />
-
-    </RelativeLayout>
+        android:layout_centerInParent="true"
+        android:text="@string/coming_soon" />
 
 </RelativeLayout>

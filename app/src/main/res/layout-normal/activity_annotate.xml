@@ -4,7 +4,7 @@
     android:background="@color/draw_screen_background">
 
     <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar"/>
+    <include layout="@layout/navigation_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,23 +13,13 @@
         android:paddingBottom="20dp">
 
         <TextView
-            android:id="@+id/button_clear"
+            android:id="@+id/button_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
             android:clickable="true"
-            android:text="@string/clear"
-            android:textColor="@drawable/text_clickable" />
-
-        <TextView
-            android:id="@+id/button_annotate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:text="@string/annotate"
+            android:text="@string/done"
             android:textColor="@drawable/text_clickable" />
 
     </RelativeLayout>

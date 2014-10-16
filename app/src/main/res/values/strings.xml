@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Activity label -->
     <string name="app_name">Trace</string>
-    <string name="title_draw">Draw</string>
-    <string name="title_walk">Walk</string>
-    <string name="title_you">You</string>
+
+    <!-- Profile screen -->
+    <string name="you">You</string>
+    <string name="coming_soon">Coming soon...</string>
 
     <!-- Draw screen -->
+    <string name="draw">Draw</string>
     <string name="back">&lt; Back</string>
     <string name="clear">Clear</string>
     <string name="annotate">Annotate</string>
+    <string name="done">Done</string>
 
     <!-- Walk screen -->
+    <string name="walk">Walk</string>
     <string name="choose_duration">Choose Duration</string>
 
-    <!-- Other -->
-    <string name="coming_soon">Coming soon...</string>
 
 </resources>

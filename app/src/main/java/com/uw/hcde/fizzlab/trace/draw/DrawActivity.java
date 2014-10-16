@@ -1,9 +1,11 @@
 package com.uw.hcde.fizzlab.trace.draw;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 
@@ -11,8 +13,7 @@ public class DrawActivity extends Activity {
 
     private static final String TAG = "DrawActivity";
 
-    // Three main buttons
-    private View mButtonBack;
+    // Main buttons
     private View mButtonClear;
     private View mButtonAnnotate;
 
@@ -21,22 +22,19 @@ public class DrawActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
 
-        mButtonBack = findViewById(R.id.main_button_draw);
-        mButtonClear = findViewById(R.id.main_button_walk);
-        mButtonAnnotate = findViewById(R.id.main_button_you);
+        // Set navigation title
+        TextView title = (TextView) findViewById(R.id.navigation_title);
+        title.setText(getString(R.string.draw));
+
+        mButtonClear = findViewById(R.id.button_walk);
+        mButtonAnnotate = findViewById(R.id.button_you);
+        setupListener();
     }
 
     /**
      * Helper function to add button listeners
      */
     private void setupListener() {
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Button back clicked");
-            }
-        });
-
         mButtonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +46,8 @@ public class DrawActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button annotate clicked");
+                Intent intent = new Intent(DrawActivity.this, AnnotateActivity.class);
+                startActivity(intent);
             }
         });
     }

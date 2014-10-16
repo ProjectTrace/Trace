@@ -20,22 +20,40 @@
             </intent-filter>
         </activity>
 
+
+        <!--============================================-->
+        <!--======= Draw related activities ============-->
+        <!--============================================-->
         <!-- Draw activity -->
         <activity
             android:name=".draw.DrawActivity"
-            android:label="@string/title_draw"
+            android:label="@string/draw"
             android:screenOrientation="portrait" />
 
-        <!-- Profile activity -->
+        <!-- Annotate activity -->
         <activity
-            android:name=".profile.ProfileActivity"
-            android:label="@string/title_you"
+            android:name=".draw.AnnotateActivity"
+            android:label="@string/annotate"
             android:screenOrientation="portrait" />
 
+
+        <!--============================================-->
+        <!--======= Walk related activities ============-->
+        <!--============================================-->
         <!-- Walk activity -->
         <activity
             android:name=".walk.WalkActivity"
-            android:label="@string/title_walk"
+            android:label="@string/walk"
+            android:screenOrientation="portrait" />
+
+
+        <!--============================================-->
+        <!--======= Profile related activities ============-->
+        <!--============================================-->
+        <!-- Profile activity -->
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:label="@string/you"
             android:screenOrientation="portrait" />
 
     </application>

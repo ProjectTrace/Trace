@@ -15,4 +15,7 @@
     <!-- Walk screen -->
     <string name="choose_duration">Choose Duration</string>
 
+    <!-- Other -->
+    <string name="coming_soon">Coming soon...</string>
+
 </resources>

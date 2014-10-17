@@ -17,6 +17,7 @@
     <!-- Walk screen -->
     <string name="walk">Walk</string>
     <string name="choose_duration">Choose Duration</string>
-
+    <string name="choose_distance">Choose Distance</string>
+    <string name="choose_drawing">Choose Drawing</string>
 
 </resources>

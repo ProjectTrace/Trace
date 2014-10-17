@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.draw.DrawActivity;
 import com.uw.hcde.fizzlab.trace.profile.ProfileActivity;
-import com.uw.hcde.fizzlab.trace.walk.WalkActivity;
+import com.uw.hcde.fizzlab.trace.walk.ChooseDistanceActivity;
 
 
 /**
@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button walk clicked");
-                Intent intent = new Intent(MainActivity.this, WalkActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChooseDistanceActivity.class);
                 startActivity(intent);
             }
         });

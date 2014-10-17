@@ -21,9 +21,9 @@
         </activity>
 
 
-        <!--============================================-->
-        <!--======= Draw related activities ============-->
-        <!--============================================-->
+        <!-- ============================================ -->
+        <!-- ======= Draw related activities ============ -->
+        <!-- ============================================ -->
         <!-- Draw activity -->
         <activity
             android:name=".draw.DrawActivity"
@@ -37,25 +37,28 @@
             android:screenOrientation="portrait" />
 
 
-        <!--============================================-->
-        <!--======= Walk related activities ============-->
-        <!--============================================-->
+        <!-- ============================================ -->
+        <!-- ======= Walk related activities ============ -->
+        <!-- ============================================ -->
         <!-- Walk activity -->
         <activity
-            android:name=".walk.WalkActivity"
-            android:label="@string/walk"
+            android:name=".walk.ChooseDistanceActivity"
+            android:label="@string/choose_distance"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".walk.ChooseDrawingActivity"
+            android:label="@string/choose_drawing"
             android:screenOrientation="portrait" />
 
 
-        <!--============================================-->
-        <!--======= Profile related activities ============-->
-        <!--============================================-->
+        <!-- ============================================ -->
+        <!-- ======= Profile related activities ============ -->
+        <!-- ============================================ -->
         <!-- Profile activity -->
         <activity
             android:name=".profile.ProfileActivity"
             android:label="@string/you"
             android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

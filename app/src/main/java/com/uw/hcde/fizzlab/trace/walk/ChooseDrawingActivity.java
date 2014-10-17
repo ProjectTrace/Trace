@@ -6,17 +6,15 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 
-public class WalkActivity extends Activity {
-
-    private static final String TAG = "WalkActivity";
+public class ChooseDrawingActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_walk);
+        setContentView(R.layout.activity_choose_drawing);
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.walk));
+        title.setText(getString(R.string.choose_drawing));
     }
 }

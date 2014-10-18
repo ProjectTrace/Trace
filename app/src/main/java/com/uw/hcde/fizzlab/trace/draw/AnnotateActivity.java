@@ -24,13 +24,6 @@ public class AnnotateActivity extends Activity {
         title.setText(getString(R.string.annotate));
 
         mButtonDone = findViewById(R.id.button_done);
-        setupListener();
-    }
-
-    /**
-     * Helper function to add button listeners
-     */
-    private void setupListener() {
         mButtonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

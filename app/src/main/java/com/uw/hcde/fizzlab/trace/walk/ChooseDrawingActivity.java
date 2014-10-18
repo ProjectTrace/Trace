@@ -8,6 +8,8 @@ import com.uw.hcde.fizzlab.trace.R;
 
 public class ChooseDrawingActivity extends Activity {
 
+    private static final String TAG = "ChooseDrawingActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

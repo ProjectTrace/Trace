@@ -4,12 +4,95 @@
     android:background="@color/main_screen_background">
 
     <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar" />
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/navigation_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:text="<"
+            android:textColor="@drawable/text_clickable"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="170dp"
+            android:layout_height="250dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="sans-serif"
+                android:text="Drawn by" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="XXX X XXXX" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="sans-serif"
+                android:text="Description" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Try it" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="sans-serif"
+                android:text="Date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10/16/2014" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:text=">"
+            android:textColor="@drawable/text_clickable"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/button_go"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:text="@string/coming_soon" />
+        android:layout_marginBottom="40dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/button_go" />
 
 </RelativeLayout>

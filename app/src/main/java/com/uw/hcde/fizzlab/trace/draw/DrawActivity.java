@@ -26,8 +26,8 @@ public class DrawActivity extends Activity {
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.draw));
 
-        mButtonClear = findViewById(R.id.button_walk);
-        mButtonAnnotate = findViewById(R.id.button_you);
+        mButtonClear = findViewById(R.id.button_clear);
+        mButtonAnnotate = findViewById(R.id.button_annotate);
         setupListener();
     }
 

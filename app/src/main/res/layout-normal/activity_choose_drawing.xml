@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clickable="true"
-            android:text="<"
+            android:text="&lt;"
             android:textColor="@drawable/text_clickable"
             android:textSize="25sp" />
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clickable="true"
-            android:text=">"
+            android:text="&gt;"
             android:textColor="@drawable/text_clickable"
             android:textSize="25sp" />
 
@@ -87,12 +87,13 @@
 
     <ImageView
         android:id="@+id/button_go"
-        android:layout_width="150dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="40dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/button_go" />
+        android:clickable="true"
+        android:src="@drawable/button_go_clickable" />
 
 </RelativeLayout>

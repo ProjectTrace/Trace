@@ -31,7 +31,6 @@ public class MainActivity extends Activity {
         mButtonDraw = findViewById(R.id.button_draw);
         mButtonWalk = findViewById(R.id.button_walk);
         mButtonYou = findViewById(R.id.button_you);
-
         setupListener();
     }
 

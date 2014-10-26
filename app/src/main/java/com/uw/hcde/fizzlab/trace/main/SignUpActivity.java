@@ -53,6 +53,9 @@ public class SignUpActivity extends Activity {
         });
     }
 
+    /**
+     * Signs up this user account if all input is valid.
+     */
     private void signUp() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -84,7 +87,7 @@ public class SignUpActivity extends Activity {
         // If there is a validation error, display the error
         if (validationError) {
             Toast toast = Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.TOP, 0, 0);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return;
         }

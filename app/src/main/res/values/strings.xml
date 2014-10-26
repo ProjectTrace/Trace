@@ -3,22 +3,37 @@
 
     <string name="app_name">Trace</string>
 
-    <!-- Profile screen -->
+    <!-- Welcome screen -->
+    <string name="welcome">Welcome</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="new_to_trace">New to Trace?</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_again">Password Again</string>
+    <string name="error_intro">"Please "</string>
+    <string name="error_blank_username">enter a username</string>
+    <string name="error_blank_password">enter a password</string>
+    <string name="error_mismatched_passwords">enter the same password twice</string>
+    <string name="error_join">", and "</string>
+    <string name="error_end">.</string>
+    <string name="progress_login">Logging you in&#8230;</string>
+    <string name="progress_sign_up">Signing you up&#8230;</string>
+
+    <!-- Titles -->
     <string name="you">You</string>
-    <string name="coming_soon">Coming soon...</string>
-
-    <!-- Draw screen -->
     <string name="draw">Draw</string>
-    <string name="back">&lt; Back</string>
-    <string name="clear">Clear</string>
-    <string name="annotate">Annotate</string>
-    <string name="done">Done</string>
-
-    <!-- Walk screen -->
-    <string name="walk">Walk</string>
     <string name="choose_duration">Choose Duration</string>
     <string name="choose_distance">Choose Distance</string>
     <string name="choose_drawing">Choose Drawing</string>
+    <string name="coming_soon">Coming soon...</string>
+
+    <!--Actions -->
+    <string name="clear">Clear</string>
+    <string name="annotate">Annotate</string>
+    <string name="done">Done</string>
+    <string name="walk">Walk</string>
     <string name="next">Next</string>
+    <string name="back">&lt; Back</string>
 
 </resources>

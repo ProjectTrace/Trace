@@ -1,10 +1,12 @@
 <resources>
 
-    <!-- Default color -->
+    <!-- Predefined color -->
     <color name="solid_white">#FFFFFF</color>
     <color name="solid_black">#000000</color>
+    <color name="klein_blue">#0033CC</color>
     <color name="transparent_white">#80FFFFFF</color>
-
+    <color name="transparent_klein_blue1">#800033CC</color>
+    <color name="transparent_klein_blue2">#600033CC</color>
 
     <!-- Color for main screen -->
     <color name="main_screen_background">#27B6B2</color>
@@ -14,5 +16,5 @@
     <!-- Color for draw screen -->
     <color name="draw_screen_background">#F37159</color>
     <color name="draw_screen_navigation">#F58E7A</color>
-    
+
 </resources>

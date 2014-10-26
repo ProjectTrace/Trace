@@ -4,7 +4,7 @@
     android:background="@color/draw_screen_background">
 
     <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar"/>
+    <include layout="@layout/navigation_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"

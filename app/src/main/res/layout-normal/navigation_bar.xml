@@ -13,9 +13,7 @@
         android:fontFamily="sans-serif"
         android:paddingBottom="8dp"
         android:paddingTop="12dp"
-        android:textSize="22sp"
-        android:text="hello"
-        />
+        android:textSize="22sp" />
 
     <View
         android:layout_width="match_parent"

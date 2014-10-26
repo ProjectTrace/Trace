@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace;
+package com.uw.hcde.fizzlab.trace.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.draw.DrawActivity;
 import com.uw.hcde.fizzlab.trace.profile.ProfileActivity;
 import com.uw.hcde.fizzlab.trace.walk.ChooseDistanceActivity;
 
 
 /**
- * Application entry point
+ * Main application screen
+ *
+ * @author tianchi
  */
 public class MainActivity extends Activity {
 

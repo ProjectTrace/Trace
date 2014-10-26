@@ -25,8 +25,8 @@ public class WelcomeActivity extends Activity {
     private static final String TAG = "WelcomeActivity";
 
     // UI references.
-    private EditText usernameEditText;
-    private EditText passwordEditText;
+    private EditText mUsernameEditText;
+    private EditText mPasswordEditText;
     private View mButtonSignUp;
 
     @Override
@@ -35,8 +35,8 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.activity_welcome);
 
         // Set up the login form
-        usernameEditText = (EditText) findViewById(R.id.text_username);
-        passwordEditText = (EditText) findViewById(R.id.text_password);
+        mUsernameEditText = (EditText) findViewById(R.id.text_username);
+        mPasswordEditText = (EditText) findViewById(R.id.text_password);
 
         // Set up the submit button click handler
         View buttonLogin = findViewById(R.id.button_login);
@@ -62,8 +62,8 @@ public class WelcomeActivity extends Activity {
      * Handles login logic
      */
     private void login() {
-        String username = usernameEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        String username = mUsernameEditText.getText().toString().trim();
+        String password = mPasswordEditText.getText().toString().trim();
 
         // Validate the log in data
         boolean validationError = false;

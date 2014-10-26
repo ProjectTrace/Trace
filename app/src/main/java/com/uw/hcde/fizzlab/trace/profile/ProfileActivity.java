@@ -10,6 +10,9 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 
+/**
+ * Profile activity that displays user information
+ */
 public class ProfileActivity extends Activity {
 
     private static final String TAG = "ProfileActivity";

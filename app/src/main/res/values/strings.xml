@@ -27,6 +27,7 @@
     <string name="choose_distance">Choose Distance</string>
     <string name="choose_drawing">Choose Drawing</string>
     <string name="coming_soon">Coming soon...</string>
+    <string name="map">Map</string>
 
     <!--Actions -->
     <string name="clear">Clear</string>

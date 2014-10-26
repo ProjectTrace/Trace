@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 
+/**
+ * Choose walking distance
+ *
+ * @author tianchi
+ */
 public class ChooseDistanceActivity extends Activity {
 
     private static final String TAG = "ChooseDistanceActivity";
-
-    private View mButtonNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,8 @@ public class ChooseDistanceActivity extends Activity {
         title.setText(getString(R.string.choose_distance));
 
         // Set up button
-        mButtonNext = findViewById(R.id.button_next);
-        mButtonNext.setOnClickListener(new View.OnClickListener() {
+        View buttonNext = findViewById(R.id.button_next);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");

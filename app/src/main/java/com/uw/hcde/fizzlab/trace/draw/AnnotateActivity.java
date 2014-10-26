@@ -8,11 +8,14 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 
+/**
+ * Activity that handles annotation
+ *
+ * @author tianchi
+ */
 public class AnnotateActivity extends Activity {
 
     private static final String TAG = "AnnotateActivity";
-
-    private View mButtonDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,8 @@ public class AnnotateActivity extends Activity {
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.annotate));
 
-        mButtonDone = findViewById(R.id.button_done);
-        mButtonDone.setOnClickListener(new View.OnClickListener() {
+        View buttonDone = findViewById(R.id.button_done);
+        buttonDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button done clicked");

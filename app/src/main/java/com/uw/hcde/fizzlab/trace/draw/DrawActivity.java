@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 
+/**
+ * Activity that handles drawing
+ *
+ * @author tianchi
+ */
 public class DrawActivity extends Activity {
 
     private static final String TAG = "DrawActivity";

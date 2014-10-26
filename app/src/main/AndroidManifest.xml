@@ -70,6 +70,11 @@
             android:label="@string/choose_drawing"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".walk.MapActivity"
+            android:label="@string/map"
+            android:screenOrientation="portrait" />
+
 
         <!-- ============================================ -->
         <!-- ======= Profile related activities ============ -->

@@ -7,8 +7,8 @@ import android.os.Bundle;
 import com.parse.ParseUser;
 
 /**
- * Activity which starts an intent for either the logged in (MainActivity) or logged out
- * (SignUpOrLoginActivity) activity.
+ * Activity which starts an intent for either Welcome activity
+ * or Main activity.
  *
  * @author tianchi
  */

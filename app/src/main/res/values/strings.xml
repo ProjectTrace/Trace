@@ -8,9 +8,9 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="new_to_trace">New to Trace?</string>
-    <string name="prompt_username">Username</string>
-    <string name="prompt_password">Password</string>
-    <string name="prompt_password_again">Password Again</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="password_again">Password Again</string>
     <string name="error_intro">"Please "</string>
     <string name="error_blank_username">enter a username</string>
     <string name="error_blank_password">enter a password</string>
@@ -35,5 +35,6 @@
     <string name="walk">Walk</string>
     <string name="next">Next</string>
     <string name="back">&lt; Back</string>
+    <string name="log_out">Log out</string>
 
 </resources>

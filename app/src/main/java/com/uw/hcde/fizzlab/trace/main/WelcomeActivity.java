@@ -83,7 +83,7 @@ public class WelcomeActivity extends Activity {
 
         // If there is a validation error, display the error
         if (validationError) {
-            Toast toast = Toast.makeText(WelcomeActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(WelcomeActivity.this, validationErrorMessage.toString(), Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return;
@@ -101,11 +101,15 @@ public class WelcomeActivity extends Activity {
                 dialog.dismiss();
                 if (e != null) {
                     // Show the error message
-                    Toast.makeText(WelcomeActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(WelcomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else {
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    // Clear root activity, a short blank screen can be seen
+                    // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }

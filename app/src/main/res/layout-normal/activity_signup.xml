@@ -16,7 +16,7 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="150dp"
-        android:hint="@string/prompt_username"
+        android:hint="@string/username"
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:singleLine="true" />
@@ -27,7 +27,7 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:hint="@string/prompt_password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:maxLines="1"
         android:singleLine="true" />
@@ -38,7 +38,7 @@
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:hint="@string/prompt_password_again"
+        android:hint="@string/password_again"
         android:inputType="textPassword"
         android:maxLines="1"
         android:singleLine="true" />

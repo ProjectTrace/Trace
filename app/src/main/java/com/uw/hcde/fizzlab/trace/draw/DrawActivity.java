@@ -21,6 +21,8 @@ public class DrawActivity extends Activity {
     // Main buttons
     private View mButtonClear;
     private View mButtonAnnotate;
+    private DrawingView mDrawingView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class DrawActivity extends Activity {
 
         mButtonClear = findViewById(R.id.button_clear);
         mButtonAnnotate = findViewById(R.id.button_annotate);
+        mDrawingView = (DrawingView) findViewById(R.id.drawing_view);
         setupListener();
     }
 
@@ -44,6 +47,7 @@ public class DrawActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button clear clicked");
+                mDrawingView.clear();
             }
         });
 

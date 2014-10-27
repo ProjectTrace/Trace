@@ -4,9 +4,12 @@
     android:background="@color/draw_screen_background">
 
     <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar" />
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar" />
 
     <RelativeLayout
+        android:id="@+id/button_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -33,5 +36,12 @@
             android:textColor="@drawable/text_clickable" />
 
     </RelativeLayout>
+
+    <com.uw.hcde.fizzlab.trace.draw.DrawingView
+        android:id="@+id/drawing_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_menu"
+        android:layout_below="@id/navigation_bar" />
 
 </RelativeLayout>

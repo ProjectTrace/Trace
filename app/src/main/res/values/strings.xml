@@ -38,4 +38,7 @@
     <string name="back">&lt; Back</string>
     <string name="log_out">Log out</string>
 
+    <!-- Other -->
+    <string name="toast_draw_larger">Please draw larger!</string>
+
 </resources>

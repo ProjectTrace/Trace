@@ -6,6 +6,11 @@
     <!-- Navigation bar -->
     <include layout="@layout/navigation_bar" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/coming_soon" />
 
     <TextView
         android:id="@+id/button_done"
@@ -13,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:clickable="true"
         android:layout_marginBottom="20dp"
+        android:clickable="true"
         android:text="@string/done"
         android:textColor="@drawable/text_clickable" />
 

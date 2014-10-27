@@ -39,6 +39,6 @@
     <string name="log_out">Log out</string>
 
     <!-- Other -->
-    <string name="toast_draw_larger">Please draw larger!</string>
+    <string name="toast_draw_larger">Please draw larger</string>
 
 </resources>

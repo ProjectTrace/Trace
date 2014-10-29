@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme -->
-    <style name="AppTheme" parent="android:Theme.NoTitleBar.Fullscreen">
+    <style name="AppTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
     </style>
 

@@ -6,12 +6,11 @@
     <!-- Navigation bar -->
     <include layout="@layout/navigation_bar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/coming_soon" />
-
+    <NumberPicker
+        android:id="@+id/picker_distance"
+        android:layout_width="150dp"
+        android:layout_height="240dp"
+        android:layout_centerInParent="true" />
 
     <TextView
         android:id="@+id/button_next"

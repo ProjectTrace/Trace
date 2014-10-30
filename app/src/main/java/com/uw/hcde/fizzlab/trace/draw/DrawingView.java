@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -24,11 +25,14 @@ public class DrawingView extends View {
     private static final String TAG = "DrawingView";
 
     private static final int MIN_PIXEL_THRESHOLD = 500;
+    private static final int MESSAGE_TIME = 2000;
 
     private Paint mPaint;
     private Path mPath;
     private Boolean mIsFinish;
+    private Boolean mIsShowingMessage;
     private Context mAppContext;
+    private Handler mHandler;
 
     // To connect to initial SimplePoint
     private ArrayList<Point> points;
@@ -41,8 +45,10 @@ public class DrawingView extends View {
         mPaint = new Paint();
         mPath = new Path();
         mIsFinish = false;
+        mIsShowingMessage = false;
         mPixelLength = 0;
         points = new ArrayList<Point>();
+        mHandler = new Handler();
 
         // Set up paint style
         mPaint.setAntiAlias(true);
@@ -61,7 +67,7 @@ public class DrawingView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // No more drawing if finished
-        if (mIsFinish) {
+        if (mIsFinish || mIsShowingMessage) {
             return true;
         }
 
@@ -75,12 +81,20 @@ public class DrawingView extends View {
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                if (points.isEmpty()) {
+                    return false;
+                }
+
                 mPath.lineTo(eventX, eventY);
                 Point prevPoint = points.get(points.size() - 1);
                 mPixelLength += (int) getEuclideanDistance(prevPoint, currentPoint);
                 break;
 
             case MotionEvent.ACTION_UP:
+                if (points.isEmpty()) {
+                    return false;
+                }
+
                 Point firstPoint = points.get(0);
                 int length = (int) getEuclideanDistance(currentPoint, firstPoint);
                 if (length + mPixelLength > MIN_PIXEL_THRESHOLD) {
@@ -96,6 +110,14 @@ public class DrawingView extends View {
                             mAppContext.getString(R.string.toast_draw_larger), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
+                    mIsShowingMessage = true;
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIsShowingMessage = false;
+                        }
+                    }, 2000);
+
                     clear();
                     return true;
                 }
@@ -140,9 +162,20 @@ public class DrawingView extends View {
         }
 
         if (message != null) {
-            Toast toast = Toast.makeText(mAppContext, message, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            if (!mIsShowingMessage) {
+                Toast toast = Toast.makeText(mAppContext, message, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
+                mIsShowingMessage = true;
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIsShowingMessage = false;
+                    }
+                }, 2000);
+            }
+
             return false;
         } else {
             return true;

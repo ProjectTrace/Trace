@@ -2,7 +2,6 @@ package com.uw.hcde.fizzlab.trace.draw;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 public class DrawingView extends View {
     private static final String TAG = "DrawingView";
 
-    private static final int MIN_PIXEL_THRESHOLD = 100;
+    private static final int MIN_PIXEL_THRESHOLD = 500;
 
     private Paint mPaint;
     private Path mPath;
@@ -33,7 +32,7 @@ public class DrawingView extends View {
 
     // To connect to initial SimplePoint
     private ArrayList<Point> points;
-    private float mPixelLength;
+    private int mPixelLength;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,10 +47,9 @@ public class DrawingView extends View {
         // Set up paint style
         mPaint.setAntiAlias(true);
         mPaint.setStrokeWidth(6f);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(getResources().getColor(R.color.transparent_white1));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setAlpha(200);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
@@ -78,17 +76,22 @@ public class DrawingView extends View {
 
             case MotionEvent.ACTION_MOVE:
                 mPath.lineTo(eventX, eventY);
-                Point prevSimplePoint = points.get(points.size() - 1);
-                mPixelLength += (int) getEuclideanDistance(prevSimplePoint, currentPoint);
+                Point prevPoint = points.get(points.size() - 1);
+                mPixelLength += (int) getEuclideanDistance(prevPoint, currentPoint);
                 break;
 
             case MotionEvent.ACTION_UP:
-                if (mPixelLength > MIN_PIXEL_THRESHOLD) {
+                Point firstPoint = points.get(0);
+                int length = (int) getEuclideanDistance(currentPoint, firstPoint);
+                if (length + mPixelLength > MIN_PIXEL_THRESHOLD) {
                     mIsFinish = true;
-                    Point firstSimplePoint = points.get(0);
-                    mPath.lineTo(firstSimplePoint.x, firstSimplePoint.y);
+                    mPath.lineTo(firstPoint.x, firstPoint.y);
+                    mPixelLength += length;
                 } else {
-                    // Drawing is too small
+
+                    // Drawing is too small. This check needed to be done here
+                    // in case the user could not see what he/she draw while
+                    // system prevents user form drawing again.
                     Toast toast = Toast.makeText(mAppContext,
                             mAppContext.getString(R.string.toast_draw_larger), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
@@ -115,6 +118,35 @@ public class DrawingView extends View {
      */
     private double getEuclideanDistance(Point p1, Point p2) {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
+
+    /**
+     * Completes drawing
+     */
+    public void complete() {
+        DrawActivity.sDrawingData.points = points;
+        DrawActivity.sDrawingData.length = mPixelLength;
+    }
+
+    /**
+     * Checks if drawing is valid, more condition can be added here
+     *
+     * @return true or false
+     */
+    public boolean isValid() {
+        String message = null;
+        if (mPixelLength == 0) {
+            message = mAppContext.getString(R.string.toast_draw_something);
+        }
+
+        if (message != null) {
+            Toast toast = Toast.makeText(mAppContext, message, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

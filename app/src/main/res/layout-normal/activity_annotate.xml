@@ -1,16 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/draw_screen_background">
+    android:background="@color/main_red1">
 
     <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/coming_soon" />
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar" />
 
     <TextView
         android:id="@+id/button_done"
@@ -22,5 +18,20 @@
         android:clickable="true"
         android:text="@string/done"
         android:textColor="@drawable/text_clickable" />
+
+
+    <RelativeLayout
+        android:id="@+id/drawing_view_path"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_done"
+        android:layout_below="@id/navigation_bar" />
+
+    <com.uw.hcde.fizzlab.trace.draw.AnnotationView
+        android:id="@+id/drawing_view_annotation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_done"
+        android:layout_below="@id/navigation_bar" />
 
 </RelativeLayout>

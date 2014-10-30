@@ -4,17 +4,18 @@
     <color name="solid_white">#FFFFFF</color>
     <color name="solid_black">#000000</color>
     <color name="klein_blue">#0033CC</color>
-    <color name="transparent_white">#80FFFFFF</color>
+    <color name="transparent_white1">#DDFFFFFF</color>
+    <color name="transparent_white2">#80FFFFFF</color>
     <color name="transparent_klein_blue1">#800033CC</color>
     <color name="transparent_klein_blue2">#600033CC</color>
 
     <!-- Color for main screen -->
-    <color name="main_screen_background">#27B6B2</color>
-    <color name="main_screen_navigation">#52C2C1</color>
-    <color name="main_screen_input">#81CECE</color>
+    <color name="main_cyan1">#27B6B2</color>
+    <color name="main_cyan2">#52C2C1</color>
+    <color name="main_cyan3">#81CECE</color>
 
     <!-- Color for draw screen -->
-    <color name="draw_screen_background">#F37159</color>
-    <color name="draw_screen_navigation">#F58E7A</color>
+    <color name="main_red1">#F37159</color>
+    <color name="main_red2">#F58E7A</color>
 
 </resources>

@@ -40,5 +40,6 @@
 
     <!-- Other -->
     <string name="toast_draw_larger">Please draw larger</string>
+    <string name="toast_draw_something">Please draw something</string>
 
 </resources>

@@ -115,7 +115,7 @@ public class SignUpActivity extends Activity {
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(SignUpActivity.this, DispatchActivity.class);
 
-                    // Clear root activity, a short numberpicker_selection_divider screen can be seen
+                    // Clear root activity
                     // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }

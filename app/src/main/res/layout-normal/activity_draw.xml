@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/draw_screen_background">
+    android:background="@color/main_red1">
 
     <!-- Navigation bar -->
     <include
@@ -38,7 +38,7 @@
     </RelativeLayout>
 
     <com.uw.hcde.fizzlab.trace.draw.DrawingView
-        android:id="@+id/drawing_view"
+        android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/button_menu"

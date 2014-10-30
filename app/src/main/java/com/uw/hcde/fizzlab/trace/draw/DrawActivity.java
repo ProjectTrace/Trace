@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.model.DrawingData;
 
 /**
  * Activity that handles drawing
@@ -23,6 +24,8 @@ public class DrawActivity extends Activity {
     private View mButtonAnnotate;
     private DrawingView mDrawingView;
 
+    // Drawing data shared by drawing activity and annotation activity
+    public static DrawingData sDrawingData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,13 @@ public class DrawActivity extends Activity {
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.draw));
 
+        // Set up buttons
         mButtonClear = findViewById(R.id.button_clear);
         mButtonAnnotate = findViewById(R.id.button_annotate);
-        mDrawingView = (DrawingView) findViewById(R.id.drawing_view);
         setupListener();
+
+        mDrawingView = (DrawingView) findViewById(R.id.drawing_view_annotation);
+        sDrawingData = new DrawingData();
     }
 
     /**
@@ -55,10 +61,17 @@ public class DrawActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button annotate clicked");
+
+                // Check if drawing is valid
+                if (!mDrawingView.isValid()) {
+                    mDrawingView.clear();
+                    return;
+                }
+
+                mDrawingView.complete();
                 Intent intent = new Intent(DrawActivity.this, AnnotateActivity.class);
                 startActivity(intent);
             }
         });
     }
-
 }

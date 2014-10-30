@@ -64,7 +64,8 @@
         <activity
             android:name=".walk.ChooseDistanceActivity"
             android:label="@string/choose_distance"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HoloTheme" />
         <activity
             android:name=".walk.ChooseDrawingActivity"
             android:label="@string/choose_drawing"

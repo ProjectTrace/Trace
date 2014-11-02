@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 /**
  * Sign up a new account
@@ -85,9 +84,7 @@ public class SignUpActivity extends Activity {
 
         // If there is a validation error, display the error
         if (validationError) {
-            Toast toast = Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            TraceUtil.showToast(SignUpActivity.this, validationErrorMessage.toString());
             return;
         }
 
@@ -108,9 +105,7 @@ public class SignUpActivity extends Activity {
                 dialog.dismiss();
                 if (e != null) {
                     // Show the error message
-                    Toast toast = Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    TraceUtil.showToast(SignUpActivity.this, e.getMessage());
                 } else {
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(SignUpActivity.this, DispatchActivity.class);

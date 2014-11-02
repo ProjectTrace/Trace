@@ -5,19 +5,17 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 import java.util.ArrayList;
 
 /**
- * A custom view to for drawing patterns
+ * A custom view to for drawing patterns.
  *
  * @author tianchi
  */
@@ -30,9 +28,7 @@ public class DrawingView extends View {
     private Paint mPaint;
     private Path mPath;
     private Boolean mIsFinish;
-    private Boolean mIsShowingMessage;
     private Context mAppContext;
-    private Handler mHandler;
 
     // To connect to initial SimplePoint
     private ArrayList<Point> points;
@@ -45,10 +41,8 @@ public class DrawingView extends View {
         mPaint = new Paint();
         mPath = new Path();
         mIsFinish = false;
-        mIsShowingMessage = false;
         mPixelLength = 0;
         points = new ArrayList<Point>();
-        mHandler = new Handler();
 
         // Set up paint style
         mPaint.setAntiAlias(true);
@@ -67,7 +61,7 @@ public class DrawingView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // No more drawing if finished
-        if (mIsFinish || mIsShowingMessage) {
+        if (mIsFinish || TraceUtil.isShowingToast()) {
             return true;
         }
 
@@ -106,18 +100,7 @@ public class DrawingView extends View {
                     // Drawing is too small. This check needed to be done here
                     // in case the user could not see what he/she draw while
                     // system prevents user form drawing again.
-                    Toast toast = Toast.makeText(mAppContext,
-                            mAppContext.getString(R.string.toast_draw_larger), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                    mIsShowingMessage = true;
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mIsShowingMessage = false;
-                        }
-                    }, 2000);
-
+                    TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_draw_larger));
                     clear();
                     return true;
                 }
@@ -143,7 +126,7 @@ public class DrawingView extends View {
     }
 
     /**
-     * Completes drawing
+     * Completes drawing.
      */
     public void complete() {
         DrawActivity.sDrawingData.points = points;
@@ -151,35 +134,16 @@ public class DrawingView extends View {
     }
 
     /**
-     * Checks if drawing is valid, more condition can be added here
+     * Checks if drawing is valid, more condition can be added here.
      *
      * @return true or false
      */
     public boolean isValid() {
-        String message = null;
         if (mPixelLength == 0) {
-            message = mAppContext.getString(R.string.toast_draw_something);
-        }
-
-        if (message != null) {
-            if (!mIsShowingMessage) {
-                Toast toast = Toast.makeText(mAppContext, message, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-
-                mIsShowingMessage = true;
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIsShowingMessage = false;
-                    }
-                }, 2000);
-            }
-
+            TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_draw_something));
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

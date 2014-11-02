@@ -5,15 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 /**
  * Welcome screen that prompts username and password
@@ -83,9 +82,7 @@ public class WelcomeActivity extends Activity {
 
         // If there is a validation error, display the error
         if (validationError) {
-            Toast toast = Toast.makeText(WelcomeActivity.this, validationErrorMessage.toString(), Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            TraceUtil.showToast(WelcomeActivity.this, validationErrorMessage.toString());
             return;
         }
 
@@ -101,9 +98,7 @@ public class WelcomeActivity extends Activity {
                 dialog.dismiss();
                 if (e != null) {
                     // Show the error message
-                    Toast toast = Toast.makeText(WelcomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+                    TraceUtil.showToast(WelcomeActivity.this, e.getMessage());
                 } else {
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(WelcomeActivity.this, DispatchActivity.class);

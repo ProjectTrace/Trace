@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -91,7 +90,6 @@ public class AnnotationView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(TAG, "on Touch");
         int eventX = (int) event.getX();
         int eventY = (int) event.getY();
         Point p1 = new Point(eventX, eventY);

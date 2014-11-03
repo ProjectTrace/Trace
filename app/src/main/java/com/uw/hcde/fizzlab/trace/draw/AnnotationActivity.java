@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.util.DrawUtil;
 
 import java.util.ArrayList;
 
@@ -25,14 +25,21 @@ import java.util.ArrayList;
  *
  * @author tianchi
  */
-public class AnnotateActivity extends Activity {
+public class AnnotationActivity extends Activity {
 
     private static final String TAG = "AnnotateActivity";
+
+    private ArrayList<Point> mRawPoints; // Used to display path
+    private ArrayList<Point> mTransformedPoints; // Used to add annotation point and upload to server
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotate);
+
+        Intent intent = getIntent();
+        mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
+        mTransformedPoints = DrawUtil.transformPointsBezierToDirect(mRawPoints);
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
@@ -41,7 +48,9 @@ public class AnnotateActivity extends Activity {
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);
         layout.addView(new DrawingViewPath(this));
-        //layout.addView(new AnnotationView(this);
+
+        AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
+        annotationView.setTransformedPoints(mTransformedPoints);
 
         // Set up buttons
         View buttonDone = findViewById(R.id.button_done);
@@ -49,7 +58,7 @@ public class AnnotateActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button done clicked");
-                Intent intent = new Intent(AnnotateActivity.this, MainActivity.class);
+                Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,9 +73,7 @@ public class AnnotateActivity extends Activity {
 
         public DrawingViewPath(Context context) {
             super(context);
-
             mPaint = new Paint();
-            mPath = new Path();
 
             // Set up paint style
             mPaint.setAntiAlias(true);
@@ -76,15 +83,10 @@ public class AnnotateActivity extends Activity {
             mPaint.setStrokeJoin(Paint.Join.ROUND);
             mPaint.setStrokeCap(Paint.Cap.ROUND);
 
-            // Sets up path given points
-            ArrayList<Point> points = DrawActivity.sDrawingData.points;
-            Point start = points.get(0);
-            mPath.moveTo(start.x, start.y);
-            for (int i = 1; i < points.size(); i++) {
-                Point p = points.get(i);
-                mPath.lineTo(p.x, p.y);
-            }
-            mPath.lineTo(start.x, start.y);
+            // Sets up path given points, using Quadratic Bézier curves
+            mPath = DrawUtil.getBezierPath(mRawPoints);
+            Point firstPoint = mRawPoints.get(0);
+            mPath.lineTo(firstPoint.x, firstPoint.y);
         }
 
         @Override

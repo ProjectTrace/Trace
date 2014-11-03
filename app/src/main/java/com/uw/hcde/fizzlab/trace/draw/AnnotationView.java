@@ -29,22 +29,22 @@ public class AnnotationView extends View {
 
     public AnnotationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        mPathPoints = DrawActivity.sDrawingData.points;
         mAnnotationPoints = new ArrayList<Point>();
 
+        // Set up paint
         mPaint = new Paint();
-        // Set up paint style
         mPaint.setAntiAlias(true);
         mPaint.setColor(getResources().getColor(R.color.main_cyan2));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStyle(Paint.Style.FILL);
     }
 
+    public void setTransformedPoints(ArrayList<Point> points) {
+        mPathPoints = points;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
-        // canvas.drawPath(mPath, mPaint);
-
         for (Point p : mAnnotationPoints) {
             drawCircle(canvas, p);
         }
@@ -85,8 +85,7 @@ public class AnnotationView extends View {
     //TODO: this part needs to be revised
 
     /**
-     * Checks if a touch point is on path. If so, Adds that point to
-     * paths points list.
+     * Checks if a touch point is on path.
      * @param p touch point
      * @return
      */

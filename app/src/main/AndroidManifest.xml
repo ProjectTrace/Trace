@@ -52,7 +52,7 @@
 
         <!-- Annotate activity -->
         <activity
-            android:name=".draw.AnnotateActivity"
+            android:name=".draw.AnnotationActivity"
             android:label="@string/annotate"
             android:screenOrientation="portrait" />
 

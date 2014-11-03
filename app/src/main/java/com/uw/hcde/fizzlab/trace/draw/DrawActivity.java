@@ -2,13 +2,15 @@ package com.uw.hcde.fizzlab.trace.draw;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.model.DrawingData;
+
+import java.util.ArrayList;
 
 /**
  * Activity that handles drawing
@@ -18,14 +20,12 @@ import com.uw.hcde.fizzlab.trace.model.DrawingData;
 public class DrawActivity extends Activity {
 
     private static final String TAG = "DrawActivity";
+    public static final String INTENT_EXTRA_RAW_POINTS = "raw_points";
 
     // Main buttons
     private View mButtonClear;
     private View mButtonAnnotate;
     private DrawingView mDrawingView;
-
-    // Drawing data shared by drawing activity and annotation activity
-    public static DrawingData sDrawingData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,6 @@ public class DrawActivity extends Activity {
         setupListener();
 
         mDrawingView = (DrawingView) findViewById(R.id.drawing_view_annotation);
-        sDrawingData = new DrawingData();
     }
 
     /**
@@ -68,8 +67,9 @@ public class DrawActivity extends Activity {
                     return;
                 }
 
-                mDrawingView.complete();
-                Intent intent = new Intent(DrawActivity.this, AnnotateActivity.class);
+                ArrayList<Point> points = mDrawingView.getPoints();
+                Intent intent = new Intent(DrawActivity.this, AnnotationActivity.class);
+                intent.putParcelableArrayListExtra(INTENT_EXTRA_RAW_POINTS, points);
                 startActivity(intent);
             }
         });

@@ -5,19 +5,20 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.uw.hcde.fizzlab.trace.R;
-
 /**
  * Contains utils for Trace project.
  *
  * @author tianchi
  */
 public class TraceUtil {
+    private static final int TOAST_MESSAGE_TIME = 2000;
+
     private static Boolean sIsShowingToastMessage = false;
     private static Handler sHandler = new Handler();
 
     /**
      * Returns if toast message is being shown.
+     *
      * @return
      */
     public static boolean isShowingToast() {
@@ -26,6 +27,7 @@ public class TraceUtil {
 
     /**
      * Displays toast message on screen.
+     *
      * @param context
      * @param msg
      */
@@ -44,6 +46,6 @@ public class TraceUtil {
             public void run() {
                 sIsShowingToastMessage = false;
             }
-        }, 2000);
+        }, TOAST_MESSAGE_TIME);
     }
 }

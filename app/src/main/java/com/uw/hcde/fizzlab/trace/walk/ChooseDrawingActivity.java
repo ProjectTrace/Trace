@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.draw.AnnotateActivity;
 
 /**
  * Choose drawing

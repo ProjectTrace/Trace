@@ -4,15 +4,19 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.util.DrawUtil;
 import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A custom view to for drawing patterns.
@@ -23,25 +27,22 @@ public class DrawingView extends View {
     private static final String TAG = "DrawingView";
 
     private static final int MIN_PIXEL_THRESHOLD = 500;
-    private static final int MESSAGE_TIME = 2000;
 
     private Paint mPaint;
-    private Path mPath;
     private Boolean mIsFinish;
     private Context mAppContext;
 
-    // To connect to initial SimplePoint
+    // To connect to initial point
     private ArrayList<Point> points;
-    private int mPixelLength;
+    private PathMeasure mPathMeasure;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAppContext = getContext();
 
         mPaint = new Paint();
-        mPath = new Path();
         mIsFinish = false;
-        mPixelLength = 0;
+        mPathMeasure = new PathMeasure();
         points = new ArrayList<Point>();
 
         // Set up paint style
@@ -55,7 +56,25 @@ public class DrawingView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawPath(mPath, mPaint);
+
+        // Use Quadratic Bézier curves to draw path
+        Path path = DrawUtil.getBezierPath(points);
+        if (mIsFinish) {
+            // Connect last point to fist point
+            Point firstPoint = points.get(0);
+            path.lineTo(firstPoint.x, firstPoint.y);
+
+            // Measure path length
+            mPathMeasure.setPath(path, false);
+            float len = mPathMeasure.getLength();
+            Log.d(TAG, "Measured length: " + len);
+            if (len < MIN_PIXEL_THRESHOLD) {
+                TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_draw_larger));
+                clear();
+                return;
+            }
+        }
+        canvas.drawPath(path, mPaint);
     }
 
     @Override
@@ -71,40 +90,21 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mPath.moveTo(eventX, eventY);
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 if (points.isEmpty()) {
                     return false;
                 }
-
-                mPath.lineTo(eventX, eventY);
-                Point prevPoint = points.get(points.size() - 1);
-                mPixelLength += (int) getEuclideanDistance(prevPoint, currentPoint);
                 break;
 
             case MotionEvent.ACTION_UP:
                 if (points.isEmpty()) {
                     return false;
                 }
-
-                Point firstPoint = points.get(0);
-                int length = (int) getEuclideanDistance(currentPoint, firstPoint);
-                if (length + mPixelLength > MIN_PIXEL_THRESHOLD) {
-                    mIsFinish = true;
-                    mPath.lineTo(firstPoint.x, firstPoint.y);
-                    mPixelLength += length;
-                } else {
-
-                    // Drawing is too small. This check needed to be done here
-                    // in case the user could not see what he/she draw while
-                    // system prevents user form drawing again.
-                    TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_draw_larger));
-                    clear();
-                    return true;
-                }
+                mIsFinish = true;
                 break;
+
             default:
                 return false;
         }
@@ -116,21 +116,10 @@ public class DrawingView extends View {
     }
 
     /**
-     * Returns Euclidean distance between two SimplePoints.
-     *
-     * @param p1
-     * @param p2
+     * Get raw drawing points.
      */
-    private double getEuclideanDistance(Point p1, Point p2) {
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-    }
-
-    /**
-     * Completes drawing.
-     */
-    public void complete() {
-        DrawActivity.sDrawingData.points = points;
-        DrawActivity.sDrawingData.length = mPixelLength;
+    public ArrayList<Point> getPoints() {
+        return points;
     }
 
     /**
@@ -139,7 +128,7 @@ public class DrawingView extends View {
      * @return true or false
      */
     public boolean isValid() {
-        if (mPixelLength == 0) {
+        if (points.size() == 0) {
             TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_draw_something));
             return false;
         }
@@ -150,9 +139,7 @@ public class DrawingView extends View {
      * Clear content
      */
     public void clear() {
-        mPath.reset();
         mIsFinish = false;
-        mPixelLength = 0;
         points.clear();
         invalidate();
     }

@@ -4,7 +4,6 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +19,19 @@ public class DrawUtil {
 
     /**
      * Transform Bezier points to Direct points
+     *
      * @param bezierPoints
      * @return points
      */
-    public static ArrayList<Point> transformPointsBezierToDirect(List<Point> bezierPoints){
+    public static ArrayList<Point> transformPointsBezierToDirect(List<Point> bezierPoints) {
         Path path = getBezierPath(bezierPoints);
 
         ArrayList<Point> points = new ArrayList<Point>();
-        PathMeasure pm = new PathMeasure(path, false);
+        PathMeasure pm = new PathMeasure(path, true);
         float length = pm.getLength();
         float distance = 0f;
 
-        int maxCount = (int)length / SEGMENT_LENGTH_PL;
+        int maxCount = (int) length / SEGMENT_LENGTH_PL;
         int counter = 0;
         float[] aCoordinates = new float[2];
         while ((distance < length) && (counter < maxCount)) {

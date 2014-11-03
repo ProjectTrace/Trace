@@ -37,9 +37,14 @@
     <string name="next">Next</string>
     <string name="back">&lt; Back</string>
     <string name="log_out">Log out</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="set">Set</string>
 
     <!-- Other -->
     <string name="toast_draw_larger">Please draw larger</string>
     <string name="toast_draw_something">Please draw something</string>
+    <string name="toast_enter_annotation">Please enter something</string>
 
 </resources>

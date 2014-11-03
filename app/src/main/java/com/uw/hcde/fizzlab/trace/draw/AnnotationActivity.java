@@ -41,6 +41,9 @@ public class AnnotationActivity extends Activity {
         mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
         mTransformedPoints = DrawUtil.transformPointsBezierToDirect(mRawPoints);
 
+        Log.d(TAG, "raw points size: " + mRawPoints.size());
+        Log.d(TAG, "transformed points size: " + mTransformedPoints.size());
+
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.annotate));
@@ -49,7 +52,7 @@ public class AnnotationActivity extends Activity {
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);
         layout.addView(new DrawingViewPath(this));
 
-        AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
+        final AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
         annotationView.setTransformedPoints(mTransformedPoints);
 
         // Set up buttons
@@ -58,6 +61,8 @@ public class AnnotationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button done clicked");
+                ArrayList<AnnotationPoint> annotationPoints = annotationView.getAnnotationPoints();
+
                 Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
                 startActivity(intent);
             }

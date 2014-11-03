@@ -54,7 +54,9 @@
         <activity
             android:name=".draw.AnnotationActivity"
             android:label="@string/annotate"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HoloTheme"
+            />
 
 
         <!-- ============================================ -->

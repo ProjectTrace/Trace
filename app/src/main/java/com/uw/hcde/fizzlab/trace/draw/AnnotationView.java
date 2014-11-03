@@ -33,8 +33,8 @@ public class AnnotationView extends View {
     private static final int CIRCLE_RADIUS_SMALL_DP = 6;
     private static final int ANNOTATION_DETECTION_RADIUS_DP = 12;
 
-    private static int DIALOG_TYPE_NEW = 0;
-    private static int DIALOG_TYPE_UPDATE = 1;
+    private static int ANNOTATION_TYPE_NEW = 0;
+    private static int ANNOTATION_TYPE_UPDATE = 1;
 
     private ArrayList<Point> mPathPoints;
     private ArrayList<AnnotationPoint> mAnnotationPoints;
@@ -103,8 +103,19 @@ public class AnnotationView extends View {
                 Point p2 = mPathPoints.get(i);
                 if (p1.x >= p2.x - mDetection_radius && p1.x <= p2.x + mDetection_radius
                         && p1.y >= p2.y - mDetection_radius && p1.y <= p2.y + mDetection_radius) {
+
                     int annotationIndex = findAnnotationIndex(p2);
-                    promptInput(annotationIndex, p2);
+                    int type;
+                    if (annotationIndex == -1) {
+                        type = ANNOTATION_TYPE_NEW;
+                        mAnnotationPoints.add(new AnnotationPoint(p2, ""));
+                        annotationIndex = mAnnotationPoints.size() - 1;
+                        invalidate();
+                    } else {
+                        type = ANNOTATION_TYPE_UPDATE;
+                    }
+
+                    promptInput(annotationIndex, type);
                     return true;
                 }
             }
@@ -139,7 +150,7 @@ public class AnnotationView extends View {
     /**
      * Prompts annotation input.
      */
-    private void promptInput(final int annotationIndex, final Point p) {
+    private void promptInput(final int annotationIndex, final int type) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mAppContext);
         builder.setTitle(mAppContext.getString(R.string.annotate));
 
@@ -150,38 +161,45 @@ public class AnnotationView extends View {
         input.setSingleLine(false);
         input.setGravity(Gravity.LEFT | Gravity.TOP);
 
-        if (annotationIndex >= 0) {
-            String msg = mAnnotationPoints.get(annotationIndex).getMsg();
-            input.setText(msg);
-            input.setSelection(msg.length());
-        }
+        String msg = mAnnotationPoints.get(annotationIndex).getMsg();
+        input.setText(msg);
+        input.setSelection(msg.length());
         builder.setView(input);
 
+        // Dialog buttons
         builder.setPositiveButton(mAppContext.getText(R.string.set), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = input.getText().toString();
                 if (text.length() != 0) {
+                    AnnotationPoint annotationPoint = mAnnotationPoints.get(annotationIndex);
+                    annotationPoint.setMsg(text);
 
-                    if (annotationIndex >= 0) {
-                        AnnotationPoint annotationPoint = mAnnotationPoints.get(annotationIndex);
-                        annotationPoint.setMsg(text);
-                    } else {
-                        mAnnotationPoints.add(new AnnotationPoint(p, text));
-                    }
-                    invalidate();
                 } else {
+                    if (type == ANNOTATION_TYPE_NEW) {
+                        mAnnotationPoints.remove(annotationIndex);
+                    }
                     TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_enter_annotation));
                 }
+                invalidate();
             }
         });
-        builder.setNegativeButton(mAppContext.getText(R.string.delete), new DialogInterface.OnClickListener() {
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (annotationIndex >= 0) {
+            public void onCancel(DialogInterface arg0) {
+                if (type == ANNOTATION_TYPE_NEW) {
                     mAnnotationPoints.remove(annotationIndex);
                     invalidate();
                 }
+            }
+        });
+
+        builder.setNegativeButton(mAppContext.getText(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAnnotationPoints.remove(annotationIndex);
+                invalidate();
             }
         });
         AlertDialog alertDialog = builder.create();

@@ -3,7 +3,7 @@ package com.uw.hcde.fizzlab.trace.draw;
 import android.graphics.Point;
 
 /**
- * Represents an annotation point
+ * Represents an annotation point.
  *
  * @author tianchi
  */
@@ -16,22 +16,34 @@ public class AnnotationPoint {
         mMsg = msg;
     }
 
+    /**
+     * Gets annotation point.
+     * @return
+     */
     public Point getPoint() {
         return mPoint;
     }
 
-    public int getX() {
-        return mPoint.x;
+    /**
+     * Sets annotation point.
+     * @param p
+     */
+    public void setPoint(Point p) {
+        mPoint = p;
     }
 
-    public int getY() {
-        return mPoint.y;
-    }
-
+    /**
+     * Gets annotation message.
+     * @return
+     */
     public String getMsg() {
         return mMsg;
     }
 
+    /**
+     * Sets annotation message.
+     * @param msg
+     */
     public void setMsg(String msg) {
         mMsg = msg;
     }

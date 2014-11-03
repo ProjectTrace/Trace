@@ -1,15 +1,20 @@
 package com.uw.hcde.fizzlab.trace.draw;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,15 +61,39 @@ public class AnnotationActivity extends Activity {
         annotationView.setTransformedPoints(mTransformedPoints);
 
         // Set up buttons
-        View buttonDone = findViewById(R.id.button_done);
-        buttonDone.setOnClickListener(new View.OnClickListener() {
+        View buttonSend = findViewById(R.id.button_send);
+        buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button done clicked");
+                Log.d(TAG, "Button send clicked");
                 ArrayList<AnnotationPoint> annotationPoints = annotationView.getAnnotationPoints();
 
-                Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
-                startActivity(intent);
+                // Send dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(AnnotationActivity.this);
+                builder.setTitle(AnnotationActivity.this.getString(R.string.send));
+
+                // Set up edit text
+                final EditText input = new EditText(AnnotationActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setSingleLine(false);
+                input.setLines(3);
+                input.setGravity(Gravity.LEFT | Gravity.TOP);
+                input.setHint(AnnotationActivity.this.getString(R.string.enter_username));
+                builder.setView(input);
+
+                // Dialog buttons
+                builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }

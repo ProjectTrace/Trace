@@ -17,6 +17,7 @@ import com.uw.hcde.fizzlab.trace.R;
 public class ChooseDrawingActivity extends Activity {
 
     private static final String TAG = "ChooseDrawingActivity";
+    private static final String EXTRA_INT_DRAWING_IDENTIFIER = "drawing_identifier";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

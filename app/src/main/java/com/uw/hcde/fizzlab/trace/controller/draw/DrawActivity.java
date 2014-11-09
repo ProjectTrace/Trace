@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.draw;
+package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.app.Activity;
 import android.content.Intent;

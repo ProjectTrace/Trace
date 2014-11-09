@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.walk;
+package com.uw.hcde.fizzlab.trace.controller.walk;
 
 
 import android.app.Activity;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 
 public class MapActivity extends Activity{
     private static final String TAG = "MapActivity";

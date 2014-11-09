@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.model;
+package com.uw.hcde.fizzlab.trace.model.object;
 
 /**
  * Data modal that represents a trace annotation.

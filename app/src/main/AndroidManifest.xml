@@ -6,14 +6,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".main.TraceApplication"
+        android:name=".controller.main.TraceApplication"
         android:icon="@drawable/app_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <!-- Dispatch sign up or main activity. Entry point-->
         <activity
-            android:name=".main.DispatchActivity"
+            android:name=".controller.main.DispatchActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,20 +23,20 @@
 
         <!-- Welcome screen -->
         <activity
-            android:name=".main.WelcomeActivity"
+            android:name=".controller.main.WelcomeActivity"
             android:label="@string/welcome"
             android:screenOrientation="portrait" />
 
         <!-- Sign up screen-->
         <activity
-            android:name=".main.SignUpActivity"
+            android:name=".controller.main.SignUpActivity"
             android:label="@string/sign_up"
             android:screenOrientation="portrait" />
 
 
         <!-- Main activity -->
         <activity
-            android:name=".main.MainActivity"
+            android:name=".controller.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
@@ -46,13 +46,13 @@
         <!-- ============================================ -->
         <!-- Draw activity -->
         <activity
-            android:name=".draw.DrawActivity"
+            android:name=".controller.draw.DrawActivity"
             android:label="@string/draw"
             android:screenOrientation="portrait" />
 
         <!-- Annotate activity -->
         <activity
-            android:name=".draw.AnnotationActivity"
+            android:name=".controller.draw.AnnotationActivity"
             android:label="@string/annotate"
             android:screenOrientation="portrait"
             android:theme="@style/HoloTheme"
@@ -64,17 +64,17 @@
         <!-- ============================================ -->
         <!-- Walk activity -->
         <activity
-            android:name=".walk.ChooseDistanceActivity"
+            android:name=".controller.walk.ChooseDistanceActivity"
             android:label="@string/choose_distance"
             android:screenOrientation="portrait"
             android:theme="@style/HoloTheme" />
         <activity
-            android:name=".walk.ChooseDrawingActivity"
+            android:name=".controller.walk.ChooseDrawingActivity"
             android:label="@string/choose_drawing"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".walk.MapActivity"
+            android:name=".controller.walk.MapActivity"
             android:label="@string/map"
             android:screenOrientation="portrait" />
 
@@ -84,7 +84,7 @@
         <!-- ============================================ -->
         <!-- Profile activity -->
         <activity
-            android:name=".profile.ProfileActivity"
+            android:name=".controller.profile.ProfileActivity"
             android:label="@string/you"
             android:screenOrientation="portrait" />
     </application>

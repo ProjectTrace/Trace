@@ -3,6 +3,8 @@ package com.uw.hcde.fizzlab.trace.model;
 import android.content.Context;
 import android.location.Location;
 
+import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
+
 import java.util.List;
 
 /**
@@ -38,4 +40,5 @@ public class TraceDataFactory {
         // TODO: this method will be implemented later. Add your test locations here.
         return null;
     }
+
 }

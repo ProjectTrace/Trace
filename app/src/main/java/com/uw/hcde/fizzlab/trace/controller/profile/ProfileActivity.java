@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.profile;
+package com.uw.hcde.fizzlab.trace.controller.profile;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
+import com.uw.hcde.fizzlab.trace.controller.main.DispatchActivity;
 
 /**
  * Profile activity that displays user information

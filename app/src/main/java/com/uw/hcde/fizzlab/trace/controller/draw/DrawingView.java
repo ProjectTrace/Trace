@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.draw;
+package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,7 +16,6 @@ import com.uw.hcde.fizzlab.trace.util.DrawUtil;
 import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A custom view to for drawing patterns.

@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.walk;
+package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
 import android.content.Intent;

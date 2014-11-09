@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.draw;
+package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.model.object.AnnotationPoint;
 import com.uw.hcde.fizzlab.trace.util.TraceUtil;
 
 import java.util.ArrayList;

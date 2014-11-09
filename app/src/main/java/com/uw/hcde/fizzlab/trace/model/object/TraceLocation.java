@@ -1,6 +1,8 @@
-package com.uw.hcde.fizzlab.trace.model;
+package com.uw.hcde.fizzlab.trace.model.object;
 
 import android.location.Location;
+
+import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
 
 /**
  * Data model that represents a trace location.

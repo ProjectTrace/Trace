@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.draw;
+package com.uw.hcde.fizzlab.trace.model.object;
 
 import android.graphics.Point;
 

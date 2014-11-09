@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.main;
+package com.uw.hcde.fizzlab.trace.controller.main;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
+import com.uw.hcde.fizzlab.trace.model.parse.ParseAnnotation;
+import com.uw.hcde.fizzlab.trace.model.parse.ParseDrawing;
 
 /**
  * Configures Parse
@@ -27,6 +30,8 @@ public class TraceApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        ParseObject.registerSubclass(ParseDrawing.class);
+        ParseObject.registerSubclass(ParseAnnotation.class);
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
         preferences = getSharedPreferences(APP_ID, Context.MODE_PRIVATE);
     }

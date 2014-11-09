@@ -3,7 +3,6 @@ package com.uw.hcde.fizzlab.trace.controller.draw;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,14 +13,18 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
+import com.uw.hcde.fizzlab.trace.model.parse.ParseDataFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +38,7 @@ public class AnnotationActivity extends Activity {
     private static final String TAG = "AnnotateActivity";
 
     private List<Point> mRawPoints; // Used to display path
+    private List<TracePoint> mTracePoints; // Trace points
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +52,10 @@ public class AnnotationActivity extends Activity {
         List<Point> normalizedPoints = DrawUtil.normalizePoints(mRawPoints);
 
         // Get tracePoints
-        List<TracePoint> tracePoints = DrawUtil.pointsToTracePoints(normalizedPoints);
+        mTracePoints = DrawUtil.pointsToTracePoints(normalizedPoints);
 
         Log.d(TAG, "raw points size: " + mRawPoints.size());
-        Log.d(TAG, "trace points size: " + tracePoints.size());
+        Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
@@ -62,8 +66,15 @@ public class AnnotationActivity extends Activity {
         layout.addView(new DrawingViewPath(this));
 
         final AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
-        annotationView.setTracePoints(tracePoints);
+        annotationView.setTracePoints(mTracePoints);
 
+        setupButtons();
+    }
+
+    /**
+     * Sets up done button
+     */
+    private void setupButtons() {
         // Set up buttons
         View buttonSend = findViewById(R.id.button_send);
         buttonSend.setOnClickListener(new View.OnClickListener() {
@@ -81,22 +92,47 @@ public class AnnotationActivity extends Activity {
                 input.setSingleLine(false);
                 input.setLines(3);
                 input.setGravity(Gravity.LEFT | Gravity.TOP);
-                input.setHint(AnnotationActivity.this.getString(R.string.enter_username));
+                input.setHint(AnnotationActivity.this.getString(R.string.hint_enter_username));
                 builder.setView(input);
 
-                // Dialog buttons
-                builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), null);
+                builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
+
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                // Sets positive button
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = input.getText().toString();
+                    public void onClick(View v) {
+
+                        // Get list of username
+                        List<String> names = new ArrayList<String>();
+                        for (String s : input.getText().toString().split(",")) {
+                            String name = s.trim();
+                            if (name.length() > 0) {
+                                names.add(name);
+                            }
+                        }
+
+                        // Empty list
+                        if (names.isEmpty()) {
+                            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_username));
+                            return;
+                        }
+
+                        // TODO: handle invalid list
+                        // TODO: more pipelines on tracePoints
+
+                        // Send data
+                        ParseDataFactory.sendDrawing(names, mTracePoints);
+
+                        alertDialog.dismiss();
                         Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
-
-                builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
             }
         });
     }

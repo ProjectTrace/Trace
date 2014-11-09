@@ -11,7 +11,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="password_again">Password Again</string>
-    <string name="error_intro">"Please "</string>
+    <string name="error_intro">"please "</string>
     <string name="error_blank_username">enter a username</string>
     <string name="error_blank_password">enter a password</string>
     <string name="error_mismatched_passwords">enter the same password twice</string>
@@ -45,10 +45,10 @@
     <string name="set">Set</string>
 
     <!-- Other -->
-    <string name="toast_draw_larger">Please draw larger</string>
-    <string name="toast_draw_something">Please draw something</string>
-    <string name="toast_enter_annotation">Empty message is not allowed</string>
-    <string name="enter_username">Enter his/her username, separate with comma</string>
-
+    <string name="toast_draw_larger">please draw larger</string>
+    <string name="toast_draw_something">please draw something</string>
+    <string name="toast_enter_annotation">empty message is not allowed</string>
+    <string name="hint_enter_username">Enter his/her username, separate with comma</string>
+    <string name="toast_enter_username">please enter a username</string>
 
 </resources>

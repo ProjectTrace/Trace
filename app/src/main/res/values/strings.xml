@@ -47,7 +47,7 @@
     <!-- Other -->
     <string name="toast_draw_larger">Please draw larger</string>
     <string name="toast_draw_something">Please draw something</string>
-    <string name="toast_enter_annotation">Please enter something</string>
+    <string name="toast_enter_annotation">Empty message is not allowed</string>
     <string name="enter_username">Enter his/her username, separate with comma</string>
 
 

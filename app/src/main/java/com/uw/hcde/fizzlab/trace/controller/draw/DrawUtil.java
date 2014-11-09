@@ -1,8 +1,10 @@
-package com.uw.hcde.fizzlab.trace.util;
+package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
+
+import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +20,13 @@ public class DrawUtil {
     private static final int SEGMENT_LENGTH_PL = 50;
 
     /**
-     * Transform Bezier points to Direct points
+     * Transforms raw points to normalized points that separates by SEGMENT_LENGTH_PL on path
      *
-     * @param bezierPoints
-     * @return points
+     * @param rawPoints
+     * @return normalized points
      */
-    public static ArrayList<Point> transformPointsBezierToDirect(List<Point> bezierPoints) {
-        Path path = getBezierPath(bezierPoints);
+    public static List<Point> normalizePoints(List<Point> rawPoints) {
+        Path path = getBezierPath(rawPoints);
 
         ArrayList<Point> points = new ArrayList<Point>();
         PathMeasure pm = new PathMeasure(path, true);
@@ -51,7 +53,7 @@ public class DrawUtil {
      * @param points
      * @return path
      */
-    public static Path getDirectPath(ArrayList<Point> points) {
+    public static Path getDirectPath(List<Point> points) {
         Path path = new Path();
         Point start = points.get(0);
         path.moveTo(start.x, start.y);
@@ -94,4 +96,20 @@ public class DrawUtil {
         }
         return path;
     }
+
+    /**
+     * Converts points to TracePoints
+     * @param points
+     * @return tracePoints
+     */
+    public static List<TracePoint> pointsToTracePoints(List<Point> points) {
+        List<TracePoint> tracePoints = new ArrayList<TracePoint>();
+        for (Point p : points) {
+            TracePoint tracePoint = new TracePoint();
+            tracePoint.point = p;
+            tracePoints.add(tracePoint);
+        }
+        return tracePoints;
+    }
+
 }

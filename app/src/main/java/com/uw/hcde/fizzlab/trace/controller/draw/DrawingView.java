@@ -12,8 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.util.DrawUtil;
-import com.uw.hcde.fizzlab.trace.util.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 
 import java.util.ArrayList;
 

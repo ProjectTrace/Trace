@@ -20,10 +20,9 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
-import com.uw.hcde.fizzlab.trace.model.object.AnnotationPoint;
-import com.uw.hcde.fizzlab.trace.util.DrawUtil;
+import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity that handles annotation. Drawing activity
@@ -35,8 +34,7 @@ public class AnnotationActivity extends Activity {
 
     private static final String TAG = "AnnotateActivity";
 
-    private ArrayList<Point> mRawPoints; // Used to display path
-    private ArrayList<Point> mTransformedPoints; // Used to add annotation point and upload to server
+    private List<Point> mRawPoints; // Used to display path
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +43,15 @@ public class AnnotationActivity extends Activity {
 
         Intent intent = getIntent();
         mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
-        mTransformedPoints = DrawUtil.transformPointsBezierToDirect(mRawPoints);
+
+        // More pipelines can be added here
+        List<Point> normalizedPoints = DrawUtil.normalizePoints(mRawPoints);
+
+        // Get tracePoints
+        List<TracePoint> tracePoints = DrawUtil.pointsToTracePoints(normalizedPoints);
 
         Log.d(TAG, "raw points size: " + mRawPoints.size());
-        Log.d(TAG, "transformed points size: " + mTransformedPoints.size());
+        Log.d(TAG, "trace points size: " + tracePoints.size());
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
@@ -59,7 +62,7 @@ public class AnnotationActivity extends Activity {
         layout.addView(new DrawingViewPath(this));
 
         final AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
-        annotationView.setTransformedPoints(mTransformedPoints);
+        annotationView.setTracePoints(tracePoints);
 
         // Set up buttons
         View buttonSend = findViewById(R.id.button_send);
@@ -67,7 +70,6 @@ public class AnnotationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button send clicked");
-                ArrayList<AnnotationPoint> annotationPoints = annotationView.getAnnotationPoints();
 
                 // Send dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(AnnotationActivity.this);
@@ -100,7 +102,7 @@ public class AnnotationActivity extends Activity {
     }
 
     /**
-     * Inner class to draw the path obtained from DrawingView activity.
+     * Inner class to draw the path obtained from DrawingView activity, using rawPoints.
      */
     private class DrawingViewPath extends View {
         private Paint mPaint;

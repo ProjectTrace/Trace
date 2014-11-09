@@ -2,11 +2,8 @@ package com.uw.hcde.fizzlab.trace.model.object;
 
 import android.location.Location;
 
-import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
-
 /**
  * Data model that represents a trace location.
- * May change later.
  *
  * @author tianchi
  */
@@ -15,10 +12,11 @@ public class TraceLocation {
     // Geo location
     public Location location;
 
-    // Weather this point contains an annotation
-    public boolean hasAnnotation;
-
-    // If hasAnnotation == true, annotation is valid.
-    // Otherwise annotation is null.
+    // If annotation == null, annotation is invalid.
     public TraceAnnotation annotation;
+
+    public TraceLocation() {
+        location = null;
+        annotation = null;
+    }
 }

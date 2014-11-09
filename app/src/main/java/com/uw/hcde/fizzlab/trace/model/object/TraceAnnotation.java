@@ -9,5 +9,9 @@ package com.uw.hcde.fizzlab.trace.model.object;
 public class TraceAnnotation {
 
     // Annotation message.
-    public String message;
+    public String msg;
+
+    public TraceAnnotation() {
+        msg = null;
+    }
 }

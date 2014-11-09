@@ -12,7 +12,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.util.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 
 /**
  * Sign up a new account

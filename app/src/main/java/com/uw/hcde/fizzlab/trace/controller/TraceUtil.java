@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.util;
+package com.uw.hcde.fizzlab.trace.controller;
 
 import android.content.Context;
 import android.os.Handler;

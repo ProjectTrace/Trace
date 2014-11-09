@@ -12,7 +12,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.util.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 
 /**
  * Welcome screen that prompts username and password

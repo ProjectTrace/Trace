@@ -50,5 +50,6 @@
     <string name="toast_enter_annotation">empty message is not allowed</string>
     <string name="hint_enter_username">Enter his/her username, separate with comma</string>
     <string name="toast_enter_username">please enter a username</string>
+    <string name="toast_success">success</string>
 
 </resources>

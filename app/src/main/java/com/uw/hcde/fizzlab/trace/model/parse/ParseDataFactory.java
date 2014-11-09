@@ -71,6 +71,8 @@ public class ParseDataFactory {
                         parseAnnotationIDs.add(annotation.getObjectId());
                     }
                     parseDrawing.setAnnotationList(parseAnnotationIDs);
+
+                    // Save to cloud
                     parseDrawing.saveInBackground();
                 } else {
                     // Something went wrong.
@@ -97,6 +99,8 @@ public class ParseDataFactory {
                 }
                 Log.d(TAG, "receiver id list size: " + parseReceiverIDs.size());
                 parseDrawing.setReceiverList(parseReceiverIDs);
+
+                // Save again
                 parseDrawing.saveInBackground();
             }
         });

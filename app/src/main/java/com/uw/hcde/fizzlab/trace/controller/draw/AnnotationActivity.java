@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -127,10 +128,18 @@ public class AnnotationActivity extends Activity {
 
                         // Send data
                         ParseDataFactory.sendDrawing(names, mTracePoints);
-
                         alertDialog.dismiss();
-                        Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_success));
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }, 2000);
+
                     }
                 });
             }

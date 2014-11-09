@@ -34,7 +34,7 @@ public class ChooseDrawingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
-                Intent intent = new Intent(ChooseDrawingActivity.this, MapActivity.class);
+                Intent intent = new Intent(ChooseDrawingActivity.this, PathGoogleMapActivity.class);
                 startActivity(intent);
             }
         });

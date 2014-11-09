@@ -32,7 +32,7 @@ public class TraceDataFactory {
      * To use this method, do the following in MapActivity:
      * Intent intent = getIntent();
      * int drawingIdentifier = intent.getIntExtra(ChooseDrawingActivity.EXTRA_INT_DRAWING_IDENTIFIER, -1);
-     * List<TraceLocation> locations = TraceDataFactory.getLocations(drawingIdentifier, currentLocation, this);
+     * List<TraceLocation> locations = TraceDataFactory.getLocations(drawingIdentifier, currentLocation, this.getApplicationContext());
      */
     public static List<TraceLocation> getLocations(int drawingIdentifier,
                                                    Location currentLocation, Context context) {

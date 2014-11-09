@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.draw.AnnotateActivity;
 
 /**
  * Choose drawing
@@ -34,7 +33,7 @@ public class ChooseDrawingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
-                Intent intent = new Intent(ChooseDrawingActivity.this, MapActivity.class);
+                Intent intent = new Intent(ChooseDrawingActivity.this, PathGoogleMapActivity.class);
                 startActivity(intent);
             }
         });

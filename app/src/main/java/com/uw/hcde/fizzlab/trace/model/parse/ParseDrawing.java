@@ -11,7 +11,7 @@ import java.util.List;
  * <p/>
  * Scheme:
  * px_x_list(number list), px_y_list(number list), creator(user id),
- * receiver_list(list of user id), annotation_list(list of annotation id)
+ * receiver_list(list of user id), annotation_list(list of annotation id), description(string)
  * <p/>
  * Constrains:
  * px_x_list and px_y_list must be of equal length
@@ -29,6 +29,7 @@ public class ParseDrawing extends ParseObject {
     private static final String KEY_CREATOR = "creator";
     private static final String KEY_RECEIVER_LIST = "receiver_list";
     private static final String KEY_ANNOTATION_LIST = "annotation_list";
+    private static final String KEY_DESCRIPTION = "description";
 
     /**
      * Sets x list
@@ -118,6 +119,24 @@ public class ParseDrawing extends ParseObject {
      */
     public List<String> getAnnotationList() {
         return getList(KEY_ANNOTATION_LIST);
+    }
+
+    /**
+     * Sets description
+     *
+     * @param description
+     */
+    public void setDescription(String description) {
+        put(KEY_DESCRIPTION, description);
+    }
+
+    /**
+     * Gets description
+     *
+     * @return description
+     */
+    public String getDescription() {
+        return getString(KEY_DESCRIPTION);
     }
 
     /**

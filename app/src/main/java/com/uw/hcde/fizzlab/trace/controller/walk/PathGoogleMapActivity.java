@@ -26,9 +26,10 @@ public class PathGoogleMapActivity extends FragmentActivity {
     //TextView title = (TextView) findViewById(R.id.navigation_title);
     //title.setText(getString(R.string.map));
 
-    private static final LatLng LOWER_MANHATTAN = new LatLng(40.722543, -73.998585);
-    private static final LatLng BROOKLYN_BRIDGE = new LatLng(40.7057, -73.9964);
-    private static final LatLng WALL_STREET = new LatLng(40.7064, -74.0094);
+    //private static final LatLng LOWER_MANHATTAN = new LatLng(40.722543, -73.998585);
+    //private static final LatLng BROOKLYN_BRIDGE = new LatLng(40.7057, -73.9964);
+    //private static final LatLng WALL_STREET = new LatLng(40.7064, -74.0094);
+    private static List<LatLng> crdList = new ArrayList<LatLng>();
 
     GoogleMap googleMap;
     final String TAG = "PathGoogleMapActivity";
@@ -41,43 +42,84 @@ public class PathGoogleMapActivity extends FragmentActivity {
                 .findFragmentById(R.id.map);
         googleMap = fm.getMap();
 
-        MarkerOptions options = new MarkerOptions();
-        options.position(LOWER_MANHATTAN);
-        options.position(BROOKLYN_BRIDGE);
-        options.position(WALL_STREET);
-        googleMap.addMarker(options);
-        String url = getMapsApiDirectionsUrl();
-        ReadTask downloadTask = new ReadTask();
-        downloadTask.execute(url);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BROOKLYN_BRIDGE, 13));
+        crdList.add(new LatLng(40.722543, -73.998585));
+        crdList.add(new LatLng(40.7057, -73.9964));
+        crdList.add(new LatLng(40.7064, -74.0094));
+        crdList.add(new LatLng(40.7164, -74.0094));
+        crdList.add(new LatLng(40.6964, -74.0094));
+        crdList.add(new LatLng(40.6764, -74.0094));
+        crdList.add(new LatLng(40.6864, -74.0094));
+        crdList.add(new LatLng(40.7064, -74.0094));
+        crdList.add(new LatLng(40.7164, -74.0094));
+        crdList.add(new LatLng(40.7264, -74.0094));
+        crdList.add(new LatLng(40.7364, -74.0094));
+        crdList.add(new LatLng(40.7464, -74.0094));
+        crdList.add(new LatLng(40.7444, -74.0094));
+        crdList.add(new LatLng(40.7364, -74.0094));
+        crdList.add(new LatLng(40.7364, -74.0094));
+
+        MarkerOptions options = new MarkerOptions();
+        for (LatLng ll: crdList) {
+            options.position(ll);
+        }
+        googleMap.addMarker(options);
+
+        int currentIndex = 0; // index in the crdlist after taking 8x points
+        int crdListSize = crdList.size();
+
+        String url = "";
+        for(int i = 0; i < crdListSize; i+=6) {
+            url = getMapsApiDirectionsUrl(currentIndex);
+            currentIndex = i;
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+        }
+        if (crdListSize != currentIndex) {
+            url = getMapsApiDirectionsUrl(currentIndex);
+            ReadTask downloadTask = new ReadTask();
+            downloadTask.execute(url);
+        }
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(crdList.get(0), 13));
         addMarkers();
 
     }
 
-    private String getMapsApiDirectionsUrl() {
-        String waypoints = "waypoints=optimize:true|"
-                + LOWER_MANHATTAN.latitude + "," + LOWER_MANHATTAN.longitude
-                + "|" + "|" + BROOKLYN_BRIDGE.latitude + ","
-                + BROOKLYN_BRIDGE.longitude + "|" + WALL_STREET.latitude + ","
-                + WALL_STREET.longitude;
+    private String getMapsApiDirectionsUrl(int index) {
+        StringBuilder waypoints = new StringBuilder();
+        waypoints.append("waypoints=optimize:true");
+        for (int i=index; (i < index+6 && i < crdList.size()); i++) {
+            LatLng ll = crdList.get(i);
+            waypoints.append("|");
+            waypoints.append(ll.latitude);
+            waypoints.append(",");
+            waypoints.append(ll.longitude);
+        }
 
-        String sensor = "sensor=false";
-        String params = waypoints + "&" + sensor;
-        String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/"
-                + output + "?" + params;
-        return url;
+        StringBuilder sensor = new StringBuilder("sensor=false");
+        StringBuilder params = new StringBuilder(waypoints + "&" + sensor);
+        StringBuilder output = new StringBuilder("json");
+        StringBuilder mode = new StringBuilder("walking");
+        StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/directions/"
+                + output + "?" + params + "&mode" + mode);
+        return url.toString();
     }
 
     private void addMarkers() {
         if (googleMap != null) {
-            googleMap.addMarker(new MarkerOptions().position(BROOKLYN_BRIDGE)
-                    .title("First Point"));
-            googleMap.addMarker(new MarkerOptions().position(LOWER_MANHATTAN)
-                    .title("Second Point"));
-            googleMap.addMarker(new MarkerOptions().position(WALL_STREET)
-                    .title("Third Point"));
+            int i = 0;
+            for(LatLng ll: crdList) {
+                googleMap.addMarker(new MarkerOptions().position(ll)
+                        .title("Point Number #" + i));
+                i++;
+            }
+            //  googleMap.addMarker(new MarkerOptions().position(BROOKLYN_BRIDGE)
+            //        .title("First Point"));
+            //googleMap.addMarker(new MarkerOptions().position(LOWER_MANHATTAN)
+            //        .title("Second Point"));
+            //googleMap.addMarker(new MarkerOptions().position(WALL_STREET)
+            //        .title("Third Point"));
         }
     }
 
@@ -143,7 +185,7 @@ public class PathGoogleMapActivity extends FragmentActivity {
                 }
 
                 polyLineOptions.addAll(points);
-                polyLineOptions.width(2);
+                polyLineOptions.width(4);
                 polyLineOptions.color(Color.BLUE);
             }
 

@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_cyan1">
+
+    <!-- Navigation bar -->
+    <include layout="@layout/navigation_bar" />
+
+    <NumberPicker
+        android:id="@+id/picker_duration"
+        android:layout_width="120dp"
+        android:layout_height="220dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp" />
+
+
+    <ImageView
+        android:id="@+id/button_go"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="40dp"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:src="@drawable/button_go_clickable" />
+
+
+</RelativeLayout>

@@ -13,43 +13,43 @@ import com.uw.hcde.fizzlab.trace.R;
 import java.lang.reflect.Field;
 
 /**
- * Choose walking distance
+ * Choose walking duration
  *
  * @author tianchi
  */
-public class ChooseDistanceActivity extends Activity {
+public class ChooseDurationActivity extends Activity {
 
     public static final String TAG = "ChooseDistanceActivity";
 
     //Choices of distances in miles
-    private static final double sDistances[] = {0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5,
-            5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10};
-    public static final String Extra_Distance_Index = "extra_distance_index";
+    private static final double sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
+        130, 140, 150, 160, 170, 180, 190, 200};
+    public static final String Extra_Duration_Index = "extra_duration_index";
 
     private NumberPicker mPickerDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_distance);
+        setContentView(R.layout.activity_choose_duration);
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.choose_distance));
+        title.setText(getString(R.string.choose_duration));
 
-        mPickerDistance = (NumberPicker) findViewById(R.id.picker_distance);
+        mPickerDistance = (NumberPicker) findViewById(R.id.picker_duration);
         initializePicker();
 
-        // Set up Next button
-        View buttonNext = findViewById(R.id.button_next);
-        buttonNext.setOnClickListener(new View.OnClickListener() {
+        // Set up go button
+        View buttonGo = findViewById(R.id.button_go);
+        buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button next clicked");
+                Log.d(TAG, "Button go clicked");
                 Log.d(TAG, "Distance index: " + mPickerDistance.getValue());
 
-                Intent intent = new Intent(ChooseDistanceActivity.this, ChooseDrawingActivity.class);
-                intent.putExtra(Extra_Distance_Index, mPickerDistance.getValue());
+                Intent intent = new Intent(ChooseDurationActivity.this, PathGoogleMapActivity.class);
+                intent.putExtra(Extra_Duration_Index, mPickerDistance.getValue());
                 startActivity(intent);
             }
         });
@@ -59,20 +59,15 @@ public class ChooseDistanceActivity extends Activity {
      * Sets up distance picker
      */
     private void initializePicker() {
-        mPickerDistance.setMaxValue(sDistances.length - 1);
+        mPickerDistance.setMaxValue(sDurations.length - 1);
         mPickerDistance.setMinValue(0);
         mPickerDistance.setWrapSelectorWheel(false);
-        mPickerDistance.setValue(1);
+        mPickerDistance.setValue(2);
         mPickerDistance.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-        String displayed[] = new String[sDistances.length];
+        String displayed[] = new String[sDurations.length];
         for (int i = 0; i < displayed.length; i++) {
-            displayed[i] = formatDouble(sDistances[i]);
-            if (i > 1) {
-                displayed[i] += " miles";
-            } else {
-                displayed[i] += " mile";
-            }
+            displayed[i] = formatDouble(sDurations[i]) + " mins";
         }
         mPickerDistance.setDisplayedValues(displayed);
 

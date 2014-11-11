@@ -84,16 +84,26 @@
 
     </LinearLayout>
 
-
-    <ImageView
-        android:id="@+id/button_go"
-        android:layout_width="140dp"
+    <TextView
+        android:id="@+id/button_next"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="40dp"
-        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:src="@drawable/button_go_clickable" />
+        android:text="@string/next"
+        android:textColor="@drawable/text_clickable" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/button_go"-->
+        <!--android:layout_width="140dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_marginBottom="40dp"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:clickable="true"-->
+        <!--android:src="@drawable/button_go_clickable" />-->
 
 </RelativeLayout>

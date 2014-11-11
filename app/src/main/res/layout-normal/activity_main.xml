@@ -29,7 +29,6 @@
             android:id="@+id/button_walk"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
             android:layout_toRightOf="@id/button_draw"
             android:adjustViewBounds="true"
             android:clickable="true"
@@ -39,8 +38,8 @@
             android:id="@+id/button_you"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70.5dp"
-            android:layout_marginTop="122.5dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="121dp"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:src="@drawable/button_you_clickable" />

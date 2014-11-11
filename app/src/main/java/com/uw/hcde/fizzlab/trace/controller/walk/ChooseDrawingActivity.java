@@ -28,13 +28,13 @@ public class ChooseDrawingActivity extends Activity {
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.choose_drawing));
 
-        // Go button
-        View buttonGo = findViewById(R.id.button_go);
-        buttonGo.setOnClickListener(new View.OnClickListener() {
+        // Next button
+        View buttonNext = findViewById(R.id.button_next);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button go clicked");
-                Intent intent = new Intent(ChooseDrawingActivity.this, PathGoogleMapActivity.class);
+                Log.d(TAG, "Button next clicked");
+                Intent intent = new Intent(ChooseDrawingActivity.this, ChooseDurationActivity.class);
                 startActivity(intent);
             }
         });

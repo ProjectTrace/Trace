@@ -49,8 +49,10 @@
     <string name="toast_draw_larger">please draw larger</string>
     <string name="toast_draw_something">please draw something</string>
     <string name="toast_enter_annotation">empty message is not allowed</string>
-    <string name="hint_enter_username">enter username, separate with comma</string>
-    <string name="toast_enter_username">please enter a username</string>
+    <string name="hint_enter_username">username, separate with comma</string>
+    <string name="hint_enter_description">description</string>
+    <string name="toast_enter_username">please enter username</string>
+    <string name="toast_enter_description">Please enter description</string>
     <string name="toast_success">success</string>
 
 </resources>

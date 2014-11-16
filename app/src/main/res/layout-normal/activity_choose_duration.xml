@@ -13,7 +13,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp" />
 
-
     <ImageView
         android:id="@+id/button_go"
         android:layout_width="140dp"

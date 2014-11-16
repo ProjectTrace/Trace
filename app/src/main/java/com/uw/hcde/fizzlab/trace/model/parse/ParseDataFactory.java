@@ -28,7 +28,7 @@ public class ParseDataFactory {
      * @param names
      * @param tracePoints
      */
-    public static void sendDrawing(final List<String> names, List<TracePoint> tracePoints) {
+    public static void sendDrawing(final List<String> names, String description, List<TracePoint> tracePoints) {
 
         // Initialize data
         final ParseDrawing parseDrawing = new ParseDrawing();
@@ -60,6 +60,7 @@ public class ParseDataFactory {
         parseDrawing.setCreator(ParseUser.getCurrentUser().getObjectId());
         parseDrawing.setXList(xList);
         parseDrawing.setYList(yList);
+        parseDrawing.setDescription(description);
 
         // Save annotation points to cloud and set annotation list
         ParseObject.saveAllInBackground(parseAnnotations, new SaveCallback() {
@@ -76,7 +77,7 @@ public class ParseDataFactory {
                     parseDrawing.saveInBackground();
                 } else {
                     // Something went wrong.
-                    Log.d(TAG, "save all annotations failed");
+                    Log.e(TAG, "save all annotations failed");
                 }
             }
         });
@@ -95,7 +96,7 @@ public class ParseDataFactory {
                     }
                 } else {
                     // Something went wrong.
-                    Log.d(TAG, "find receiver IDs failed");
+                    Log.e(TAG, "find receiver IDs failed");
                 }
                 Log.d(TAG, "receiver id list size: " + parseReceiverIDs.size());
                 parseDrawing.setReceiverList(parseReceiverIDs);

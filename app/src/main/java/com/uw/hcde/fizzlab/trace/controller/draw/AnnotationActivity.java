@@ -9,9 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,18 +85,16 @@ public class AnnotationActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AnnotationActivity.this);
                 builder.setTitle(AnnotationActivity.this.getString(R.string.send));
 
-                // Set up edit text
-                final EditText input = new EditText(AnnotationActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setSingleLine(false);
-                input.setLines(3);
-                input.setGravity(Gravity.LEFT | Gravity.TOP);
-                input.setHint(AnnotationActivity.this.getString(R.string.hint_enter_username));
-                builder.setView(input);
+                // Set up dialog view
+                LayoutInflater inflater = (LayoutInflater) AnnotationActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.dialog_send, null);
+                final EditText inputNames = (EditText) view.findViewById(R.id.input_username);
+                final EditText inputDescription = (EditText) view.findViewById(R.id.input_description);
 
+                // Build dialog
+                builder.setView(view);
                 builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), null);
                 builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
-
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
@@ -109,7 +106,7 @@ public class AnnotationActivity extends Activity {
 
                         // Get list of username
                         List<String> names = new ArrayList<String>();
-                        for (String s : input.getText().toString().split(",")) {
+                        for (String s : inputNames.getText().toString().split(",")) {
                             String name = s.trim();
                             if (name.length() > 0) {
                                 names.add(name);
@@ -122,11 +119,18 @@ public class AnnotationActivity extends Activity {
                             return;
                         }
 
+                        // Get description
+                        String description = inputDescription.getText().toString().trim();
+                        if (description.length() == 0) {
+                            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_description));
+                            return;
+                        }
+
                         // TODO: handle invalid list
                         // TODO: more pipelines on tracePoints
 
                         // Send data
-                        ParseDataFactory.sendDrawing(names, mTracePoints);
+                        ParseDataFactory.sendDrawing(names, description, mTracePoints);
                         alertDialog.dismiss();
 
                         // TODO: What happened after send data?

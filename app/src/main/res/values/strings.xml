@@ -8,17 +8,17 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="new_to_trace">New to Trace?</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="password_again">Password Again</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="password_again">password again</string>
     <string name="error_intro">"please "</string>
     <string name="error_blank_username">enter a username</string>
     <string name="error_blank_password">enter a password</string>
     <string name="error_mismatched_passwords">enter the same password twice</string>
     <string name="error_join">", and "</string>
     <string name="error_end">.</string>
-    <string name="progress_login">Logging you in&#8230;</string>
-    <string name="progress_sign_up">Signing you up&#8230;</string>
+    <string name="progress_login">logging you in&#8230;</string>
+    <string name="progress_sign_up">signing you up&#8230;</string>
 
     <!-- Titles -->
     <string name="you">You</string>
@@ -42,12 +42,14 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="set">Set</string>
+    <string name="less_than">&lt;&lt;</string>
+    <string name="greater_than">&gt;&gt;</string>
 
     <!-- Other -->
     <string name="toast_draw_larger">please draw larger</string>
     <string name="toast_draw_something">please draw something</string>
     <string name="toast_enter_annotation">empty message is not allowed</string>
-    <string name="hint_enter_username">Enter username, separate with comma</string>
+    <string name="hint_enter_username">enter username, separate with comma</string>
     <string name="toast_enter_username">please enter a username</string>
     <string name="toast_success">success</string>
 

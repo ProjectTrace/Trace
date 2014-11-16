@@ -1,13 +1,98 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TaskRoadMap" >
+    android:background="@color/main_cyan1"
+
+    >
+
+    <!-- Navigation bar -->
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar" />
+
+    <FrameLayout
+        android:id="@+id/drawing_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/navigation_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Mother's Day stroll" />
+
+    </FrameLayout>
+
+    <!-- Panel -->
+    <RelativeLayout
+        android:id="@+id/map_panel"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/less_than" />
+
+        <TextView
+            android:id="@+id/map_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="direction"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/greater_than" />
+
+
+        <TextView
+            android:id="@+id/map_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="0 mile" />
+
+        <TextView
+            android:id="@+id/map_ending_early"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:text="ending early"
+            android:textColor="@drawable/text_clickable" />
+
+    </RelativeLayout>
+
 
     <fragment
         android:id="@+id/map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        class="com.google.android.gms.maps.SupportMapFragment"/>
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/map_panel"
+        android:layout_below="@id/drawing_title" />
+
 
 </RelativeLayout>

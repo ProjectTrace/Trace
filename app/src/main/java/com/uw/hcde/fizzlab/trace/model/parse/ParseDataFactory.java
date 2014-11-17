@@ -11,6 +11,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseNameToUserCallback;
+import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseRetrieveCallback;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
 import java.util.ArrayList;
@@ -24,30 +25,41 @@ import java.util.List;
 public class ParseDataFactory {
     public static final String TAG = "ParseDataFactory";
 
-//    /**
-//     * Gets list of parse drawings or empty list given user ID.
-//     * @param userId
-//     * @return list of parse drawings or empty list
-//     */
-//    public static List<ParseDrawing> getDrawings(String userId) {
-//        final List<ParseDrawing> res = new ArrayList<ParseDrawing>();
-//        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
-//        query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, userId);
-//
-//        query.findInBackground(new FindCallback<ParseDrawing>() {
-//            public void done(List<ParseDrawing> drawingList, ParseException e) {
-//                if (e == null) {
-//                    res.addAll(drawingList);
-//
-//                    Log.d(TAG, "Retrieved " + drawingList.size() + " drawings");
-//                } else {
-//                    Log.e(TAG, "Retrieved drawings failed " +  e.getMessage());
-//                }
-//            }
-//        });
-//        return res;
-//    }
+    /**
+     * Gets list of parse drawings or empty list given user.
+     * @param user
+     * @return list of parse drawings or empty list
+     */
+    public static void retrieveDrawings(ParseUser user, final ParseRetrieveCallback callback) {
+        // Set up query
+        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
+        query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, user);
 
+        // Start query
+        query.findInBackground(new FindCallback<ParseDrawing>() {
+            public void done(List<ParseDrawing> drawingList, ParseException e) {
+                if (e == null) {
+                    Log.d(TAG, "Retrieved " + drawingList.size() + " drawings");
+
+                    try {
+                        for (ParseDrawing drawing : drawingList) {
+                            drawing.getCreator().fetch();
+                            ParseObject.fetchAll(drawing.getAnnotationList());
+                        }
+                    } catch (ParseException exception) {
+                        Log.e(TAG, "Fetch drawing content failed " +  e.getMessage());
+                        callback.retrieveCallback(ParseConstant.FAILED, null);
+                        return;
+                    }
+
+                    callback.retrieveCallback(ParseConstant.SUCCESS, drawingList);
+                } else {
+                    Log.e(TAG, "Retrieve drawings failed " +  e.getMessage());
+                    callback.retrieveCallback(ParseConstant.FAILED, null);
+                }
+            }
+        });
+    }
 
     /**
      * Sends annotation points to database.

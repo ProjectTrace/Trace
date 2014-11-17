@@ -79,11 +79,10 @@ public class AnnotationActivity extends Activity implements ParseSendCallback, P
 
         final AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
         annotationView.setTracePoints(mTracePoints);
-
         setupButtons();
 
         mReceivers = null;
-        mReceivers = null;
+        mReceiverNames = null;
         mDescription = null;
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.progress_sending));

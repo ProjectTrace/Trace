@@ -7,5 +7,7 @@ import java.util.List;
  * TODO: No need to use this class after offline storage is enabled
  */
 public class TraceDataContainer {
+
+    public static int sDistance;
     public static List<TracePoint> sTracePoints;
 }

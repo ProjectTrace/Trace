@@ -9,6 +9,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.lang.reflect.Field;
 
@@ -19,11 +20,12 @@ import java.lang.reflect.Field;
  */
 public class ChooseDurationActivity extends Activity {
 
-    public static final String TAG = "ChooseDistanceActivity";
+    private static final String TAG = "ChooseDistanceActivity";
+    private static final int AVERAGE_SPEED_METER_PER_MINUTE = 40;
 
     //Choices of distances in miles
-    private static final double sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
-        130, 140, 150, 160, 170, 180, 190, 200};
+    private static final int sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
+            130, 140, 150, 160, 170, 180, 190, 200};
     public static final String Extra_Duration_Index = "extra_duration_index";
 
     private NumberPicker mPickerDistance;
@@ -46,7 +48,9 @@ public class ChooseDurationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
-                Log.d(TAG, "Distance index: " + mPickerDistance.getValue());
+
+                TraceDataContainer.sDistance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
+                Log.d(TAG, "Distance : " + TraceDataContainer.sDistance);
 
                 Intent intent = new Intent(ChooseDurationActivity.this, PathGoogleMapActivity.class);
                 intent.putExtra(Extra_Duration_Index, mPickerDistance.getValue());

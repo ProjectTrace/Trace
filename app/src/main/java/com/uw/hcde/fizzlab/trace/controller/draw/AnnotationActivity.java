@@ -27,7 +27,6 @@ import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDataFactory;
-import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseNameToUserCallback;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ import java.util.List;
  *
  * @author tianchi
  */
-public class AnnotationActivity extends Activity implements ParseSendCallback, ParseNameToUserCallback {
+public class AnnotationActivity extends Activity implements ParseSendCallback {
 
     private static final String TAG = "AnnotateActivity";
 
@@ -167,7 +166,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback, P
     }
 
     @Override
-    public void nameToUserCallback(int returnCode, List<ParseUser> users) {
+    public void convertNameToUserCallback(int returnCode, List<ParseUser> users) {
         if (returnCode == ParseConstant.SUCCESS) {
             mReceivers = users;
 
@@ -192,14 +191,14 @@ public class AnnotationActivity extends Activity implements ParseSendCallback, P
                 }
 
                 mProgressDialog.dismiss();
-                TraceUtil.showToast(AnnotationActivity.this, msg);
+                TraceUtil.showToast(this, msg);
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }
 
         } else {
             mProgressDialog.dismiss();
-            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
 
@@ -209,7 +208,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback, P
             ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
         } else {
             mProgressDialog.dismiss();
-            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
 
@@ -229,7 +228,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback, P
             }, TraceUtil.TOAST_MESSAGE_TIME);
 
         } else {
-            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
 

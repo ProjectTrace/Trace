@@ -12,8 +12,23 @@ import java.util.List;
 public interface ParseRetrieveCallback {
     /**
      * Retrieves drawings
+     *
      * @param returnCode
      * @param drawings
      */
-    public void retrieveCallback(int returnCode, List<ParseDrawing> drawings);
+    public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings);
+
+    /**
+     * Retrieves annotations
+     *
+     * @param returnCode
+     */
+    public void retrieveAnnotationsCallback(int returnCode);
+
+    /**
+     * Retrieves creator
+     *
+     * @param returnCode
+     */
+    public void retrieveCreatorsCallback(int returnCode);
 }

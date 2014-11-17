@@ -1,5 +1,6 @@
 package com.uw.hcde.fizzlab.trace.model.parse.callback;
 
+import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseAnnotation;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface ParseSendCallback {
      * @param returnCode
      */
     public void sendDrawingCallback(int returnCode);
+
+    /**
+     * Converts name list to user list
+     * @param returnCode
+     * @param users
+     */
+    public void convertNameToUserCallback(int returnCode, List<ParseUser> users);
 }

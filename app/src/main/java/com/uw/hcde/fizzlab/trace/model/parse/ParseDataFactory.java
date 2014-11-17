@@ -10,7 +10,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
-import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseNameToUserCallback;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseRetrieveCallback;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
@@ -26,7 +25,57 @@ public class ParseDataFactory {
     public static final String TAG = "ParseDataFactory";
 
     /**
+     * Retrieves annotations from cloud.
+     *
+     * @param drawings
+     * @param callback
+     */
+    public static void retrieveAnnotations(List<ParseDrawing> drawings, final ParseRetrieveCallback callback) {
+        List<ParseAnnotation> annotations = new ArrayList<ParseAnnotation>();
+        for (ParseDrawing drawing : drawings) {
+            annotations.addAll(drawing.getAnnotationList());
+        }
+
+        ParseObject.fetchAllInBackground(annotations, new FindCallback<ParseAnnotation>() {
+            @Override
+            public void done(List<ParseAnnotation> annotations, ParseException e) {
+                if (e == null) {
+                    callback.retrieveAnnotationsCallback(ParseConstant.SUCCESS);
+                } else {
+                    Log.e(TAG, "Retrieve annotations failed " + e.getMessage());
+                    callback.retrieveAnnotationsCallback(ParseConstant.FAILED);
+                }
+            }
+        });
+    }
+
+    /**
+     * Retrieves creator from cloud.
+     *
+     * @param drawings
+     * @param callback
+     */
+    public static void retrieveCreators(List<ParseDrawing> drawings, final ParseRetrieveCallback callback) {
+        List<ParseUser> creators = new ArrayList<ParseUser>();
+        for (ParseDrawing drawing : drawings) {
+            creators.add(drawing.getCreator());
+        }
+        ParseObject.fetchAllInBackground(creators, new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null) {
+                    callback.retrieveCreatorsCallback(ParseConstant.SUCCESS);
+                } else {
+                    Log.e(TAG, "Retrieve creator failed " + e.getMessage());
+                    callback.retrieveCreatorsCallback(ParseConstant.FAILED);
+                }
+            }
+        });
+    }
+
+    /**
      * Gets list of parse drawings or empty list given user.
+     *
      * @param user
      * @return list of parse drawings or empty list
      */
@@ -39,23 +88,10 @@ public class ParseDataFactory {
         query.findInBackground(new FindCallback<ParseDrawing>() {
             public void done(List<ParseDrawing> drawingList, ParseException e) {
                 if (e == null) {
-                    Log.d(TAG, "Retrieved " + drawingList.size() + " drawings");
-
-                    try {
-                        for (ParseDrawing drawing : drawingList) {
-                            drawing.getCreator().fetch();
-                            ParseObject.fetchAll(drawing.getAnnotationList());
-                        }
-                    } catch (ParseException exception) {
-                        Log.e(TAG, "Fetch drawing content failed " +  e.getMessage());
-                        callback.retrieveCallback(ParseConstant.FAILED, null);
-                        return;
-                    }
-
-                    callback.retrieveCallback(ParseConstant.SUCCESS, drawingList);
+                    callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
                 } else {
-                    Log.e(TAG, "Retrieve drawings failed " +  e.getMessage());
-                    callback.retrieveCallback(ParseConstant.FAILED, null);
+                    Log.e(TAG, "Retrieve drawings failed " + e.getMessage());
+                    callback.retrieveDrawingsCallback(ParseConstant.FAILED, null);
                 }
             }
         });
@@ -110,7 +146,7 @@ public class ParseDataFactory {
      * @param names
      * @param callback
      */
-    public static void convertNameToParseUser(List<String> names, final ParseNameToUserCallback callback) {
+    public static void convertNameToParseUser(List<String> names, final ParseSendCallback callback) {
 
         // Get user query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -121,11 +157,11 @@ public class ParseDataFactory {
             public void done(List<ParseUser> parseUsers, ParseException e) {
                 if (e == null) {
                     // Success
-                    callback.nameToUserCallback(ParseConstant.SUCCESS, parseUsers);
+                    callback.convertNameToUserCallback(ParseConstant.SUCCESS, parseUsers);
                 } else {
                     // Something went wrong.
                     Log.e(TAG, "find users failed " + e.getMessage());
-                    callback.nameToUserCallback(ParseConstant.FAILED, null);
+                    callback.convertNameToUserCallback(ParseConstant.FAILED, null);
                 }
             }
         });

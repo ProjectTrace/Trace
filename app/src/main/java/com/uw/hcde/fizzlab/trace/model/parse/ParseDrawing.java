@@ -3,6 +3,7 @@ package com.uw.hcde.fizzlab.trace.model.parse;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -24,12 +25,12 @@ import java.util.List;
 public class ParseDrawing extends ParseObject {
 
     // Related table keys
-    private static final String KEY_PX_X_LIST = "px_x_list";
-    private static final String KEY_PX_Y_LIST = "px_y_list";
-    private static final String KEY_CREATOR = "creator";
-    private static final String KEY_RECEIVER_LIST = "receiver_list";
-    private static final String KEY_ANNOTATION_LIST = "annotation_list";
-    private static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_PX_X_LIST = "px_x_list";
+    public static final String KEY_PX_Y_LIST = "px_y_list";
+    public static final String KEY_CREATOR = "creator";
+    public static final String KEY_RECEIVER_LIST = "receiver_list";
+    public static final String KEY_ANNOTATION_LIST = "annotation_list";
+    public static final String KEY_DESCRIPTION = "description";
 
     /**
      * Sets x list
@@ -68,56 +69,56 @@ public class ParseDrawing extends ParseObject {
     }
 
     /**
-     * Sets creator id
+     * Sets creator
      *
-     * @param creatorID
+     * @param creator
      */
-    public void setCreator(String creatorID) {
-        put(KEY_CREATOR, creatorID);
+    public void setCreator(ParseUser creator) {
+        put(KEY_CREATOR, creator);
     }
 
     /**
-     * Gets creator id
+     * Gets creator
+     *
+     * @return creator
+     */
+    public ParseUser getCreator() {
+        return getParseUser(KEY_CREATOR);
+    }
+
+    /**
+     * Sets receivers
+     *
+     * @param receivers
+     */
+    public void setReceiverList(List<ParseUser> receivers) {
+        put(KEY_RECEIVER_LIST, receivers);
+    }
+
+    /**
+     * Gets receiver list
      *
      * @return
      */
-    public String getCreator() {
-        return getString(KEY_CREATOR);
-    }
-
-    /**
-     * Sets receiver id list
-     *
-     * @param receiverIDs
-     */
-    public void setReceiverList(List<String> receiverIDs) {
-        addAll(KEY_RECEIVER_LIST, receiverIDs);
-    }
-
-    /**
-     * Gets receiver id list
-     *
-     * @return
-     */
-    public List<String> getReceiverList() {
+    public List<ParseUser> getReceiverList() {
         return getList(KEY_RECEIVER_LIST);
     }
 
     /**
-     * Sets annotation id list
+     * Sets annotations
      *
-     * @param annotationIDs
+     * @param annotations
      */
-    public void setAnnotationList(List<String> annotationIDs) {
-        addAll(KEY_ANNOTATION_LIST, annotationIDs);
+    public void setAnnotationList(List<ParseAnnotation> annotations) {
+        put(KEY_ANNOTATION_LIST, annotations);
     }
 
     /**
-     * Gets annotation id list
+     * Gets annotation list
      *
      * @return
      */
-    public List<String> getAnnotationList() {
+    public List<ParseAnnotation> getAnnotationList() {
         return getList(KEY_ANNOTATION_LIST);
     }
 

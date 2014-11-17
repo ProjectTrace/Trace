@@ -10,6 +10,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
+import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseNameToUserCallback;
+import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +24,49 @@ import java.util.List;
 public class ParseDataFactory {
     public static final String TAG = "ParseDataFactory";
 
+//    /**
+//     * Gets list of parse drawings or empty list given user ID.
+//     * @param userId
+//     * @return list of parse drawings or empty list
+//     */
+//    public static List<ParseDrawing> getDrawings(String userId) {
+//        final List<ParseDrawing> res = new ArrayList<ParseDrawing>();
+//        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
+//        query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, userId);
+//
+//        query.findInBackground(new FindCallback<ParseDrawing>() {
+//            public void done(List<ParseDrawing> drawingList, ParseException e) {
+//                if (e == null) {
+//                    res.addAll(drawingList);
+//
+//                    Log.d(TAG, "Retrieved " + drawingList.size() + " drawings");
+//                } else {
+//                    Log.e(TAG, "Retrieved drawings failed " +  e.getMessage());
+//                }
+//            }
+//        });
+//        return res;
+//    }
+
+
     /**
-     * Sends data to parse database, without any error handling at this moment.
+     * Sends annotation points to database.
      *
-     * @param names
      * @param tracePoints
+     * @param callback
      */
-    public static void sendDrawing(final List<String> names, String description, List<TracePoint> tracePoints) {
+    public static void sendAnnotation(List<TracePoint> tracePoints, final ParseSendCallback callback) {
 
-        // Initialize data
-        final ParseDrawing parseDrawing = new ParseDrawing();
+        // Initialize annotation list
         final List<ParseAnnotation> parseAnnotations = new ArrayList<ParseAnnotation>();
-        final List<String> parseAnnotationIDs = new ArrayList<String>();
-        final List<String> parseReceiverIDs = new ArrayList<String>();
 
-        // Set up drawing coordinates and annotation points
-        List<Integer> xList = new ArrayList<Integer>();
-        List<Integer> yList = new ArrayList<Integer>();
+        // Get all annotation points
         for (TracePoint tracePoint : tracePoints) {
             Point p = tracePoint.point;
-            xList.add(p.x);
-            yList.add(p.y);
 
             // An annotation point
             if (tracePoint.annotation != null) {
-                final ParseAnnotation annotation = new ParseAnnotation();
+                ParseAnnotation annotation = new ParseAnnotation();
                 annotation.setX(p.x);
                 annotation.setY(p.y);
                 annotation.setText(tracePoint.annotation.msg);
@@ -56,54 +76,96 @@ public class ParseDataFactory {
             }
         }
 
-        // Add data entry
-        parseDrawing.setCreator(ParseUser.getCurrentUser().getObjectId());
-        parseDrawing.setXList(xList);
-        parseDrawing.setYList(yList);
-        parseDrawing.setDescription(description);
-
-        // Save annotation points to cloud and set annotation list
+        // Save annotation points to cloud
         ParseObject.saveAllInBackground(parseAnnotations, new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     // Success
-                    for (ParseAnnotation annotation : parseAnnotations) {
-                        parseAnnotationIDs.add(annotation.getObjectId());
-                    }
-                    parseDrawing.setAnnotationList(parseAnnotationIDs);
-
-                    // Save to cloud
-                    parseDrawing.saveInBackground();
+                    callback.sendAnnotationCallback(ParseConstant.SUCCESS, parseAnnotations);
                 } else {
                     // Something went wrong.
-                    Log.e(TAG, "save all annotations failed");
+                    Log.e(TAG, "save all annotations failed " + e.getMessage());
+                    callback.sendAnnotationCallback(ParseConstant.FAILED, null);
                 }
             }
         });
+    }
 
-        // Set receiver list
+    /**
+     * Converts name list to ParseUser list
+     *
+     * @param names
+     * @param callback
+     */
+    public static void convertNameToParseUser(List<String> names, final ParseNameToUserCallback callback) {
+
+        // Get user query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        Log.d(TAG, "Receiver : " + names.toString());
+        Log.d(TAG, "Names : " + names.toString());
         query.whereContainedIn("username", names);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<ParseUser> parseUsers, com.parse.ParseException e) {
+            public void done(List<ParseUser> parseUsers, ParseException e) {
                 if (e == null) {
                     // Success
-                    for (ParseUser receiver : parseUsers) {
-                        parseReceiverIDs.add(receiver.getObjectId());
-                    }
+                    callback.nameToUserCallback(ParseConstant.SUCCESS, parseUsers);
                 } else {
                     // Something went wrong.
-                    Log.e(TAG, "find receiver IDs failed");
+                    Log.e(TAG, "find users failed " + e.getMessage());
+                    callback.nameToUserCallback(ParseConstant.FAILED, null);
                 }
-                Log.d(TAG, "receiver id list size: " + parseReceiverIDs.size());
-                parseDrawing.setReceiverList(parseReceiverIDs);
-
-                // Save again
-                parseDrawing.saveInBackground();
             }
         });
+    }
+
+    /**
+     * Sends drawing to database
+     *
+     * @param description
+     * @param receivers
+     * @param tracePoints
+     * @param annotations
+     * @param callback
+     */
+    public static void sendDrawing(String description, List<ParseUser> receivers,
+                                   List<TracePoint> tracePoints, List<ParseAnnotation> annotations,
+                                   final ParseSendCallback callback) {
+
+        // Initialize drawing
+        final ParseDrawing parseDrawing = new ParseDrawing();
+
+        // Set up drawing coordinates and annotation points
+        List<Integer> xList = new ArrayList<Integer>();
+        List<Integer> yList = new ArrayList<Integer>();
+        for (TracePoint tracePoint : tracePoints) {
+            Point p = tracePoint.point;
+            xList.add(p.x);
+            yList.add(p.y);
+        }
+
+        // Add data entry
+        parseDrawing.setDescription(description);
+        parseDrawing.setCreator(ParseUser.getCurrentUser());
+        parseDrawing.setXList(xList);
+        parseDrawing.setYList(yList);
+        parseDrawing.setReceiverList(receivers);
+        parseDrawing.setAnnotationList(annotations);
+
+        // Save
+        parseDrawing.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Success
+                    callback.sendDrawingCallback(ParseConstant.SUCCESS);
+                } else {
+                    // Something went wrong.
+                    Log.e(TAG, "send drawing failed " + e.getMessage());
+                    callback.sendDrawingCallback(ParseConstant.FAILED);
+                }
+            }
+        });
+
     }
 }

@@ -2,6 +2,7 @@ package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +19,16 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
+import com.uw.hcde.fizzlab.trace.model.parse.ParseAnnotation;
+import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDataFactory;
+import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseNameToUserCallback;
+import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +39,18 @@ import java.util.List;
  *
  * @author tianchi
  */
-public class AnnotationActivity extends Activity {
+public class AnnotationActivity extends Activity implements ParseSendCallback, ParseNameToUserCallback {
 
     private static final String TAG = "AnnotateActivity";
 
     private List<Point> mRawPoints; // Used to display path
     private List<TracePoint> mTracePoints; // Trace points
+
+    // Data to send on database
+    private List<String> mReceiverNames;
+    private List<ParseUser> mReceivers;
+    private String mDescription;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +81,13 @@ public class AnnotationActivity extends Activity {
         annotationView.setTracePoints(mTracePoints);
 
         setupButtons();
+
+        mReceivers = null;
+        mReceivers = null;
+        mDescription = null;
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(getString(R.string.progress_sending));
+
     }
 
     /**
@@ -105,41 +125,113 @@ public class AnnotationActivity extends Activity {
                     public void onClick(View v) {
 
                         // Get list of username
-                        List<String> names = new ArrayList<String>();
+                        mReceiverNames = new ArrayList<String>();
                         for (String s : inputNames.getText().toString().split(",")) {
                             String name = s.trim();
                             if (name.length() > 0) {
-                                names.add(name);
+                                mReceiverNames.add(name);
                             }
                         }
 
                         // Empty list
-                        if (names.isEmpty()) {
+                        if (mReceiverNames.isEmpty()) {
                             TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_username));
                             return;
                         }
 
                         // Get description
-                        String description = inputDescription.getText().toString().trim();
-                        if (description.length() == 0) {
+                        mDescription = inputDescription.getText().toString().trim();
+                        if (mDescription.length() == 0) {
                             TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_description));
                             return;
                         }
 
-                        // TODO: handle invalid list
-                        // TODO: more pipelines on tracePoints
+                        // TODO: more pipelines on tracePoints goes here
 
                         // Send data
-                        ParseDataFactory.sendDrawing(names, description, mTracePoints);
+                        sendData();
                         alertDialog.dismiss();
-
-                        // TODO: What happened after send data?
-                        Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
-                        startActivity(intent);
                     }
                 });
             }
         });
+    }
+
+
+    /**
+     * Sends all data to parse database and sets up progress dialog
+     * Get name -> send annotation -> send drawing
+     */
+    private void sendData() {
+        mProgressDialog.show();
+        ParseDataFactory.convertNameToParseUser(mReceiverNames, this);
+    }
+
+    @Override
+    public void nameToUserCallback(int returnCode, List<ParseUser> users) {
+        if (returnCode == ParseConstant.SUCCESS) {
+            mReceivers = users;
+
+            // Contains invalid names
+            if (mReceivers.size() != mReceiverNames.size()) {
+
+                // Gets failed names
+                List<String> failedNames = new ArrayList<String>(mReceiverNames);
+                for (ParseUser user : mReceivers) {
+                    if (mReceiverNames.contains(user.getUsername())) {
+                        failedNames.remove(user.getUsername());
+                    }
+                }
+
+                // Finds out invalid usernames
+                String msg = getString(R.string.toast_invalid_username);
+                for (int i = 0; i < failedNames.size(); i++) {
+                    msg += failedNames.get(i);
+                    if (i < failedNames.size() - 1) {
+                        msg += ", ";
+                    }
+                }
+
+                mProgressDialog.dismiss();
+                TraceUtil.showToast(AnnotationActivity.this, msg);
+            } else {
+                ParseDataFactory.sendAnnotation(mTracePoints, this);
+            }
+
+        } else {
+            mProgressDialog.dismiss();
+            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+        }
+    }
+
+    @Override
+    public void sendAnnotationCallback(int returnCode, List<ParseAnnotation> annotations) {
+        if (returnCode == ParseConstant.SUCCESS) {
+            ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
+        } else {
+            mProgressDialog.dismiss();
+            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+        }
+    }
+
+    @Override
+    public void sendDrawingCallback(int returnCode) {
+        mProgressDialog.dismiss();
+        if (returnCode == ParseConstant.SUCCESS) {
+            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_success));
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }, TraceUtil.TOAST_MESSAGE_TIME);
+
+        } else {
+            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_network_error));
+        }
     }
 
     /**

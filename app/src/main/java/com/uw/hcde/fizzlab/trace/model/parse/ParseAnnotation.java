@@ -22,13 +22,12 @@ import com.parse.ParseQuery;
 public class ParseAnnotation extends ParseObject {
 
     // Related table keys
-    private static final String KEY_PX_X = "px_x";
-    private static final String KEY_PX_Y = "px_y";
-
-    private static final String KEY_TEXT = "text";
-    private static final String KEY_IMAGE = "image";
-    private static final String KEY_VIDEO = "video";
-    private static final String KEY_AUDIO = "audio";
+    public static final String KEY_PX_X = "px_x";
+    public static final String KEY_PX_Y = "px_y";
+    public static final String KEY_TEXT = "text";
+    public static final String KEY_IMAGE = "image";
+    public static final String KEY_VIDEO = "video";
+    public static final String KEY_AUDIO = "audio";
 
     /**
      * Sets px x

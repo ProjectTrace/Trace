@@ -11,7 +11,7 @@ import android.widget.Toast;
  * @author tianchi
  */
 public class TraceUtil {
-    private static final int TOAST_MESSAGE_TIME = 2000;
+    public static final int TOAST_MESSAGE_TIME = 2000;
 
     private static Boolean sIsShowingToastMessage = false;
     private static Handler sHandler = new Handler();

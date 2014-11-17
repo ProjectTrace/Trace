@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.controller.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,9 +88,11 @@ public class WelcomeActivity extends Activity {
         }
 
         // Set up a progress dialog
-        final ProgressDialog dialog = new ProgressDialog(WelcomeActivity.this);
+        final ProgressDialog dialog = new ProgressDialog(WelcomeActivity.this, ProgressDialog.THEME_HOLO_DARK);
+
         dialog.setMessage(getString(R.string.progress_login));
         dialog.show();
+
 
         // Call the Parse login method
         ParseUser.logInInBackground(username, password, new LogInCallback() {

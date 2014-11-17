@@ -25,7 +25,7 @@
         android:name=".controller.main.TraceApplication"
         android:icon="@drawable/app_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/HoloTheme">
 
 
         <!-- ============================================ -->
@@ -45,13 +45,15 @@
         <activity
             android:name=".controller.main.WelcomeActivity"
             android:label="@string/welcome"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
 
         <!-- Sign up screen -->
         <activity
             android:name=".controller.main.SignUpActivity"
             android:label="@string/sign_up"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
 
         <!-- Main activity -->
         <activity
@@ -74,8 +76,7 @@
         <activity
             android:name=".controller.draw.AnnotationActivity"
             android:label="@string/annotate"
-            android:screenOrientation="portrait"
-            android:theme="@style/HoloTheme" />
+            android:screenOrientation="portrait" />
 
 
         <!-- ============================================ -->
@@ -85,8 +86,7 @@
         <activity
             android:name=".controller.walk.ChooseDurationActivity"
             android:label="@string/choose_distance"
-            android:screenOrientation="portrait"
-            android:theme="@style/HoloTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".controller.walk.ChooseDrawingActivity"
             android:label="@string/choose_drawing"

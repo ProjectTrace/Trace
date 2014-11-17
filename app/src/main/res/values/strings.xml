@@ -53,6 +53,10 @@
     <string name="hint_enter_description">description</string>
     <string name="toast_enter_username">please enter username</string>
     <string name="toast_enter_description">Please enter description</string>
-    <string name="toast_success">success</string>
+    <string name="toast_success">success!</string>
+    <string name="progress_sending">sending data</string>
+
+    <string name="toast_network_error">network error, please try again later</string>
+    <string name="toast_invalid_username">invalid username: </string>
 
 </resources>

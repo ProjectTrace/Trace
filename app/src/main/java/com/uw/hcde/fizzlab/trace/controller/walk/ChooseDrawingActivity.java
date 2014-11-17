@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
+import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDrawing;
@@ -66,6 +67,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
 
         mDrawingIndex = 0;
         mDrawings = null;
+        mContentView.setVisibility(View.INVISIBLE);
+        mEmptyContentView.setVisibility(View.INVISIBLE);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.progress_retrieving));
         mProgressDialog.show();
@@ -82,6 +85,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");
+                TraceDataContainer.sTracePoints = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
+                Log.d(TAG, "trace points: " + TraceDataContainer.sTracePoints.size());
                 Intent intent = new Intent(ChooseDrawingActivity.this, ChooseDurationActivity.class);
                 startActivity(intent);
             }

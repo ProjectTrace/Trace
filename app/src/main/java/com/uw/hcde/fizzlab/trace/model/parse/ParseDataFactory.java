@@ -9,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseRetrieveCallback;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
@@ -214,6 +215,41 @@ public class ParseDataFactory {
                 }
             }
         });
+    }
 
+    /**
+     * Convert parse drawings to trace points.
+     *
+     * @param drawing
+     * @return trace points
+     */
+    public static List<TracePoint> convertToTracePoints(ParseDrawing drawing) {
+        List<TracePoint> tracePoints = new ArrayList<TracePoint>();
+
+        List<Integer> xList = drawing.getXList();
+        List<Integer> yList = drawing.getYList();
+        List<ParseAnnotation> annotations = drawing.getAnnotationList();
+
+        for (int i = 0; i < xList.size(); i++) {
+            TracePoint tracePoint = new TracePoint();
+            tracePoint.point = new Point(xList.get(i), yList.get(i));
+            tracePoints.add(tracePoint);
+        }
+
+        int i = 0;
+        for (ParseAnnotation annotation : annotations) {
+            while (i < tracePoints.size()) {
+                TracePoint tracePoint = tracePoints.get(i);
+                Point point = tracePoint.point;
+                if (annotation.getX() == point.x && annotation.getY() == point.y) {
+                    TraceAnnotation traceAnnotation = new TraceAnnotation();
+                    traceAnnotation.msg = annotation.getText();
+                    tracePoint.annotation = traceAnnotation;
+                    break;
+                }
+                i++;
+            }
+        }
+        return tracePoints;
     }
 }

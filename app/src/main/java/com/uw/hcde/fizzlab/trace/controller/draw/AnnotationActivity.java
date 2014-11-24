@@ -42,6 +42,9 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
 
     private static final String TAG = "AnnotateActivity";
 
+    private View mButtonSend;
+    private View mButtonBack;
+
     private List<Point> mRawPoints; // Used to display path
     private List<TracePoint> mTracePoints; // Trace points
 
@@ -55,6 +58,9 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotate);
+
+        mButtonBack = findViewById(R.id.button_back);
+        mButtonSend = findViewById(R.id.button_send);
 
         Intent intent = getIntent();
         mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
@@ -89,12 +95,17 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     }
 
     /**
-     * Sets up done button
+     * Sets up buttons
      */
     private void setupButtons() {
-        // Set up buttons
-        View buttonSend = findViewById(R.id.button_send);
-        buttonSend.setOnClickListener(new View.OnClickListener() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button send clicked");

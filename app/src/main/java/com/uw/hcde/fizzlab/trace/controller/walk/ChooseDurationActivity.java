@@ -2,6 +2,7 @@ package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.lang.reflect.Field;
@@ -21,12 +23,11 @@ import java.lang.reflect.Field;
 public class ChooseDurationActivity extends Activity {
 
     private static final String TAG = "ChooseDistanceActivity";
-    private static final int AVERAGE_SPEED_METER_PER_MINUTE = 40;
 
-    //Choices of distances in miles
+    // Average speeds
+    private static final int AVERAGE_SPEED_METER_PER_MINUTE = 84;
     private static final int sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
             130, 140, 150, 160, 170, 180, 190, 200};
-    public static final String Extra_Duration_Index = "extra_duration_index";
 
     private NumberPicker mPickerDistance;
 
@@ -51,9 +52,13 @@ public class ChooseDurationActivity extends Activity {
 
                 TraceDataContainer.sDistance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
                 Log.d(TAG, "Distance : " + TraceDataContainer.sDistance);
+//
+//                Location seattle = new Location("!!");
+//                seattle.setLatitude(47.6097);
+//                seattle.setLongitude(-122.3331);
+//                TraceDataFactory.getLocations(seattle, null);
 
                 Intent intent = new Intent(ChooseDurationActivity.this, PathGoogleMapActivity.class);
-                intent.putExtra(Extra_Duration_Index, mPickerDistance.getValue());
                 startActivity(intent);
             }
         });

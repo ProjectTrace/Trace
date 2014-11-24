@@ -112,4 +112,33 @@ public class DrawUtil {
         return tracePoints;
     }
 
+    /**
+     * Calculates pixel circumference, assuming enclosed drawing.
+     * @param tracePoints
+     * @return
+     */
+    public static double getPixelLength(List<TracePoint> tracePoints) {
+        double res = 0;
+        for (int i = 1; i < tracePoints.size(); i++) {
+            Point prev = tracePoints.get(i - 1).point;
+            Point curr = tracePoints.get(i).point;
+            res += getEuclideanDistance(prev, curr);
+        }
+
+        Point first = tracePoints.get(0).point;
+        Point last = tracePoints.get(tracePoints.size() - 1).point;
+        res += getEuclideanDistance(first, last);
+        return res;
+    }
+
+    /**
+     * Calculates Euclidean distance between two points.
+     * @param p1
+     * @param p2
+     * @return
+     */
+    public static double getEuclideanDistance(Point p1, Point p2) {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
+
 }

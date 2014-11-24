@@ -24,7 +24,7 @@ public class DrawActivity extends Activity {
 
     // Main buttons
     private View mButtonClear;
-    private View mButtonAnnotate;
+    private View mButtonNext;
     private View mButtonBack;
     private DrawingView mDrawingView;
 
@@ -39,7 +39,7 @@ public class DrawActivity extends Activity {
 
         // Set up buttons
         mButtonClear = findViewById(R.id.button_clear);
-        mButtonAnnotate = findViewById(R.id.button_annotate);
+        mButtonNext = findViewById(R.id.button_next);
         mButtonBack = findViewById(R.id.button_back);
         setupListener();
 
@@ -65,10 +65,10 @@ public class DrawActivity extends Activity {
             }
         });
 
-        mButtonAnnotate.setOnClickListener(new View.OnClickListener() {
+        mButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button annotate clicked");
+                Log.d(TAG, "Button next clicked");
 
                 // Check if drawing is valid
                 if (!mDrawingView.isValid()) {

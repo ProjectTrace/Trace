@@ -44,6 +44,7 @@
     <string name="set">Set</string>
     <string name="less_than">&lt;&lt;</string>
     <string name="greater_than">&gt;&gt;</string>
+    <string name="touch_to_annotate">Touch to annotate</string>
 
     <!-- Other -->
     <string name="toast_draw_larger">please draw larger</string>

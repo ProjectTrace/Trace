@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ import java.util.List;
 public class AnnotationActivity extends Activity implements ParseSendCallback {
 
     private static final String TAG = "AnnotateActivity";
+    private static final int TITLE_TEXT_SIZE_SP = 20;
 
     private View mButtonSend;
     private View mButtonBack;
@@ -76,7 +78,8 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.annotate));
+        title.setText(getString(R.string.touch_to_annotate));
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_TEXT_SIZE_SP);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);

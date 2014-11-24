@@ -26,13 +26,13 @@
             android:textColor="@drawable/text_clickable" />
 
         <TextView
-            android:id="@+id/button_annotate"
+            android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:clickable="true"
-            android:text="@string/annotate"
+            android:text="@string/next"
             android:textColor="@drawable/text_clickable" />
 
     </RelativeLayout>

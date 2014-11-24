@@ -36,7 +36,7 @@ public class DrawUtil {
         int maxCount = (int) length / SEGMENT_LENGTH_PL;
         int counter = 0;
         float[] aCoordinates = new float[2];
-        while ((distance < length) && (counter < maxCount)) {
+        while ((distance < length) && (counter <= maxCount)) {
             // get point from the path
             pm.getPosTan(distance, aCoordinates, null);
             points.add(new Point((int) aCoordinates[0], (int) aCoordinates[1]));

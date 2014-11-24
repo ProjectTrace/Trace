@@ -64,4 +64,9 @@
     <string name="date">Date</string>
     <string name="empty_traces">You do not have any traces yet</string>
 
+    <!-- Test only -->
+    <string name="draw_instruction"> Dear tester,
+        \nThe first drawing point will be used as trace starting point.
+        \nTop -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>
+
 </resources>

@@ -1,202 +1,254 @@
 package com.uw.hcde.fizzlab.trace.controller.walk;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.uw.hcde.fizzlab.trace.R;
-
-import org.json.JSONObject;
+import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
+import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
+import com.uw.hcde.fizzlab.trace.services.MapsUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
-public class PathGoogleMapActivity extends FragmentActivity {
-    //private static final String TAG = "MapActivity";
-    //TextView title = (TextView) findViewById(R.id.navigation_title);
-    //title.setText(getString(R.string.map));
+public class PathGoogleMapActivity extends FragmentActivity implements
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener {
 
-    //private static final LatLng LOWER_MANHATTAN = new LatLng(40.722543, -73.998585);
-    //private static final LatLng BROOKLYN_BRIDGE = new LatLng(40.7057, -73.9964);
-    //private static final LatLng WALL_STREET = new LatLng(40.7064, -74.0094);
-    private static List<LatLng> crdList = new ArrayList<LatLng>();
+    public static Handler handler;
 
-    GoogleMap googleMap;
-    final String TAG = "PathGoogleMapActivity";
+    private GoogleMap googleMap;
+
+    public static List<LatLng> tracedPoints = new ArrayList<LatLng>(); // the user walked those points already
+
+    public static List<LatLng> suggestedPathPoints = new ArrayList<LatLng>(); // points returned
+                                                                                // by parser task
+    private List<TraceLocation> originalCoords = null; // get its values from TraceFactory
+
+    private static ArrayList<LatLng> crdList = new ArrayList<LatLng>(); //Coordinates after adding the
+                                                                        //current location
+    private List<String> urlList = new ArrayList<String>(); //urlList for a request to
+                                                                    // GoogleMapsAPIWeb services
+    private Location myCurrLocation;
+
+    private int segmentStart = 0;
+    private int segmentEnd = 0;
+    private int segmentSize = 5;
+    private int tracedIndex = 0; // the index that points to the coordinate
+                                                            // till which the user walked
+    public static Location target = null;      // the target segmentEnd coordinate location
+
+    public LocationClient mLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_google_map);
 
+        //Mock testing code here
+        //Connect to Location Services
+        mLocationClient= new LocationClient(this, this, this);
+        mLocationClient.connect();
+
+
+
+
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.map));
 
+        // Creating an instance for being able to interact with Google Map
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         googleMap = fm.getMap();
 
 
-        crdList.add(new LatLng(40.722543, -73.998585));
-        crdList.add(new LatLng(40.7057, -73.9964));
-        crdList.add(new LatLng(40.7064, -74.0094));
-        crdList.add(new LatLng(40.7164, -74.0094));
-        crdList.add(new LatLng(40.6964, -74.0094));
-        crdList.add(new LatLng(40.6764, -74.0094));
-        crdList.add(new LatLng(40.6864, -74.0094));
-        crdList.add(new LatLng(40.7064, -74.0094));
-        crdList.add(new LatLng(40.7164, -74.0094));
-        crdList.add(new LatLng(40.7264, -74.0094));
-        crdList.add(new LatLng(40.7364, -74.0094));
-        crdList.add(new LatLng(40.7464, -74.0094));
-        crdList.add(new LatLng(40.7444, -74.0094));
-        crdList.add(new LatLng(40.7364, -74.0094));
-        crdList.add(new LatLng(40.7364, -74.0094));
+        // Getting the current location of the user for further gps tracking and path drawing
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final LocationListener locListener = new MyLocationListener(this, googleMap);
+        myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                10000, 10, locListener); //10 seconds and 10 meters
 
-        MarkerOptions options = new MarkerOptions();
-        for (LatLng ll: crdList) {
-            options.position(ll);
+
+
+
+        // end early functionality (must be improved)
+        TextView endEarly = (TextView) findViewById(R.id.map_ending_early);
+        endEarly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationManager.removeUpdates(locListener);
+
+            }
+        });
+
+        originalCoords = TraceDataFactory.getLocations(myCurrLocation, this);
+        myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); //take
+                                                            // updated gps location
+        crdList.add(new LatLng(myCurrLocation.getLatitude(), myCurrLocation.getLongitude()));
+        for(TraceLocation tLoc: originalCoords) {
+            Location tempLoc = tLoc.getLocation();
+            crdList.add(new LatLng(tempLoc.getLatitude(), tempLoc.getLongitude()));
         }
-        googleMap.addMarker(options);
 
+
+        //Drawing the path
         int currentIndex = 0; // index in the crdlist after taking 8x points
         int crdListSize = crdList.size();
 
+
         String url = "";
-        for(int i = 0; i < crdListSize; i+=6) {
-            url = getMapsApiDirectionsUrl(currentIndex);
+        for (int i = 0; i < crdListSize; i += 7) {
             currentIndex = i;
-            ReadTask downloadTask = new ReadTask();
-            downloadTask.execute(url);
-        }
-        if (crdListSize != currentIndex) {
-            url = getMapsApiDirectionsUrl(currentIndex);
-            ReadTask downloadTask = new ReadTask();
-            downloadTask.execute(url);
+            url = new MapsUtil(crdList, googleMap).getMapsApiDirectionsUrl(currentIndex);
+            urlList.add(url);
         }
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(crdList.get(0), 13));
-        addMarkers();
+        ReadTask downloadTask = new ReadTask(googleMap);
+        try {
+            Log.d("onCreate: ", "1");
+            downloadTask.execute(urlList.toArray(new String[0])).get();
+            Log.d("onCreate: ", "2");
 
-    }
-
-    private String getMapsApiDirectionsUrl(int index) {
-        StringBuilder waypoints = new StringBuilder();
-        waypoints.append("waypoints=optimize:true");
-        for (int i=index; (i < index+6 && i < crdList.size()); i++) {
-            LatLng ll = crdList.get(i);
-            waypoints.append("|");
-            waypoints.append(ll.latitude);
-            waypoints.append(",");
-            waypoints.append(ll.longitude);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
 
-        StringBuilder sensor = new StringBuilder("sensor=false");
-        StringBuilder params = new StringBuilder(waypoints + "&" + sensor);
-        StringBuilder output = new StringBuilder("json");
-        StringBuilder mode = new StringBuilder("walking");
-        StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/directions/"
-                + output + "?" + params + "&mode" + mode);
-        return url.toString();
-    }
+        final MapsUtil mapsUtil = new MapsUtil(suggestedPathPoints, googleMap);
 
-    private void addMarkers() {
-        if (googleMap != null) {
-            int i = 0;
-            for(LatLng ll: crdList) {
-                googleMap.addMarker(new MarkerOptions().position(ll)
-                        .title("Point Number #" + i));
-                i++;
+        if(suggestedPathPoints != null) {
+            // **** For testing porposes only
+            PolylineOptions temp = new PolylineOptions();
+            for(int i = 0; i < suggestedPathPoints.size(); i++) {
+                temp.add(suggestedPathPoints.get(i));
             }
-            //  googleMap.addMarker(new MarkerOptions().position(BROOKLYN_BRIDGE)
-            //        .title("First Point"));
-            //googleMap.addMarker(new MarkerOptions().position(LOWER_MANHATTAN)
-            //        .title("Second Point"));
-            //googleMap.addMarker(new MarkerOptions().position(WALL_STREET)
-            //        .title("Third Point"));
+            temp.color(Color.YELLOW);
+            googleMap.addPolyline(temp);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(0), 13));
+            //****
+
+            if (myCurrLocation != null) {
+                googleMap.setMyLocationEnabled(true);
+
+            }
+
+            if (segmentSize > suggestedPathPoints.size()) {
+                segmentSize = suggestedPathPoints.size();
+            }
+            segmentEnd = segmentSize;
+            target = new Location("Test");
+            target.setLatitude(suggestedPathPoints.get(segmentEnd).latitude);
+            target.setLongitude(suggestedPathPoints.get(segmentEnd).longitude);
+
+            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+            //        10000, 10, locListener); //10 seconds and 10 meters
+            mapsUtil.drawPathSegment(this, segmentStart, segmentEnd);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(segmentStart), 15));
+
+            handler = new Handler() {
+
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what == 0) {
+
+                        if (segmentEnd == suggestedPathPoints.size() - 1) {
+                            mapsUtil.drawTracedPathSegment(PathGoogleMapActivity.this,
+                                    tracedPoints, tracedPoints.size());
+                            mLocationClient.setMockMode(false);
+                            locationManager.removeUpdates(locListener);
+                            return;
+                        }
+                        segmentStart = segmentEnd - 1;
+                        tracedIndex = segmentEnd - 1;
+
+                        if (segmentEnd - 1 + segmentSize > suggestedPathPoints.size()) {
+                            segmentEnd = suggestedPathPoints.size() - segmentEnd - 1;
+                            target.setLatitude(suggestedPathPoints.get(segmentEnd-1).latitude);
+                            target.setLongitude(suggestedPathPoints.get(segmentEnd-1).longitude);
+                        } else {
+                            segmentEnd += segmentSize - 1;
+                            target.setLatitude(suggestedPathPoints.get(segmentEnd).latitude);
+                            target.setLongitude(suggestedPathPoints.get(segmentEnd).longitude);
+                        }
+                        mapsUtil.drawPathSegment(PathGoogleMapActivity.this,
+                                                             segmentStart, segmentEnd);
+                        mapsUtil.drawTracedPathSegment(PathGoogleMapActivity.this, tracedPoints, tracedPoints.size());
+
+                    }
+
+                }
+            };
         }
     }
 
-    private class ReadTask extends AsyncTask<String, Void, String> {
+    @Override
+    public void onConnected(Bundle bundle) {
+        //TODO define location services callbacks
+        // When the location client is connected, set mock mode
+        mLocationClient.setMockMode(true);
+    }
+
+    @Override
+    public void onDisconnected() {
+        //TODO define location services callbacks
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        //TODO define location services callbacks
+    }
+
+    /**
+     * Created by sonagrigoryan on 14-11-21.
+     */
+    public class ReadTask extends AsyncTask<String, Void, Void> {
+        private GoogleMap googleMap;
+        public ReadTask(GoogleMap gMap) {
+            Log.d("ReadTask", "init");
+            googleMap = gMap;
+        }
+
         @Override
-        protected String doInBackground(String... url) {
+        protected Void doInBackground(String... urlList) {
             String data = "";
             try {
                 HttpConnection http = new HttpConnection();
-                data = http.readUrl(url[0]);
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            new ParserTask().execute(result);
-        }
-    }
-
-    private class ParserTask extends
-            AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(
-                String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-                PathJSONParser parser = new PathJSONParser();
-                routes = parser.parse(jObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> routes) {
-            ArrayList<LatLng> points = null;
-            PolylineOptions polyLineOptions = null;
-
-            // traversing through routes
-            for (int i = 0; i < routes.size(); i++) {
-                points = new ArrayList<LatLng>();
-                polyLineOptions = new PolylineOptions();
-                List<HashMap<String, String>> path = routes.get(i);
-
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
+                for(String s: urlList) {
+                    data = http.readUrl(s);
+                    suggestedPathPoints.addAll(MapsUtil.parseLatLongJSON(data));
                 }
-
-                polyLineOptions.addAll(points);
-                polyLineOptions.width(4);
-                polyLineOptions.color(Color.BLUE);
+            } catch (Exception e) {
+                Log.d("Background Task: ", e.toString());
             }
 
-            googleMap.addPolyline(polyLineOptions);
+            return null;
         }
     }
+
 }

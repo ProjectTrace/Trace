@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,10 @@ import java.util.List;
 public class AnnotationActivity extends Activity implements ParseSendCallback {
 
     private static final String TAG = "AnnotateActivity";
+    private static final int TITLE_TEXT_SIZE_SP = 20;
+
+    private View mButtonSend;
+    private View mButtonBack;
 
     private List<Point> mRawPoints; // Used to display path
     private List<TracePoint> mTracePoints; // Trace points
@@ -56,6 +61,9 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotate);
 
+        mButtonBack = findViewById(R.id.button_back);
+        mButtonSend = findViewById(R.id.button_send);
+
         Intent intent = getIntent();
         mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
 
@@ -70,7 +78,8 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.annotate));
+        title.setText(getString(R.string.touch_to_annotate));
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_TEXT_SIZE_SP);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);
@@ -89,12 +98,17 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     }
 
     /**
-     * Sets up done button
+     * Sets up buttons
      */
     private void setupButtons() {
-        // Set up buttons
-        View buttonSend = findViewById(R.id.button_send);
-        buttonSend.setOnClickListener(new View.OnClickListener() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button send clicked");
@@ -155,13 +169,31 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         });
     }
 
+    /**
+     * Shows progress dialog, disable buttons
+     */
+    private void showProgressDialog() {
+        mProgressDialog.show();
+        mButtonBack.setVisibility(View.INVISIBLE);
+        mButtonSend.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Dismiss progress dialog, enable buttons
+     */
+    private void dismissProgressDialog() {
+        mProgressDialog.dismiss();
+        mButtonBack.setVisibility(View.VISIBLE);
+        mButtonSend.setVisibility(View.VISIBLE);
+    }
+
 
     /**
      * Sends all data to parse database and sets up progress dialog
      * Get name -> send annotation -> send drawing
      */
     private void sendData() {
-        mProgressDialog.show();
+        showProgressDialog();
         ParseDataFactory.convertNameToParseUser(mReceiverNames, this);
     }
 
@@ -182,22 +214,24 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                 }
 
                 // Finds out invalid usernames
-                String msg = getString(R.string.toast_invalid_username);
+                StringBuilder sb = new StringBuilder();
+                sb.append(getString(R.string.toast_invalid_username));
+                sb.append(" ");
                 for (int i = 0; i < failedNames.size(); i++) {
-                    msg += failedNames.get(i);
+                    sb.append(failedNames.get(i));
                     if (i < failedNames.size() - 1) {
-                        msg += ", ";
+                        sb.append(", ");
                     }
                 }
 
-                mProgressDialog.dismiss();
-                TraceUtil.showToast(this, msg);
+                dismissProgressDialog();
+                TraceUtil.showToast(this, sb.toString());
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }
 
         } else {
-            mProgressDialog.dismiss();
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
@@ -207,15 +241,15 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         if (returnCode == ParseConstant.SUCCESS) {
             ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
         } else {
-            mProgressDialog.dismiss();
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
 
     @Override
     public void sendDrawingCallback(int returnCode) {
-        mProgressDialog.dismiss();
         if (returnCode == ParseConstant.SUCCESS) {
+            mProgressDialog.dismiss();
             TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_success));
 
             Handler handler = new Handler();
@@ -228,6 +262,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
             }, TraceUtil.TOAST_MESSAGE_TIME);
 
         } else {
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }

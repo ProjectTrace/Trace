@@ -105,6 +105,11 @@ public class AnnotationView extends View {
                 if (currPoint.x >= p.x - mDetection_radius && currPoint.x <= p.x + mDetection_radius
                         && currPoint.y >= p.y - mDetection_radius && currPoint.y <= p.y + mDetection_radius) {
 
+                    // Annotation on fist point is not allowed, by design
+                    if (i == 0) {
+                        return false;
+                    }
+
                     // Show annotation point
                     if (tracePoint.annotation == null) {
                         tracePoint.annotation = new TraceAnnotation();

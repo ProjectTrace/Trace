@@ -31,6 +31,9 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
     private static final String TAG = "ChooseDrawingActivity";
     private static final String EXTRA_INT_DRAWING_IDENTIFIER = "drawing_identifier";
 
+    private View mButtonBack;
+    private View mButtonNext;
+
     // Drawing selector content
     private View mEmptyContentView;
     private View mContentView;
@@ -41,7 +44,6 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
     private TextView mCreator;
     private TextView mDescription;
     private TextView mDate;
-    private View mButtonNext;
 
     private int mDrawingIndex;
     private List<ParseDrawing> mDrawings;
@@ -64,23 +66,29 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mDescription = (TextView) findViewById(R.id.description);
         mDate = (TextView) findViewById(R.id.date);
         mButtonNext = findViewById(R.id.button_next);
-        setupListeners();
+        mButtonBack = findViewById(R.id.button_back);
+        setupButtons();
 
-        mDrawingIndex = 0;
-        mDrawings = null;
-        mContentView.setVisibility(View.INVISIBLE);
-        mEmptyContentView.setVisibility(View.INVISIBLE);
+        // Sets up progress dialog
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.progress_retrieving));
         mProgressDialog.show();
+
+        mDrawingIndex = 0;
+        mDrawings = null;
         ParseDataFactory.retrieveDrawings(ParseUser.getCurrentUser(), this);
     }
 
     /**
-     * Sets up listeners
+     * Sets up buttons
      */
-    private void setupListeners() {
-        // Next button
+    private void setupButtons() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +123,23 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         });
     }
 
+
+    /**
+     * Sets up drawing content
+     */
+    private void setDrawingContent() {
+        mContentView.setVisibility(View.VISIBLE);
+        mButtonNext.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Sets up empty content
+     */
+    private void setEmptyContent() {
+        mEmptyContentView.setVisibility(View.VISIBLE);
+        mButtonNext.setVisibility(View.INVISIBLE);
+    }
+
     // Retrieve drawings -> annotations -> creators
     @Override
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
@@ -125,12 +150,16 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
 
             if (mDrawings.isEmpty()) {
                 mProgressDialog.dismiss();
-                mEmptyContentView.setVisibility(View.VISIBLE);
+                setEmptyContent();
+
             } else {
                 ParseDataFactory.retrieveAnnotations(mDrawings, this);
+                mButtonNext.setVisibility(View.VISIBLE);
             }
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 
@@ -141,6 +170,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             ParseDataFactory.retrieveCreators(mDrawings, this);
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 
@@ -149,9 +180,11 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         if (returnCode == ParseConstant.SUCCESS) {
             updateDrawingDisplay();
             mProgressDialog.dismiss();
-            mContentView.setVisibility(View.VISIBLE);
+            setDrawingContent();
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 

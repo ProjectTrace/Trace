@@ -44,6 +44,7 @@
     <string name="set">Set</string>
     <string name="less_than">&lt;&lt;</string>
     <string name="greater_than">&gt;&gt;</string>
+    <string name="touch_to_annotate">Touch to annotate</string>
 
     <!-- Other -->
     <string name="toast_draw_larger">please draw larger</string>
@@ -57,10 +58,15 @@
     <string name="progress_sending">sending data</string>
     <string name="progress_retrieving">retrieving data</string>
     <string name="toast_network_error">network error, please try again</string>
-    <string name="toast_invalid_username">invalid username: </string>
+    <string name="toast_invalid_username">invalid username:</string>
     <string name="draw_by">Draw by</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="empty_traces">You do not have any traces yet</string>
+
+    <!-- Test only -->
+    <string name="draw_instruction"> Dear tester,
+        \nThe first drawing point will be used as trace starting point.
+        \nTop -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>
 
 </resources>

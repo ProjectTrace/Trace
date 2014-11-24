@@ -2,7 +2,6 @@ package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.lang.reflect.Field;
@@ -29,7 +27,10 @@ public class ChooseDurationActivity extends Activity {
     private static final int sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
             130, 140, 150, 160, 170, 180, 190, 200};
 
+    private View mButtonGo;
+    private View mButtonBack;
     private NumberPicker mPickerDistance;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,24 @@ public class ChooseDurationActivity extends Activity {
         mPickerDistance = (NumberPicker) findViewById(R.id.picker_duration);
         initializePicker();
 
-        // Set up go button
-        View buttonGo = findViewById(R.id.button_go);
-        buttonGo.setOnClickListener(new View.OnClickListener() {
+        // Buttons
+        mButtonGo = findViewById(R.id.button_go);
+        mButtonBack = findViewById(R.id.button_back);
+        setupButtons();
+    }
+
+    /**
+     * Sets up buttons
+     */
+    private void setupButtons() {
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        mButtonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");

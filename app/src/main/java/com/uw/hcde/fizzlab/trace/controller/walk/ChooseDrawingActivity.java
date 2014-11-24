@@ -69,13 +69,13 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mButtonBack = findViewById(R.id.button_back);
         setupButtons();
 
-        mDrawingIndex = 0;
-        mDrawings = null;
-        mContentView.setVisibility(View.INVISIBLE);
-        mEmptyContentView.setVisibility(View.INVISIBLE);
+        // Sets up progress dialog
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.progress_retrieving));
         mProgressDialog.show();
+
+        mDrawingIndex = 0;
+        mDrawings = null;
         ParseDataFactory.retrieveDrawings(ParseUser.getCurrentUser(), this);
     }
 
@@ -123,6 +123,23 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         });
     }
 
+
+    /**
+     * Sets up drawing content
+     */
+    private void setDrawingContent() {
+        mContentView.setVisibility(View.VISIBLE);
+        mButtonNext.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Sets up empty content
+     */
+    private void setEmptyContent() {
+        mEmptyContentView.setVisibility(View.VISIBLE);
+        mButtonNext.setVisibility(View.INVISIBLE);
+    }
+
     // Retrieve drawings -> annotations -> creators
     @Override
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
@@ -133,8 +150,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
 
             if (mDrawings.isEmpty()) {
                 mProgressDialog.dismiss();
-                mEmptyContentView.setVisibility(View.VISIBLE);
-                mButtonNext.setVisibility(View.INVISIBLE);
+                setEmptyContent();
 
             } else {
                 ParseDataFactory.retrieveAnnotations(mDrawings, this);
@@ -142,6 +158,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             }
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 
@@ -152,6 +170,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             ParseDataFactory.retrieveCreators(mDrawings, this);
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 
@@ -160,9 +180,11 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         if (returnCode == ParseConstant.SUCCESS) {
             updateDrawingDisplay();
             mProgressDialog.dismiss();
-            mContentView.setVisibility(View.VISIBLE);
+            setDrawingContent();
         } else {
             showNetworkError();
+            mProgressDialog.dismiss();
+            setEmptyContent();
         }
     }
 

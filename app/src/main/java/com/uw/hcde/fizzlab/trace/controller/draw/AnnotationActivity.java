@@ -169,13 +169,31 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         });
     }
 
+    /**
+     * Shows progress dialog, disable buttons
+     */
+    private void showProgressDialog() {
+        mProgressDialog.show();
+        mButtonBack.setVisibility(View.INVISIBLE);
+        mButtonSend.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Dismiss progress dialog, enable buttons
+     */
+    private void dismissProgressDialog() {
+        mProgressDialog.dismiss();
+        mButtonBack.setVisibility(View.VISIBLE);
+        mButtonSend.setVisibility(View.VISIBLE);
+    }
+
 
     /**
      * Sends all data to parse database and sets up progress dialog
      * Get name -> send annotation -> send drawing
      */
     private void sendData() {
-        mProgressDialog.show();
+        showProgressDialog();
         ParseDataFactory.convertNameToParseUser(mReceiverNames, this);
     }
 
@@ -206,14 +224,14 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                     }
                 }
 
-                mProgressDialog.dismiss();
+                dismissProgressDialog();
                 TraceUtil.showToast(this, sb.toString());
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }
 
         } else {
-            mProgressDialog.dismiss();
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
@@ -223,15 +241,15 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         if (returnCode == ParseConstant.SUCCESS) {
             ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
         } else {
-            mProgressDialog.dismiss();
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }
 
     @Override
     public void sendDrawingCallback(int returnCode) {
-        mProgressDialog.dismiss();
         if (returnCode == ParseConstant.SUCCESS) {
+            mProgressDialog.dismiss();
             TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_success));
 
             Handler handler = new Handler();
@@ -244,6 +262,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
             }, TraceUtil.TOAST_MESSAGE_TIME);
 
         } else {
+            dismissProgressDialog();
             TraceUtil.showToast(this, getString(R.string.toast_network_error));
         }
     }

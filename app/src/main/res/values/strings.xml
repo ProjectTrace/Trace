@@ -58,7 +58,7 @@
     <string name="progress_sending">sending data</string>
     <string name="progress_retrieving">retrieving data</string>
     <string name="toast_network_error">network error, please try again</string>
-    <string name="toast_invalid_username">invalid username: </string>
+    <string name="toast_invalid_username">invalid username:</string>
     <string name="draw_by">Draw by</string>
     <string name="description">Description</string>
     <string name="date">Date</string>

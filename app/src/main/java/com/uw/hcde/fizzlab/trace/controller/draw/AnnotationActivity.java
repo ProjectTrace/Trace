@@ -196,16 +196,18 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                 }
 
                 // Finds out invalid usernames
-                String msg = getString(R.string.toast_invalid_username);
+                StringBuilder sb = new StringBuilder();
+                sb.append(getString(R.string.toast_invalid_username));
+                sb.append(" ");
                 for (int i = 0; i < failedNames.size(); i++) {
-                    msg += failedNames.get(i);
+                    sb.append(failedNames.get(i));
                     if (i < failedNames.size() - 1) {
-                        msg += ", ";
+                        sb.append(", ");
                     }
                 }
 
                 mProgressDialog.dismiss();
-                TraceUtil.showToast(this, msg);
+                TraceUtil.showToast(this, sb.toString());
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }

@@ -1,7 +1,5 @@
 package com.uw.hcde.fizzlab.trace.model;
 
-import android.content.Context;
-import android.graphics.Point;
 import android.location.Location;
 import android.util.Log;
 
@@ -24,13 +22,10 @@ public class TraceDataFactory {
     private static final double EARTH_CIRCUMFERENCE_METER = 2 * WGS84_RADIUS_METER * Math.PI;
     private static final String PROVIDER = "Trace_app";
 
-    // private static final double SHRINK_FACTOR = Math.cos(Math.toRadians())
-
     /**
      * Generates trace geo location data given selected drawing and current location.
      *
      * @param currentLocation current geo location
-     * @param context         application context
      * @return list of trace locations scaled from drawing to real world map. If anything goes wrong,
      * null is returned.
      * <p/>
@@ -39,7 +34,7 @@ public class TraceDataFactory {
      * the drawing must be a closing loop, so A is the current location given in the method
      * parameter.
      */
-    public static List<TraceLocation> getLocations(Location currentLocation, Context context) {
+    public static List<TraceLocation> getLocations(Location currentLocation) {
         Log.d(TAG, "current lat: " + currentLocation.getLatitude());
         Log.d(TAG, "current long: " + currentLocation.getLongitude());
 
@@ -125,6 +120,7 @@ public class TraceDataFactory {
 
     /**
      * Debug function
+     *
      * @param list
      */
     private static void printTraceLocations(List<TraceLocation> list) {
@@ -135,7 +131,6 @@ public class TraceDataFactory {
             Log.d(TAG, "long: " + traceLocation.location.getLongitude());
         }
     }
-
 
 
 }

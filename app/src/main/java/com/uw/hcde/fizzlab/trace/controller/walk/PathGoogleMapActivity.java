@@ -105,7 +105,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
             }
         });
 
-        originalCoords = TraceDataFactory.getLocations(myCurrLocation, this);
+        originalCoords = TraceDataFactory.getLocations(myCurrLocation);
         myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); //take
                                                             // updated gps location
         crdList.add(new LatLng(myCurrLocation.getLatitude(), myCurrLocation.getLongitude()));

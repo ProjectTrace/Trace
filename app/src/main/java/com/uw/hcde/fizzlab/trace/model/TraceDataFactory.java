@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.model;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.location.Location;
 import android.util.Log;
 
@@ -134,5 +135,7 @@ public class TraceDataFactory {
             Log.d(TAG, "long: " + traceLocation.location.getLongitude());
         }
     }
+
+
 
 }

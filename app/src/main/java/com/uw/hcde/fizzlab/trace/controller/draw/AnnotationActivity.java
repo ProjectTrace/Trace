@@ -158,8 +158,6 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                             return;
                         }
 
-                        // TODO: more pipelines on tracePoints goes here
-
                         // Send data
                         sendData();
                         alertDialog.dismiss();

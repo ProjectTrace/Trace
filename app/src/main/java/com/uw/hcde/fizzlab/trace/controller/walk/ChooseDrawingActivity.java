@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.draw.DrawUtil;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
+import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseDrawing;
@@ -94,8 +96,10 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");
-                TraceDataContainer.sTracePoints = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
-                Log.d(TAG, "trace points: " + TraceDataContainer.sTracePoints.size());
+                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
+                TraceDataContainer.sTracePoints = DrawUtil.trimPoints(points);
+
+                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.sTracePoints.size());
                 Intent intent = new Intent(ChooseDrawingActivity.this, ChooseDurationActivity.class);
                 startActivity(intent);
             }

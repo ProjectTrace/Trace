@@ -18,6 +18,7 @@ public class DrawUtil {
 
     private static final String TAG = "DrawUtil";
     private static final int SEGMENT_LENGTH_PL = 50;
+    private static final int EPSILON = 25;
 
     /**
      * Transforms raw points to normalized points that separates by SEGMENT_LENGTH_PL on path
@@ -99,6 +100,7 @@ public class DrawUtil {
 
     /**
      * Converts points to TracePoints
+     *
      * @param points
      * @return tracePoints
      */
@@ -114,6 +116,7 @@ public class DrawUtil {
 
     /**
      * Calculates pixel circumference, assuming enclosed drawing.
+     *
      * @param tracePoints
      * @return
      */
@@ -133,6 +136,7 @@ public class DrawUtil {
 
     /**
      * Calculates Euclidean distance between two points.
+     *
      * @param p1
      * @param p2
      * @return
@@ -141,4 +145,53 @@ public class DrawUtil {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 
+    /**
+     * Checks if a point is on line, given epsilon
+     *
+     * @param A
+     * @param B
+     * @param P
+     * @return true or false
+     */
+    public static boolean isPointOnLine(TracePoint A, TracePoint B, TracePoint P) {
+        double normalLength = Math.sqrt((B.point.x - A.point.x) * (B.point.x - A.point.x) + (B.point.y - A.point.y) * (B.point.y - A.point.y));
+        double distance = Math.abs((P.point.x - A.point.x) * (B.point.y - A.point.y) - (P.point.y - A.point.y) * (B.point.x - A.point.x)) / normalLength;
+        return distance <= EPSILON;
+    }
+
+
+    /**
+     * Trims list of trace points
+     *
+     * @param list
+     * @return
+     */
+    public static List<TracePoint> trimPoints(List<TracePoint> list) {
+        List<TracePoint> res = new ArrayList<TracePoint>();
+
+        TracePoint linePointA = list.get(0);
+        TracePoint linePointB = list.get(1);
+        res.add(linePointA);
+
+        for (int i = 2; i < list.size(); i++) {
+            TracePoint point = list.get(i);
+
+            if (!isPointOnLine(linePointA, linePointB, point)) {
+                linePointA = linePointB;
+                linePointB = point;
+                res.add(linePointA);
+            } else if (point.annotation != null) {
+                res.add(point);
+            }
+        }
+
+        TracePoint fistPoint = list.get(0);
+        if (!isPointOnLine(linePointA, linePointB, fistPoint)) {
+            res.add(linePointB);
+        } else if (linePointB.annotation != null) {
+            res.add(linePointB);
+        }
+
+        return res;
+    }
 }

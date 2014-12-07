@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
+import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class MapActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_path_google_map);
+        setContentView(R.layout.activity_map);
 
         //Mock testing code here
         //Connect to Location Services
@@ -86,6 +87,9 @@ public class MapActivity extends FragmentActivity implements
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.map));
+
+        TextView description = (TextView) findViewById(R.id.description_text);
+        description.setText(TraceDataContainer.description);
 
         // Creating an instance for being able to interact with Google Map
         SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager()

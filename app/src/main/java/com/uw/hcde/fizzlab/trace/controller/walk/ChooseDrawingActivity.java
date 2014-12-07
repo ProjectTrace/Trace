@@ -98,9 +98,10 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");
                 List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
-                TraceDataContainer.sTracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainer.tracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
 
-                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.sTracePoints.size());
+                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.tracePoints.size());
                 Intent intent = new Intent(ChooseDrawingActivity.this, ChooseDurationActivity.class);
                 startActivity(intent);
             }
@@ -155,7 +156,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             Collections.sort(mDrawings, new Comparator<ParseDrawing>() {
                 @Override
                 public int compare(ParseDrawing lhs, ParseDrawing rhs) {
-                    return - lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
+                    return -lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
                 }
             });
 

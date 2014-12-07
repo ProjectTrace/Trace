@@ -67,13 +67,8 @@ public class ChooseDurationActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
 
-                TraceDataContainer.sDistance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
-                Log.d(TAG, "Distance : " + TraceDataContainer.sDistance);
-//
-//                Location seattle = new Location("!!");
-//                seattle.setLatitude(47.6097);
-//                seattle.setLongitude(-122.3331);
-//                TraceDataFactory.getLocations(seattle, null);
+                TraceDataContainer.distance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
+                Log.d(TAG, "Distance : " + TraceDataContainer.distance);
 
                 Intent intent = new Intent(ChooseDurationActivity.this, MapActivity.class);
                 startActivity(intent);

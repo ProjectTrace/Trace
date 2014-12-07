@@ -4,10 +4,12 @@ import java.util.List;
 
 /**
  * Singleton class for trace points/location list storage
- * TODO: No need to use this class after offline storage is enabled
  */
 public class TraceDataContainer {
 
-    public static int sDistance;
-    public static List<TracePoint> sTracePoints;
+    // Distance in meter
+    public static int distance;
+
+    public static List<TracePoint> tracePoints;
+    public static String description;
 }

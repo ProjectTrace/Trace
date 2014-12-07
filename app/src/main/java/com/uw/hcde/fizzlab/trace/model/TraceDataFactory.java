@@ -46,11 +46,11 @@ public class TraceDataFactory {
         Log.d(TAG, "degrees per meter long: " + degreesPerMeterLong);
 
         // Points data
-        List<TracePoint> tracePoints = TraceDataContainer.sTracePoints;
+        List<TracePoint> tracePoints = TraceDataContainer.tracePoints;
         TracePoint startingPoint = tracePoints.get(0);
 
         // Gets scale factor
-        int distanceMeter = TraceDataContainer.sDistance;
+        int distanceMeter = TraceDataContainer.distance;
         double distancePixel = DrawUtil.getPixelLength(tracePoints);
         double scaleFactor = distanceMeter / distancePixel;
         Log.d(TAG, "distanceMeter: " + distanceMeter);
@@ -72,8 +72,8 @@ public class TraceDataFactory {
             double meterDy = pixelDy * scaleFactor;
 
             // Generates geo location
-            double latitude = generateLat(currentLocation.getLatitude(), degreesPerMeterLat, meterDy);
-            double longitude = generateLong(currentLocation.getLongitude(), degreesPerMeterLong, meterDx);
+            double latitude = currentLocation.getLatitude() + degreesPerMeterLat * meterDy;
+            double longitude = currentLocation.getLongitude() + degreesPerMeterLong * meterDx;
             Location location = new Location(PROVIDER);
             location.setLatitude(latitude);
             location.setLongitude(longitude);
@@ -90,32 +90,7 @@ public class TraceDataFactory {
         traceCurrentLocation.location = currentLocation;
         traceLocations.add(traceCurrentLocation);
 
-        printTraceLocations(traceLocations);
         return traceLocations;
-    }
-
-    /**
-     * Generates new latitude given start latitude, conversion and displacement of latitude (dy)
-     *
-     * @param startLat
-     * @param degreesPerMeterLat
-     * @param displacement
-     * @return latitude
-     */
-    private static double generateLat(double startLat, double degreesPerMeterLat, double displacement) {
-        return startLat + degreesPerMeterLat * displacement;
-    }
-
-    /**
-     * Generates new longitude given start longitude, conversion and displacement of longitude (dx)
-     *
-     * @param startLong
-     * @param degreesPerMeterLong
-     * @param displacement
-     * @return longitude
-     */
-    private static double generateLong(double startLong, double degreesPerMeterLong, double displacement) {
-        return startLong + degreesPerMeterLong * displacement;
     }
 
     /**

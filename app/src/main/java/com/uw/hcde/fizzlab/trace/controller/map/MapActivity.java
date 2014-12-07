@@ -1,6 +1,8 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,22 +23,28 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
+import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
-import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
-public class PathGoogleMapActivity extends FragmentActivity implements
+public class MapActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener
+
+{
 
     public static Handler handler;
 
@@ -44,20 +53,21 @@ public class PathGoogleMapActivity extends FragmentActivity implements
     public static List<LatLng> tracedPoints = new ArrayList<LatLng>(); // the user walked those points already
 
     public static List<LatLng> suggestedPathPoints = new ArrayList<LatLng>(); // points returned
-                                                                                // by parser task
+    // by parser task
     private List<TraceLocation> originalCoords = null; // get its values from TraceFactory
 
     private static ArrayList<LatLng> crdList = new ArrayList<LatLng>(); //Coordinates after adding the
-                                                                        //current location
+    //current location
     private List<String> urlList = new ArrayList<String>(); //urlList for a request to
-                                                                    // GoogleMapsAPIWeb services
+    // GoogleMapsAPIWeb services
     private Location myCurrLocation;
+    private Map<Marker, TraceAnnotation> markerToAnnotation;
 
     private int segmentStart = 0;
     private int segmentEnd = 0;
     private int segmentSize = 1;
     private int tracedIndex = 0; // the index that points to the coordinate
-                                                            // till which the user walked
+    // till which the user walked
     public static Location target = null;      // the target segmentEnd coordinate location
 
     public LocationClient mLocationClient;
@@ -69,11 +79,8 @@ public class PathGoogleMapActivity extends FragmentActivity implements
 
         //Mock testing code here
         //Connect to Location Services
-        mLocationClient= new LocationClient(this, this, this);
+        mLocationClient = new LocationClient(this, this, this);
         mLocationClient.connect();
-
-
-
 
 
         // Set navigation title
@@ -94,8 +101,6 @@ public class PathGoogleMapActivity extends FragmentActivity implements
                 10000, 10, locListener); //10 seconds and 10 meters
 
 
-
-
         // end early functionality (must be improved)
         TextView endEarly = (TextView) findViewById(R.id.map_ending_early);
         endEarly.setOnClickListener(new View.OnClickListener() {
@@ -107,31 +112,17 @@ public class PathGoogleMapActivity extends FragmentActivity implements
         });
 
         originalCoords = TraceDataFactory.getLocations(myCurrLocation);
-        for (TraceLocation tracePoint : originalCoords) {
-
-
-            if (tracePoint.annotation != null) {
-                Location location = tracePoint.location;
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .alpha(0.5f));
-            } else {
-                Location location = tracePoint.location;
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(location.getLatitude(), location.getLongitude())));
-            }
-        }
-
 
 
         myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); //take
-                                                            // updated gps location
+        // updated gps location
         crdList.add(new LatLng(myCurrLocation.getLatitude(), myCurrLocation.getLongitude()));
-        for(TraceLocation tLoc: originalCoords) {
+        for (TraceLocation tLoc : originalCoords) {
             Location tempLoc = tLoc.getLocation();
             crdList.add(new LatLng(tempLoc.getLatitude(), tempLoc.getLongitude()));
         }
 
+        showMarkers();
 
         //Drawing the path
         int currentIndex = 0; // index in the crdlist after taking 8x points
@@ -159,10 +150,10 @@ public class PathGoogleMapActivity extends FragmentActivity implements
 
         final MapsUtil mapsUtil = new MapsUtil(suggestedPathPoints, googleMap);
 
-        if(suggestedPathPoints != null) {
+        if (suggestedPathPoints != null) {
             // **** For testing porposes only
             PolylineOptions temp = new PolylineOptions();
-            for(int i = 0; i < suggestedPathPoints.size(); i++) {
+            for (int i = 0; i < suggestedPathPoints.size(); i++) {
                 temp.add(suggestedPathPoints.get(i));
             }
             temp.color(Color.YELLOW);
@@ -195,7 +186,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
                     if (msg.what == 0) {
 
                         if (segmentEnd == suggestedPathPoints.size() - 1) {
-                            mapsUtil.drawTracedPathSegment(PathGoogleMapActivity.this,
+                            mapsUtil.drawTracedPathSegment(MapActivity.this,
                                     tracedPoints, tracedPoints.size());
                             mLocationClient.setMockMode(false);
                             locationManager.removeUpdates(locListener);
@@ -206,16 +197,16 @@ public class PathGoogleMapActivity extends FragmentActivity implements
 
                         if (segmentEnd - 1 + segmentSize > suggestedPathPoints.size()) {
                             segmentEnd = suggestedPathPoints.size() - segmentEnd - 1;
-                            target.setLatitude(suggestedPathPoints.get(segmentEnd-1).latitude);
-                            target.setLongitude(suggestedPathPoints.get(segmentEnd-1).longitude);
+                            target.setLatitude(suggestedPathPoints.get(segmentEnd - 1).latitude);
+                            target.setLongitude(suggestedPathPoints.get(segmentEnd - 1).longitude);
                         } else {
                             segmentEnd += segmentSize - 1;
                             target.setLatitude(suggestedPathPoints.get(segmentEnd).latitude);
                             target.setLongitude(suggestedPathPoints.get(segmentEnd).longitude);
                         }
-                        mapsUtil.drawPathSegment(PathGoogleMapActivity.this,
-                                                             segmentStart, segmentEnd);
-                        mapsUtil.drawTracedPathSegment(PathGoogleMapActivity.this, tracedPoints, tracedPoints.size());
+                        mapsUtil.drawPathSegment(MapActivity.this,
+                                segmentStart, segmentEnd);
+                        mapsUtil.drawTracedPathSegment(MapActivity.this, tracedPoints, tracedPoints.size());
 
                     }
 
@@ -224,11 +215,69 @@ public class PathGoogleMapActivity extends FragmentActivity implements
         }
     }
 
+
+    /**
+     * Shows all markers.
+     * Blue maker represents trace point. Red marker represents annotation point.
+     */
+    private void showMarkers() {
+        markerToAnnotation = new HashMap<Marker, TraceAnnotation>();
+        for (TraceLocation tracePoint : originalCoords) {
+            Location location = tracePoint.location;
+            MarkerOptions markerOption = new MarkerOptions()
+                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .alpha(0.8f);
+
+            if (tracePoint.annotation == null) {
+                markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            } else {
+                markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+            }
+
+            Marker marker = googleMap.addMarker(markerOption);
+            if (tracePoint.annotation != null) {
+                markerToAnnotation.put(marker, tracePoint.annotation);
+            }
+        }
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (!markerToAnnotation.containsKey(marker)) {
+                    return true;
+                }
+
+                TraceAnnotation annotation = markerToAnnotation.get(marker);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                builder.setTitle(getString(R.string.message));
+
+                // Sets up message window
+                TextView text = new TextView(MapActivity.this);
+                text.setText(annotation.msg);
+                text.setLines(3);
+                text.setSingleLine(false);
+                text.setGravity(Gravity.CENTER);
+                builder.setView(text);
+
+                // Positive button
+                builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Nothing
+                    }
+                });
+
+                builder.create().show();
+                return true;
+            }
+        });
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         //TODO define location services callbacks
         // When the location client is connected, set mock mode
-       // mLocationClient.setMockMode(true);
+        // mLocationClient.setMockMode(true);
     }
 
     @Override
@@ -247,6 +296,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
      */
     public class ReadTask extends AsyncTask<String, Void, Void> {
         private GoogleMap googleMap;
+
         public ReadTask(GoogleMap gMap) {
             Log.d("ReadTask", "init");
             googleMap = gMap;
@@ -257,7 +307,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
             String data = "";
             try {
                 HttpConnection http = new HttpConnection();
-                for(String s: urlList) {
+                for (String s : urlList) {
                     data = http.readUrl(s);
                     suggestedPathPoints.addAll(MapsUtil.parseLatLongJSON(data));
                 }

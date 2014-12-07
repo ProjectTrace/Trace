@@ -9,7 +9,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.controller.map.PathGoogleMapActivity;
+import com.uw.hcde.fizzlab.trace.controller.map.MapActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.lang.reflect.Field;
@@ -75,7 +75,7 @@ public class ChooseDurationActivity extends Activity {
 //                seattle.setLongitude(-122.3331);
 //                TraceDataFactory.getLocations(seattle, null);
 
-                Intent intent = new Intent(ChooseDurationActivity.this, PathGoogleMapActivity.class);
+                Intent intent = new Intent(ChooseDurationActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });

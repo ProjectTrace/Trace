@@ -28,10 +28,10 @@ public class MyLocationListener implements LocationListener {
     public void onLocationChanged(Location location) {
 
         googleMap.setMyLocationEnabled(true);
-        if(PathGoogleMapActivity.target != null && location.distanceTo(PathGoogleMapActivity.target) > 3) {
-            PathGoogleMapActivity.tracedPoints.add(new LatLng(location.getLatitude(),
+        if(MapActivity.target != null && location.distanceTo(MapActivity.target) > 3) {
+            MapActivity.tracedPoints.add(new LatLng(location.getLatitude(),
                                                                  location.getLongitude()));
-            PathGoogleMapActivity.handler.sendEmptyMessage(0);
+            MapActivity.handler.sendEmptyMessage(0);
         }
         String text = "My current Location is: Latitude" + location.getLatitude() +
                 ", " + location.getLongitude();

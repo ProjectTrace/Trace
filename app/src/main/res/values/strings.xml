@@ -63,6 +63,7 @@
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="empty_traces">You do not have any traces yet</string>
+    <string name="message">Message</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

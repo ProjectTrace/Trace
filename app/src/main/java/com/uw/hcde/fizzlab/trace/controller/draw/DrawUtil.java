@@ -177,12 +177,18 @@ public class DrawUtil {
 
         for (int i = 2; i < list.size(); i++) {
             TracePoint point = list.get(i);
-
             if (isPointOnLine(startPoint, controlPoint, point)) {
                 endPoint = point;
-
+                // An annotation point
+                if (endPoint.annotation != null) {
+                    res.add(endPoint);
+                }
             } else {
-                res.add(endPoint);
+                // Avoid adding annotation point again
+                if (!res.contains(endPoint)) {
+                    res.add(endPoint);
+                }
+
                 startPoint = endPoint;
                 controlPoint = point;
                 endPoint = point;
@@ -191,6 +197,8 @@ public class DrawUtil {
 
         TracePoint fistPoint = list.get(0);
         if (!isPointOnLine(startPoint, controlPoint, fistPoint)) {
+            res.add(endPoint);
+        } else if (endPoint.annotation != null && !res.contains(endPoint)) {
             res.add(endPoint);
         }
 

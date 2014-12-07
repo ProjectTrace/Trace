@@ -24,7 +24,7 @@ public class ChooseDurationActivity extends Activity {
     private static final String TAG = "ChooseDistanceActivity";
 
     // Average speeds
-    private static final int AVERAGE_SPEED_METER_PER_MINUTE = 84;
+    private static final int AVERAGE_SPEED_METER_PER_MINUTE = 80;
     private static final int sDurations[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
             130, 140, 150, 160, 170, 180, 190, 200};
 

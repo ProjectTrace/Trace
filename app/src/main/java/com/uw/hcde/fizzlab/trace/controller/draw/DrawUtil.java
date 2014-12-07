@@ -18,7 +18,7 @@ public class DrawUtil {
 
     private static final String TAG = "DrawUtil";
     private static final int SEGMENT_LENGTH_PL = 50;
-    private static final int EPSILON = 25;
+    private static final int EPSILON = 40;
 
     /**
      * Transforms raw points to normalized points that separates by SEGMENT_LENGTH_PL on path
@@ -161,35 +161,37 @@ public class DrawUtil {
 
 
     /**
-     * Trims list of trace points
+     * Trims list of trace points. list size >= 3
      *
      * @param list
      * @return
      */
     public static List<TracePoint> trimPoints(List<TracePoint> list) {
+
         List<TracePoint> res = new ArrayList<TracePoint>();
 
-        TracePoint linePointA = list.get(0);
-        TracePoint linePointB = list.get(1);
-        res.add(linePointA);
+        TracePoint startPoint = list.get(0);
+        TracePoint controlPoint = list.get(1);
+        TracePoint endPoint = controlPoint;
+        res.add(startPoint);
 
         for (int i = 2; i < list.size(); i++) {
             TracePoint point = list.get(i);
 
-            if (!isPointOnLine(linePointA, linePointB, point)) {
-                linePointA = linePointB;
-                linePointB = point;
-                res.add(linePointA);
-            } else if (point.annotation != null) {
-                res.add(point);
+            if (isPointOnLine(startPoint, controlPoint, point)) {
+                endPoint = point;
+
+            } else {
+                res.add(endPoint);
+                startPoint = endPoint;
+                controlPoint = point;
+                endPoint = point;
             }
         }
 
         TracePoint fistPoint = list.get(0);
-        if (!isPointOnLine(linePointA, linePointB, fistPoint)) {
-            res.add(linePointB);
-        } else if (linePointB.annotation != null) {
-            res.add(linePointB);
+        if (!isPointOnLine(startPoint, controlPoint, fistPoint)) {
+            res.add(endPoint);
         }
 
         return res;

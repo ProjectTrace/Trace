@@ -21,6 +21,7 @@ import com.uw.hcde.fizzlab.trace.model.parse.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseRetrieveCallback;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -149,7 +150,15 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
         if (returnCode == ParseConstant.SUCCESS) {
             mDrawings = drawings;
-            Collections.reverse(mDrawings);
+
+            // Sorts the drawing in reverse created order
+            Collections.sort(mDrawings, new Comparator<ParseDrawing>() {
+                @Override
+                public int compare(ParseDrawing lhs, ParseDrawing rhs) {
+                    return - lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
+                }
+            });
+
             Log.d(TAG, "drawing size: " + mDrawings.size());
 
             if (mDrawings.isEmpty()) {

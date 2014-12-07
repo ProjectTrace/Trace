@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.controller.walk;
+package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -21,11 +21,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
-import com.uw.hcde.fizzlab.trace.services.MapsUtil;
+import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
 
     private int segmentStart = 0;
     private int segmentEnd = 0;
-    private int segmentSize = 5;
+    private int segmentSize = 1;
     private int tracedIndex = 0; // the index that points to the coordinate
                                                             // till which the user walked
     public static Location target = null;      // the target segmentEnd coordinate location
@@ -106,6 +107,23 @@ public class PathGoogleMapActivity extends FragmentActivity implements
         });
 
         originalCoords = TraceDataFactory.getLocations(myCurrLocation);
+        for (TraceLocation tracePoint : originalCoords) {
+
+
+            if (tracePoint.annotation != null) {
+                Location location = tracePoint.location;
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .alpha(0.5f));
+            } else {
+                Location location = tracePoint.location;
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(location.getLatitude(), location.getLongitude())));
+            }
+        }
+
+
+
         myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); //take
                                                             // updated gps location
         crdList.add(new LatLng(myCurrLocation.getLatitude(), myCurrLocation.getLongitude()));
@@ -210,7 +228,7 @@ public class PathGoogleMapActivity extends FragmentActivity implements
     public void onConnected(Bundle bundle) {
         //TODO define location services callbacks
         // When the location client is connected, set mock mode
-        mLocationClient.setMockMode(true);
+       // mLocationClient.setMockMode(true);
     }
 
     @Override

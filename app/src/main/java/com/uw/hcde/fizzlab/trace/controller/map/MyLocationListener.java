@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.controller.walk;
+package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.content.Context;
 import android.location.Location;

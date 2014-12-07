@@ -94,7 +94,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".controller.walk.PathGoogleMapActivity"
+            android:name=".controller.map.PathGoogleMapActivity"
             android:label="@string/map"
             android:screenOrientation="portrait" />
 

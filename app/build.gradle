@@ -20,9 +20,12 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.0.0'
+    // Parse platform
     compile files('libs/Parse-1.7.1.jar')
     compile files('libs/bolts-android-1.1.3.jar')
+
+    // Google map API
+    compile 'com.android.support:support-v4:20.0.0'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.google.code.gson:gson:+'
 }

@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.controller.walk;
+package com.uw.hcde.fizzlab.trace.controller.map;
 
 /**
  * Created by sonagrigoryan on 14-10-31.

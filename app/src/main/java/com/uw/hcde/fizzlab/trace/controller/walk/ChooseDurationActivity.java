@@ -9,6 +9,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.controller.map.PathGoogleMapActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.lang.reflect.Field;

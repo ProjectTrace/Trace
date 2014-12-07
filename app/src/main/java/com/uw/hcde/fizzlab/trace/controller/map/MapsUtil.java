@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.services;
+package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -16,7 +15,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.controller.walk.PathJSONParser;
 
 import org.json.JSONObject;
 

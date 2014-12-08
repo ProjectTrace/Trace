@@ -69,9 +69,8 @@ public class ChooseDurationActivity extends Activity {
                 Log.d(TAG, "Button go clicked");
 
                 // Checks connection and gps status
-                boolean isGPSAvailable = TraceUtil.checkGPSStatus(ChooseDurationActivity.this);
-                boolean isNetworkAvailable = TraceUtil.checkNetworkStatus(ChooseDurationActivity.this);
-                if (!isGPSAvailable || !isNetworkAvailable) {
+                if (!TraceUtil.checkGPSStatus(ChooseDurationActivity.this)
+                        || !TraceUtil.checkNetworkStatus(ChooseDurationActivity.this)) {
                     return;
                 }
 

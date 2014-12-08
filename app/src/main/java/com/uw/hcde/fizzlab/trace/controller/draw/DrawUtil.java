@@ -3,6 +3,7 @@ package com.uw.hcde.fizzlab.trace.controller.draw;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
+import android.os.Trace;
 
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
@@ -96,6 +97,19 @@ public class DrawUtil {
             path.lineTo(prevPoint.x, prevPoint.y);
         }
         return path;
+    }
+
+    /**
+     * Converts tracePoints to points.
+     * @param tracePoints
+     * @return
+     */
+    public static List<Point> tracePointsToPoints(List<TracePoint> tracePoints) {
+        List<Point> points = new ArrayList<Point>();
+        for (TracePoint tracePoint : tracePoints) {
+            points.add(tracePoint.point);
+        }
+        return points;
     }
 
     /**

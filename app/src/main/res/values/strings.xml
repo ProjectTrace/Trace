@@ -69,6 +69,9 @@
     <string name="network_service_disabled">Network service disabled</string>
     <string name="enable_gps">Trace needs access to your location. Please turn on location access.</string>
     <string name="enable_network">Trace needs access to network. Please check network connection.</string>
+    <string name="mile">miles</string>
+    <string name="ending_early">Ending early</string>
+    <string name="show_drawing">Show drawing</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

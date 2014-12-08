@@ -35,27 +35,14 @@ public class MainActivity extends Activity {
         mButtonDraw = findViewById(R.id.button_draw);
         mButtonWalk = findViewById(R.id.button_walk);
         mButtonYou = findViewById(R.id.button_you);
+        setupListener();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // Checks if network connection is available
-        boolean isNetworkAvailable = TraceUtil.checkNetworkStatus(this);
-        if (isNetworkAvailable) {
-            setupListener();
-        } else {
-            disableListener();
-        }
-    }
-
-    /**
-     * Helper function to disable button listeners.
-     */
-    private void disableListener() {
-        mButtonDraw.setOnClickListener(null);
-        mButtonWalk.setOnClickListener(null);
-        mButtonYou.setOnClickListener(null);
+        TraceUtil.checkNetworkStatus(this);
     }
 
     /**

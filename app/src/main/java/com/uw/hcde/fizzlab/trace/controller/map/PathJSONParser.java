@@ -1,9 +1,5 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
-/**
- * Created by sonagrigoryan on 14-10-31.
- */
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -14,9 +10,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Represents a JSON path parser used by Google Map API.
+ *
+ * @author sonagrigoryan
+ */
 public class PathJSONParser {
 
-    public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
+    private static final String TAG = "PathJSONParser";
+
+    public static List<List<HashMap<String, String>>> parse(JSONObject jObject) {
         List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String, String>>>();
         JSONArray jRoutes = null;
         JSONArray jLegs = null;
@@ -42,10 +45,8 @@ public class PathJSONParser {
                         /** Traversing all points */
                         for (int l = 0; l < list.size(); l++) {
                             HashMap<String, String> hm = new HashMap<String, String>();
-                            hm.put("lat",
-                                    Double.toString(((LatLng) list.get(l)).latitude));
-                            hm.put("lng",
-                                    Double.toString(((LatLng) list.get(l)).longitude));
+                            hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));
+                            hm.put("lng", Double.toString(((LatLng) list.get(l)).longitude));
                             path.add(hm);
                         }
                     }
@@ -61,11 +62,12 @@ public class PathJSONParser {
     }
 
     /**
-     * Method Courtesy :
-     * jeffreysambells.com/2010/05/27
-     * /decoding-polylines-from-google-maps-direction-api-with-java
+     * Decodes poly line.
+     *
+     * @param encoded
+     * @return
      */
-    private List<LatLng> decodePoly(String encoded) {
+    private static List<LatLng> decodePoly(String encoded) {
 
         List<LatLng> poly = new ArrayList<LatLng>();
         int index = 0, len = encoded.length();

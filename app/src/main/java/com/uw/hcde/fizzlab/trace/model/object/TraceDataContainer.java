@@ -10,6 +10,7 @@ public class TraceDataContainer {
     // Distance in meter
     public static int distance;
 
+    public static List<TracePoint> rawTracePoints;
     public static List<TracePoint> tracePoints;
     public static String description;
 }

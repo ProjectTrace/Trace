@@ -90,6 +90,7 @@ public class SignUpActivity extends Activity {
 
         // Set up a progress dialog
         final ProgressDialog dialog = new ProgressDialog(SignUpActivity.this, ProgressDialog.THEME_HOLO_DARK);
+        dialog.setCancelable(false);
         dialog.setMessage(getString(R.string.progress_sign_up));
         dialog.show();
 

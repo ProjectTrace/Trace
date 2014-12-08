@@ -74,6 +74,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
 
         // Sets up progress dialog
         mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.progress_retrieving));
         mProgressDialog.show();
 
@@ -98,6 +99,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");
                 List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
+                TraceDataContainer.rawTracePoints = points;
                 TraceDataContainer.tracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
 
@@ -135,7 +137,6 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
      */
     private void setDrawingContent() {
         mContentView.setVisibility(View.VISIBLE);
-        mButtonNext.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -143,7 +144,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
      */
     private void setEmptyContent() {
         mEmptyContentView.setVisibility(View.VISIBLE);
-        mButtonNext.setVisibility(View.INVISIBLE);
+        mButtonNext.setOnClickListener(null);
     }
 
     // Retrieve drawings -> annotations -> creators

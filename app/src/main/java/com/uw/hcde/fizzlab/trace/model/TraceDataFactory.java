@@ -30,7 +30,7 @@ public class TraceDataFactory {
      * null is returned.
      * <p/>
      * The list structure is B -> C -> D -> E -> F -> A
-     * B is the first geo point to go, A is the last geo point to go. In our current design,
+     * B is the first geo point to go, A is the last geo point teo go. In our current design,
      * the drawing must be a closing loop, so A is the current location given in the method
      * parameter.
      */

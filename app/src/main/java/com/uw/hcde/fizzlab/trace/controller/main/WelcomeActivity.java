@@ -41,18 +41,14 @@ public class WelcomeActivity extends Activity {
         // Sets up the submit button click handler
         mButtonLogin = findViewById(R.id.button_login);
         mButtonSignUp = findViewById(R.id.button_sign_up);
+        setupListener();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // Checks if network connection is available
-        boolean isNetworkAvailable = TraceUtil.checkNetworkStatus(this);
-        if (isNetworkAvailable) {
-            setupListener();
-        } else {
-            disableListener();
-        }
+        TraceUtil.checkNetworkStatus(this);
     }
 
     /**
@@ -74,14 +70,6 @@ public class WelcomeActivity extends Activity {
                 startActivity(intent);
             }
         });
-    }
-
-    /**
-     * Helper function to disable listeners.
-     */
-    private void disableListener() {
-        mButtonLogin.setOnClickListener(null);
-        mButtonSignUp.setOnClickListener(null);
     }
 
     /**
@@ -115,7 +103,7 @@ public class WelcomeActivity extends Activity {
 
         // Set up a progress dialog
         final ProgressDialog dialog = new ProgressDialog(WelcomeActivity.this, ProgressDialog.THEME_HOLO_DARK);
-
+        dialog.setCancelable(false);
         dialog.setMessage(getString(R.string.progress_login));
         dialog.show();
 

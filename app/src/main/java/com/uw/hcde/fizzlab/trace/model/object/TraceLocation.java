@@ -19,7 +19,4 @@ public class TraceLocation {
         location = null;
         annotation = null;
     }
-    public Location getLocation() {
-        return location;
-    }
 }

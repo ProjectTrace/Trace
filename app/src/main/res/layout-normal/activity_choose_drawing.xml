@@ -112,7 +112,6 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:text="@string/next"
-        android:textColor="@drawable/text_clickable"
-        android:visibility="invisible" />
+        android:textColor="@drawable/text_clickable"/>
 
 </RelativeLayout>

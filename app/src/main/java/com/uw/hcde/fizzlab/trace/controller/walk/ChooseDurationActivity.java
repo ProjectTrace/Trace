@@ -1,8 +1,12 @@
 package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -67,9 +71,41 @@ public class ChooseDurationActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
 
+                // Check GPS service
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (!enabled) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChooseDurationActivity.this);
+                    builder.setTitle(getString(R.string.location_service_disabled));
+
+                    // Sets up message window
+                    TextView text = new TextView(ChooseDurationActivity.this);
+                    text.setText(getString(R.string.enable_gps));
+                    text.setPadding(20, 20, 0, 20);
+                    builder.setView(text);
+
+                    // Negative button
+                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Nothing
+                        }
+                    });
+
+                    // Positive button
+                    builder.setPositiveButton(getString(R.string.settings), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.create().show();
+                    return;
+                }
+
                 TraceDataContainer.distance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
                 Log.d(TAG, "Distance : " + TraceDataContainer.distance);
-
                 Intent intent = new Intent(ChooseDurationActivity.this, MapActivity.class);
                 startActivity(intent);
             }

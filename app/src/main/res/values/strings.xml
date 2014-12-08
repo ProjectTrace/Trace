@@ -42,6 +42,7 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="set">Set</string>
+    <string name="settings">Settings</string>
     <string name="less_than">&lt;&lt;</string>
     <string name="greater_than">&gt;&gt;</string>
     <string name="touch_to_annotate">Touch to annotate</string>
@@ -64,6 +65,8 @@
     <string name="date">Date</string>
     <string name="empty_traces">You do not have any traces yet</string>
     <string name="message">Message</string>
+    <string name="location_service_disabled">Location service disabled</string>
+    <string name="enable_gps">Trace needs access to your location. Please turn on location access.</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

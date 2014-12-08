@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +32,7 @@ public class MyLocationListener implements LocationListener {
         if(MapActivity.target != null && location.distanceTo(MapActivity.target) > 3) {
             MapActivity.tracedPoints.add(new LatLng(location.getLatitude(),
                                                                  location.getLongitude()));
-            MapActivity.handler.sendEmptyMessage(0);
+
         }
         String text = "My current Location is: Latitude" + location.getLatitude() +
                 ", " + location.getLongitude();

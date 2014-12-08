@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -49,15 +47,13 @@ public class MapActivity extends Activity implements
 
 {
 
-    public static Handler handler;
-
-    private GoogleMap googleMap;
+    private GoogleMap mGoogleMap;
 
     public static List<LatLng> tracedPoints = new ArrayList<LatLng>(); // the user walked those points already
 
     public static List<LatLng> suggestedPathPoints = new ArrayList<LatLng>(); // points returned
     // by parser task
-    private List<TraceLocation> originalCoords = null; // get its values from TraceFactory
+    private List<TraceLocation> mOriginalPoints = null; // get its values from TraceFactory
 
     private static ArrayList<LatLng> crdList = new ArrayList<LatLng>(); //Coordinates after adding the
     //current location
@@ -106,12 +102,12 @@ public class MapActivity extends Activity implements
         // Creating an instance for being able to interact with Google Map
         MapFragment fm = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
-        googleMap = fm.getMap();
+        mGoogleMap = fm.getMap();
 
 
         // Getting the current location of the user for further gps tracking and path drawing
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        final LocationListener locListener = new MyLocationListener(this, googleMap);
+        final LocationListener locListener = new MyLocationListener(this, mGoogleMap);
         myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 10000, 10, locListener); //10 seconds and 10 meters
@@ -127,13 +123,13 @@ public class MapActivity extends Activity implements
             }
         });
 
-        originalCoords = TraceDataFactory.getLocations(myCurrLocation);
+        mOriginalPoints = TraceDataFactory.getLocations(myCurrLocation);
 
 
         myCurrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); //take
         // updated gps location
         crdList.add(new LatLng(myCurrLocation.getLatitude(), myCurrLocation.getLongitude()));
-        for (TraceLocation tLoc : originalCoords) {
+        for (TraceLocation tLoc : mOriginalPoints) {
             Location tempLoc = tLoc.getLocation();
             crdList.add(new LatLng(tempLoc.getLatitude(), tempLoc.getLongitude()));
         }
@@ -148,11 +144,11 @@ public class MapActivity extends Activity implements
         String url = "";
         for (int i = 0; i < crdListSize; i += 7) {
             currentIndex = i;
-            url = new MapsUtil(crdList, googleMap).getMapsApiDirectionsUrl(currentIndex);
+            url = new MapsUtil(crdList, mGoogleMap).getMapsApiDirectionsUrl(currentIndex);
             urlList.add(url);
         }
 
-        ReadTask downloadTask = new ReadTask(googleMap);
+        ReadTask downloadTask = new ReadTask(mGoogleMap);
         try {
             Log.d("onCreate: ", "1");
             downloadTask.execute(urlList.toArray(new String[0])).get();
@@ -164,7 +160,7 @@ public class MapActivity extends Activity implements
             e.printStackTrace();
         }
 
-        final MapsUtil mapsUtil = new MapsUtil(suggestedPathPoints, googleMap);
+        final MapsUtil mapsUtil = new MapsUtil(suggestedPathPoints, mGoogleMap);
 
         if (suggestedPathPoints != null) {
             // **** For testing porposes only
@@ -173,12 +169,12 @@ public class MapActivity extends Activity implements
                 temp.add(suggestedPathPoints.get(i));
             }
             temp.color(Color.YELLOW);
-            googleMap.addPolyline(temp);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(0), 13));
+            mGoogleMap.addPolyline(temp);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(0), 13));
             //****
 
             if (myCurrLocation != null) {
-                googleMap.setMyLocationEnabled(true);
+                mGoogleMap.setMyLocationEnabled(true);
 
             }
 
@@ -193,10 +189,9 @@ public class MapActivity extends Activity implements
             //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
             //        10000, 10, locListener); //10 seconds and 10 meters
             mapsUtil.drawPathSegment(this, segmentStart, segmentEnd);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(segmentStart), 15));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(segmentStart), 15));
 
-            handler = new Handler() {
-
+            Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
                     if (msg.what == 0) {
@@ -238,7 +233,7 @@ public class MapActivity extends Activity implements
      */
     private void showMarkers() {
         markerToAnnotation = new HashMap<Marker, TraceAnnotation>();
-        for (TraceLocation tracePoint : originalCoords) {
+        for (TraceLocation tracePoint : mOriginalPoints) {
             Location location = tracePoint.location;
             MarkerOptions markerOption = new MarkerOptions()
                     .position(new LatLng(location.getLatitude(), location.getLongitude()))
@@ -250,13 +245,13 @@ public class MapActivity extends Activity implements
                 markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
             }
 
-            Marker marker = googleMap.addMarker(markerOption);
+            Marker marker = mGoogleMap.addMarker(markerOption);
             if (tracePoint.annotation != null) {
                 markerToAnnotation.put(marker, tracePoint.annotation);
             }
         }
 
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (!markerToAnnotation.containsKey(marker)) {

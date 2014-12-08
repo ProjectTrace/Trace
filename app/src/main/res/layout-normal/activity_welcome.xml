@@ -48,8 +48,8 @@
         android:id="@+id/button_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
         android:clickable="true"
+        android:paddingTop="15dp"
         android:text="@string/new_to_trace"
         android:textColor="@drawable/text_clickable"
         android:textSize="15sp" />

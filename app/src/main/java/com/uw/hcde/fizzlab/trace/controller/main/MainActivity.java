@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawActivity;
 import com.uw.hcde.fizzlab.trace.controller.profile.ProfileActivity;
 import com.uw.hcde.fizzlab.trace.controller.walk.ChooseDrawingActivity;
@@ -34,11 +35,31 @@ public class MainActivity extends Activity {
         mButtonDraw = findViewById(R.id.button_draw);
         mButtonWalk = findViewById(R.id.button_walk);
         mButtonYou = findViewById(R.id.button_you);
-        setupListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Checks if network connection is available
+        boolean isNetworkAvailable = TraceUtil.checkNetworkStatus(this);
+        if (isNetworkAvailable) {
+            setupListener();
+        } else {
+            disableListener();
+        }
     }
 
     /**
-     * Helper function to add button listeners
+     * Helper function to disable button listeners.
+     */
+    private void disableListener() {
+        mButtonDraw.setOnClickListener(null);
+        mButtonWalk.setOnClickListener(null);
+        mButtonYou.setOnClickListener(null);
+    }
+
+    /**
+     * Helper function to add button listeners.
      */
     private void setupListener() {
         mButtonDraw.setOnClickListener(new View.OnClickListener() {

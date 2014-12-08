@@ -1,7 +1,6 @@
 package com.uw.hcde.fizzlab.trace.controller.main;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,26 +27,45 @@ public class WelcomeActivity extends Activity {
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
     private View mButtonSignUp;
+    private View mButtonLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // Set up the login form
+        // Sets up the login form
         mUsernameEditText = (EditText) findViewById(R.id.text_username);
         mPasswordEditText = (EditText) findViewById(R.id.text_password);
 
-        // Set up the submit button click handler
-        View buttonLogin = findViewById(R.id.button_login);
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        // Sets up the submit button click handler
+        mButtonLogin = findViewById(R.id.button_login);
+        mButtonSignUp = findViewById(R.id.button_sign_up);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Checks if network connection is available
+        boolean isNetworkAvailable = TraceUtil.checkNetworkStatus(this);
+        if (isNetworkAvailable) {
+            setupListener();
+        } else {
+            disableListener();
+        }
+    }
+
+    /**
+     * Helper function to add button listeners.
+     */
+    private void setupListener() {
+        mButtonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Log.d(TAG, "login clicked");
                 login();
             }
         });
 
-        mButtonSignUp = findViewById(R.id.button_sign_up);
         mButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +74,14 @@ public class WelcomeActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    /**
+     * Helper function to disable listeners.
+     */
+    private void disableListener() {
+        mButtonLogin.setOnClickListener(null);
+        mButtonSignUp.setOnClickListener(null);
     }
 
     /**

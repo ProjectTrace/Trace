@@ -16,27 +16,38 @@ import com.uw.hcde.fizzlab.trace.controller.main.DispatchActivity;
 public class ProfileActivity extends Activity {
 
     private static final String TAG = "ProfileActivity";
+    private View mButtonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Set navigation title
+        // Sets navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.you));
 
-        // Set displayed username
+        // Sets displayed username
         TextView userName = (TextView) findViewById(R.id.text_username);
         userName.setText(ParseUser.getCurrentUser().getUsername());
 
-        // Set up the log out button click handler
+        // Back button
+        mButtonBack = findViewById(R.id.button_back);
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        // Sets up the log out button click handler
         View buttonLogout = findViewById(R.id.button_logout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Call the Parse log out method
+                // Calls the Parse log out method
                 ParseUser.logOut();
-                // Start and intent for the dispatch activity
+
+                // Clears root activity and switch to dispatch activity
                 Intent intent = new Intent(ProfileActivity.this, DispatchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

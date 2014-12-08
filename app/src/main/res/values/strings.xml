@@ -66,7 +66,9 @@
     <string name="empty_traces">You do not have any traces yet</string>
     <string name="message">Message</string>
     <string name="location_service_disabled">Location service disabled</string>
+    <string name="network_service_disabled">Network service disabled</string>
     <string name="enable_gps">Trace needs access to your location. Please turn on location access.</string>
+    <string name="enable_network">Trace needs access to network. Please check network connection.</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

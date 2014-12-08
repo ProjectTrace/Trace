@@ -1,5 +1,6 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,7 +43,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 
-public class MapActivity extends FragmentActivity implements
+public class MapActivity extends Activity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener
 
@@ -84,15 +86,25 @@ public class MapActivity extends FragmentActivity implements
         mLocationClient.connect();
 
 
-        // Set navigation title
+        // Sets navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.map));
 
+        // Map description
         TextView description = (TextView) findViewById(R.id.description_text);
         description.setText(TraceDataContainer.description);
 
+        // Back button
+        TextView buttonBack = (TextView) findViewById(R.id.button_back);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         // Creating an instance for being able to interact with Google Map
-        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager()
+        MapFragment fm = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         googleMap = fm.getMap();
 

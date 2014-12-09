@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
@@ -69,6 +70,8 @@ public class MapActivity extends Activity implements
     private List<LatLng> mTraceLatLngs;
     private Map<LatLng, TraceAnnotation> mLatLngToAnnotation;
     private int mTraceLatLngIndex;
+    private boolean mIsEndingEarly;
+    private Polyline mDirectionSegment;
 
 //    public static List<LatLng> suggestedPathPoints = new ArrayList<LatLng>(); // points returned
 //
@@ -133,6 +136,8 @@ public class MapActivity extends Activity implements
         mLocationRequest.setInterval(MAP_UPDATE_INTERVAL_MILLISECONDS);
 
         mTraceLatLngIndex = 0;
+        mIsEndingEarly = false;
+        mDirectionSegment = null;
 
         //Drawing the path
 
@@ -172,7 +177,7 @@ public class MapActivity extends Activity implements
 //
 //            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 //            //        10000, 10, locListener); //10 seconds and 10 meters
-//            mapsUtil.drawPathSegment(this, segmentStart, segmentEnd);
+//            mapsUtil.drawSegment(this, segmentStart, segmentEnd);
 //            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(suggestedPathPoints.get(segmentStart), 15));
 //
 //            Handler handler = new Handler() {
@@ -199,7 +204,7 @@ public class MapActivity extends Activity implements
 //                            target.setLatitude(suggestedPathPoints.get(segmentEnd).latitude);
 //                            target.setLongitude(suggestedPathPoints.get(segmentEnd).longitude);
 //                        }
-//                        mapsUtil.drawPathSegment(MapActivity.this,
+//                        mapsUtil.drawSegment(MapActivity.this,
 //                                segmentStart, segmentEnd);
 //                        mapsUtil.drawTracedPathSegment(MapActivity.this, tracedPoints, tracedPoints.size());
 //
@@ -217,12 +222,17 @@ public class MapActivity extends Activity implements
         mButtonEndingEarly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMarkers();
-                showFuturePath();
-                mLocationClient.removeLocationUpdates(MapActivity.this);
+                mIsEndingEarly = true;
                 mButtonEndingEarly.setVisibility(View.INVISIBLE);
                 mTextDistanceMiles.setVisibility(View.INVISIBLE);
                 mButtonShowDrawing.setVisibility(View.VISIBLE);
+
+                if (mDirectionSegment != null) {
+                    mDirectionSegment.remove();
+                }
+                showMarkers();
+                showAllFuturePath();
+                mLocationClient.removeLocationUpdates(MapActivity.this);
             }
         });
 
@@ -252,7 +262,13 @@ public class MapActivity extends Activity implements
     @Override
     public void onLocationChanged(Location location) {
         if (location.distanceTo(mCurrentLocation) > MAP_UPDATE_SENSITIVITY_METERS) {
+            List<LatLng> points = new ArrayList<LatLng>();
+            points.add(MapUtil.locationToLatLng(mCurrentLocation));
+            points.add(MapUtil.locationToLatLng(location));
+
+            mDirectionSegment = MapUtil.drawSegment(points, getResources().getColor(R.color.transparent_klein_blue1), mGoogleMap, 20);
             mCurrentLocation = location;
+
             Log.d(TAG, "update new location");
         } else {
             Log.d(TAG, "get new location");
@@ -286,6 +302,7 @@ public class MapActivity extends Activity implements
         }
 
         setupListeners();
+        showDirectionPath();
     }
 
     @Override
@@ -348,9 +365,19 @@ public class MapActivity extends Activity implements
     }
 
     /**
+     * Show next direction path
+     */
+    private void showDirectionPath() {
+        String url = MapUtil.getMapsApiDirectionsUrl(
+                MapUtil.locationToLatLng(mCurrentLocation), mTraceLatLngs.get(mTraceLatLngIndex));
+        new FetchDirectionTask().execute(url);
+    }
+
+
+    /**
      * Shows all future path.
      */
-    private void showFuturePath() {
+    private void showAllFuturePath() {
         String url = MapUtil.getMapsApiDirectionsUrl(
                 MapUtil.locationToLatLng(mCurrentLocation), mTraceLatLngs.get(0));
         new FetchDirectionTask().execute(url);
@@ -479,7 +506,13 @@ public class MapActivity extends Activity implements
                     points.add(position);
                 }
             }
-            MapUtil.drawPathSegment(points, getResources().getColor(R.color.transparent_klein_blue1), mGoogleMap);
+
+            if (mIsEndingEarly) {
+                MapUtil.drawSegment(points, getResources().getColor(R.color.transparent_klein_blue1), mGoogleMap, Integer.MAX_VALUE);
+            } else {
+                mDirectionSegment = MapUtil.drawSegment(points, getResources().getColor(R.color.transparent_klein_blue1), mGoogleMap, Integer.MAX_VALUE);
+            }
+
         }
     }
 

@@ -33,7 +33,7 @@ public class MapUtil {
     Marker arrowMarker;
 
 //
-//    public void drawPathSegment(Context context, int start, int end) {
+//    public void drawSegment(Context context, int start, int end) {
 //        if (crdList == null || crdList.size() == 0) return;
 //        if (polylineFuture != null) {
 //            polylineFuture.remove();
@@ -54,14 +54,26 @@ public class MapUtil {
      * @param list
      * @param color
      * @param map
+     * @param maxLength
      */
-    public static void drawPathSegment(List<LatLng> list, int color, GoogleMap map) {
+    public static Polyline drawSegment(List<LatLng> list, int color, GoogleMap map, int maxLength) {
+
         PolylineOptions temp = new PolylineOptions();
         temp.color(color);
-        for (LatLng l : list) {
-            temp.add(l);
+        int meters = 0;
+        temp.add(list.get(0));
+
+        for (int i = 0; i < list.size() - 1; i ++) {
+            Location l1 = lagLngToLocation(list.get(i));
+            Location l2 = lagLngToLocation(list.get(i + 1));
+
+            if (meters + l1.distanceTo(l2) > maxLength) {
+                break;
+            }
+            temp.add(list.get(i + 1));
+            meters += l1.distanceTo(l2);
         }
-        map.addPolyline(temp);
+        return map.addPolyline(temp);
     }
 
 
@@ -115,5 +127,12 @@ public class MapUtil {
      */
     public static LatLng locationToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    public static Location lagLngToLocation(LatLng latLng) {
+        Location l = new Location("Provider");
+        l.setLatitude(latLng.latitude);
+        l.setLongitude(latLng.longitude);
+        return l;
     }
 }

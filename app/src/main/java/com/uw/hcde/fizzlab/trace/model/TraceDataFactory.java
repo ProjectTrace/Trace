@@ -1,8 +1,8 @@
 package com.uw.hcde.fizzlab.trace.model;
 
-import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawUtil;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.model.object.TraceLocation;
@@ -20,27 +20,23 @@ public class TraceDataFactory {
     private static final String TAG = "TraceDataFactory";
     private static final double WGS84_RADIUS_METER = 6371200;
     private static final double EARTH_CIRCUMFERENCE_METER = 2 * WGS84_RADIUS_METER * Math.PI;
-    private static final String PROVIDER = "Trace_app";
 
     /**
-     * Generates trace geo location data given selected drawing and current location.
+     * Generates trace geo latLng data given selected drawing and current latLng.
      *
-     * @param currentLocation current geo location
+     * @param currentLagLng current geo latLng
      * @return list of trace locations scaled from drawing to real world map. If anything goes wrong,
      * null is returned.
      * <p/>
      * The list structure is B -> C -> D -> E -> F -> A
      * B is the first geo point to go, A is the last geo point teo go. In our current design,
-     * the drawing must be a closing loop, so A is the current location given in the method
+     * the drawing must be a closing loop, so A is the current latLng given in the method
      * parameter.
      */
-    public static List<TraceLocation> getLocations(Location currentLocation) {
-        Log.d(TAG, "current lat: " + currentLocation.getLatitude());
-        Log.d(TAG, "current long: " + currentLocation.getLongitude());
-
+    public static List<TraceLocation> getLocations(LatLng currentLagLng) {
         // Gets conversion constants
         double degreesPerMeterLat = 360.0 / EARTH_CIRCUMFERENCE_METER;
-        double shrinkFactor = Math.cos(Math.toRadians(currentLocation.getLatitude()));
+        double shrinkFactor = Math.cos(Math.toRadians(currentLagLng.latitude));
         double degreesPerMeterLong = degreesPerMeterLat / shrinkFactor;
         Log.d(TAG, "degrees per meter lat: " + degreesPerMeterLat);
         Log.d(TAG, "degrees per meter long: " + degreesPerMeterLong);
@@ -71,30 +67,26 @@ public class TraceDataFactory {
             double meterDx = pixelDx * scaleFactor;
             double meterDy = pixelDy * scaleFactor;
 
-            // Generates geo location
-            double latitude = currentLocation.getLatitude() + degreesPerMeterLat * meterDy;
-            double longitude = currentLocation.getLongitude() + degreesPerMeterLong * meterDx;
-            Location location = new Location(PROVIDER);
-            location.setLatitude(latitude);
-            location.setLongitude(longitude);
+            // Generates geo latLng
+            double latitude = currentLagLng.latitude + degreesPerMeterLat * meterDy;
+            double longitude = currentLagLng.longitude + degreesPerMeterLong * meterDx;
 
             // Adds to list
             TraceLocation traceLocation = new TraceLocation();
-            traceLocation.location = location;
+            traceLocation.latLng = new LatLng(latitude, longitude);
             traceLocation.annotation = tracePoint.annotation;
             traceLocations.add(traceLocation);
         }
 
-        // Last location
-        TraceLocation traceCurrentLocation = new TraceLocation();
-        traceCurrentLocation.location = currentLocation;
-        traceLocations.add(traceCurrentLocation);
-
+        // Last latLng
+        TraceLocation lastLatLng = new TraceLocation();
+        lastLatLng.latLng = currentLagLng;
+        traceLocations.add(lastLatLng);
         return traceLocations;
     }
 
     /**
-     * Debug function
+     * Debug function.
      *
      * @param list
      */
@@ -102,8 +94,8 @@ public class TraceDataFactory {
         Log.d(TAG, "start debug list size: " + list.size());
         for (TraceLocation traceLocation : list) {
 
-            Log.d(TAG, "lat: " + traceLocation.location.getLatitude());
-            Log.d(TAG, "long: " + traceLocation.location.getLongitude());
+            Log.d(TAG, "lat: " + traceLocation.latLng.latitude);
+            Log.d(TAG, "long: " + traceLocation.latLng.longitude);
         }
     }
 

@@ -49,7 +49,7 @@ public class DrawUtil {
     }
 
     /**
-     * Generates direct path given points in pixel location. The path
+     * Generates direct path given points in pixel latLng. The path
      * does not close itself.
      *
      * @param points
@@ -67,7 +67,7 @@ public class DrawUtil {
     }
 
     /**
-     * Generates Bezier path given points in pixel location. The path
+     * Generates Bezier path given points in pixel latLng. The path
      * does not close itself.
      *
      * @param points

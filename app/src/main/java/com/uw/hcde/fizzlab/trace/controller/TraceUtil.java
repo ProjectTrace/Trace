@@ -13,6 +13,8 @@ import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.uw.hcde.fizzlab.trace.R;
 
 /**
@@ -121,5 +123,28 @@ public class TraceUtil {
             builder.create().show();
         }
         return enabled;
+    }
+
+    /**
+     * Checks if google play service is available.
+     * TODO: prompts user to install latest version.
+     *
+     * @return true if available
+     */
+    public static boolean checkGooglePlayService(final Context context) {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+        if (ConnectionResult.SUCCESS == resultCode) {
+            return true;
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(context.getString(R.string.google_play_required));
+            builder.setCancelable(false);
+            builder.setMessage(context.getString(R.string.enable_google_play));
+
+            builder.setNegativeButton(context.getString(R.string.cancel), null);
+            builder.setPositiveButton(context.getString(R.string.ok), null);
+            builder.create().show();
+            return false;
+        }
     }
 }

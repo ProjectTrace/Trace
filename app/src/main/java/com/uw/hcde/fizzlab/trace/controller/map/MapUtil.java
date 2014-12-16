@@ -1,106 +1,72 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.uw.hcde.fizzlab.trace.R;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by sonagrigoryan on 14-11-22.
+ * Represents a map util class.
+ *
+ * @author sonagrigoryan, tianchi
  */
 public class MapUtil {
     private static final String TAG = "MapUtil";
+    private static final int WAY_POINT_DISTANCE_METER = 100;
+    private static final int WAY_POINT_TOLERANCE_METER = 10;
 
-    ArrayList<LatLng> crdList;
-    GoogleMap googleMap;
-    private Bitmap arrowIcon = null;
-    Polyline polylineFuture;
-    Polyline polyLineTraced;
-    Marker arrowMarker;
-
-//
-//    public void drawSegment(Context context, int start, int end) {
-//        if (crdList == null || crdList.size() == 0) return;
-//        if (polylineFuture != null) {
-//            polylineFuture.remove();
-//        }
-//        PolylineOptions temp = new PolylineOptions();
-//        temp.color(Color.BLUE);
-//        for (int i = start; i < end; i++) {
-//            temp.add(crdList.get(i));
-//
-//        }
-//        polylineFuture = googleMap.addPolyline(temp);
-//        drawDirectionArrow(context, crdList.get(end - 1), crdList.get(end));
-//    }
 
     /**
-     * Draws a segment with given color.
+     * A pipeline to break list of latLng into way points. Each end of
+     * sub list will contain a way point.
      *
      * @param list
-     * @param color
-     * @param map
-     * @param maxLength
+     * @return
      */
-    public static Polyline drawSegment(List<LatLng> list, int color, GoogleMap map, int maxLength) {
+    public static List<List<LatLng>> normalizeWayPoints(List<List<LatLng>> list) {
+        List<List<LatLng>> res = new LinkedList<List<LatLng>>();
+        List<LatLng> points = new ArrayList<LatLng>();
+        for (List<LatLng> subList : list) {
+            points.addAll(subList);
+        }
 
-        PolylineOptions temp = new PolylineOptions();
-        temp.color(color);
-        int meters = 0;
-        temp.add(list.get(0));
+        res.add(new LinkedList<LatLng>());
+        res.get(0).add(points.get(0));
+        int segmentIndex = 0;
+        LatLng prev = points.get(0);
 
-        for (int i = 0; i < list.size() - 1; i ++) {
-            Location l1 = lagLngToLocation(list.get(i));
-            Location l2 = lagLngToLocation(list.get(i + 1));
+        int i = 1;
+        double meters = 0;
+        while (i < points.size()) {
+            double distance = SphericalUtil.computeDistanceBetween(prev, points.get(i));
+            if (meters + distance < WAY_POINT_DISTANCE_METER) {
+                meters += distance;
+                res.get(segmentIndex).add(points.get(i));
+                prev = points.get(i);
+                i++;
 
-            if (meters + l1.distanceTo(l2) > maxLength) {
-                break;
+                if (WAY_POINT_DISTANCE_METER - meters < WAY_POINT_TOLERANCE_METER && i < points.size() - 1) {
+                    meters = 0;
+                    res.add(new LinkedList<LatLng>());
+                    segmentIndex++;
+                }
+
+            } else {
+                double heading = SphericalUtil.computeHeading(prev, points.get(i));
+                LatLng wayPoint = SphericalUtil.computeOffset(prev, WAY_POINT_DISTANCE_METER - meters, heading);
+                res.get(segmentIndex).add(wayPoint);
+                res.add(new LinkedList<LatLng>());
+                segmentIndex++;
+                prev = wayPoint;
+                meters = 0;
             }
-            temp.add(list.get(i + 1));
-            meters += l1.distanceTo(l2);
-        }
-        return map.addPolyline(temp);
-    }
-
-
-    private void drawDirectionArrow(Context context, LatLng origin, LatLng destination) {
-        float rotationDegrees = (float) Math.toDegrees(Math.atan2(origin.latitude - destination.latitude,
-                origin.longitude - destination.longitude));
-        if (arrowMarker != null) {
-            arrowMarker.remove();
-            arrowMarker = null;
         }
 
-        //Rotate the bitmap of the arrowhead somewhere in your code
-        Matrix matrix = new Matrix();
-        matrix.postRotate(rotationDegrees);
-
-        if (arrowIcon == null) {
-            Drawable myDrawable = context.getResources().getDrawable(R.drawable.arrowdir);
-            arrowIcon = ((BitmapDrawable) myDrawable).getBitmap();
-        }
-
-        // Create the rotated arrowhead bitmap
-        Bitmap arrowheadBitmap = Bitmap.createBitmap(arrowIcon, 0, 0,
-                arrowIcon.getWidth(), arrowIcon.getHeight(), matrix, true);
-        // Now we are going to add a marker
-
-        arrowMarker = googleMap.addMarker(new MarkerOptions().position(destination)
-                .icon(BitmapDescriptorFactory.fromBitmap(arrowheadBitmap)));
+        return res;
     }
 
     /**
@@ -125,14 +91,7 @@ public class MapUtil {
      * @param location
      * @return
      */
-    public static LatLng locationToLatLng(Location location) {
+    public static LatLng toLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
-    }
-
-    public static Location lagLngToLocation(LatLng latLng) {
-        Location l = new Location("Provider");
-        l.setLatitude(latLng.latitude);
-        l.setLongitude(latLng.longitude);
-        return l;
     }
 }

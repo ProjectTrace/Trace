@@ -20,5 +20,6 @@ dependencies {
 
     // Google map API
     compile 'com.google.android.gms:play-services:+'
+    compile 'com.google.maps.android:android-maps-utils:+'
     compile 'com.google.code.gson:gson:+'
 }

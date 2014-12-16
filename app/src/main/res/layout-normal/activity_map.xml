@@ -75,12 +75,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="0 miles" />
+                android:text="0"
+                android:visibility="visible" />
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/mile" />-->
+            <TextView
+                android:id="@+id/text_miles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mile"
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -89,9 +92,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
             android:clickable="true"
             android:text="@string/show_drawing"
+            android:textColor="@drawable/text_clickable"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/button_show_trace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:clickable="true"
+            android:text="@string/show_trace"
+            android:textColor="@drawable/text_clickable"
             android:visibility="invisible" />
 
 
@@ -104,7 +121,8 @@
             android:layout_marginRight="20dp"
             android:clickable="true"
             android:text="@string/ending_early"
-            android:textColor="@drawable/text_clickable" />
+            android:textColor="@drawable/text_clickable"
+            android:visibility="visible" />
 
     </RelativeLayout>
 

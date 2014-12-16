@@ -72,6 +72,14 @@
     <string name="mile">miles</string>
     <string name="ending_early">Ending early</string>
     <string name="show_drawing">Show drawing</string>
+    <string name="show_trace">Show trace</string>
+    <string name="please_wait">please wait...</string>
+    <string name="google_play_required">Google play service required</string>
+    <string name="enable_google_play">Trace needs access to Google play service. Please check if you installed latest version of Google play service.</string>
+    <string name="connection_failed">Google play service connection failed</string>
+    <string name="trace_success">Trace success!</string>
+    <string name="trace_success_message">Congratulations, you finished a trace!</string>
+    <string name="resume">&lt; Resume</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +33,14 @@ public class ChooseDurationActivity extends Activity {
     private View mButtonGo;
     private View mButtonBack;
     private NumberPicker mPickerDistance;
+    private Context mActivityContext;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_duration);
+        mActivityContext = this;
 
         // Set navigation title
         TextView title = (TextView) findViewById(R.id.navigation_title);
@@ -68,9 +71,10 @@ public class ChooseDurationActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Button go clicked");
 
-                // Checks connection and gps status
-                if (!TraceUtil.checkGPSStatus(ChooseDurationActivity.this)
-                        || !TraceUtil.checkNetworkStatus(ChooseDurationActivity.this)) {
+                // Check connection, gps status and google play status
+                if (!TraceUtil.checkGPSStatus(mActivityContext)
+                        || !TraceUtil.checkNetworkStatus(mActivityContext)
+                        || !TraceUtil.checkGooglePlayService(mActivityContext)) {
                     return;
                 }
 

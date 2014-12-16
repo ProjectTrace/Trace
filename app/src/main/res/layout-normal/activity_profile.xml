@@ -35,7 +35,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
-        android:background="@drawable/button_custom_clickable"
+        android:background="@drawable/button_blue_bar_clickable"
         android:clickable="true"
         android:gravity="center"
         android:text="@string/log_out" />

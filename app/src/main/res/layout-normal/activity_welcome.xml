@@ -39,7 +39,7 @@
         android:layout_width="180dp"
         android:layout_height="40dp"
         android:layout_marginTop="70dp"
-        android:background="@drawable/button_custom_clickable"
+        android:background="@drawable/button_blue_bar_clickable"
         android:clickable="true"
         android:gravity="center"
         android:text="@string/log_in" />

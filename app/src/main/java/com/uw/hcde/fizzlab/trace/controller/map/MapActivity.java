@@ -351,8 +351,12 @@ public class MapActivity extends Activity implements
         mButtonShowTrace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWalkedPolyline.setPoints(mWalkedPoints);
-                mWalkedPolyline.setVisible(true);
+                if (mWalkedPoints.size() <= 2) {
+                    TraceUtil.showToast(MapActivity.this, getString(R.string.no_trace));
+                } else {
+                    mWalkedPolyline.setPoints(mWalkedPoints);
+                    mWalkedPolyline.setVisible(true);
+                }
             }
         });
     }

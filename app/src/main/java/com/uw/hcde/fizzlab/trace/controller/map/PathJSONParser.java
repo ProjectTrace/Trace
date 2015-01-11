@@ -24,6 +24,7 @@ public class PathJSONParser {
         JSONArray jRoutes = null;
         JSONArray jLegs = null;
         JSONArray jSteps = null;
+        
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */

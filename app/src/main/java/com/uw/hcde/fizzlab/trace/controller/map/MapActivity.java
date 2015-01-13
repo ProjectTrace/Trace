@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
@@ -69,7 +70,7 @@ public class MapActivity extends Activity implements
 
     private static final double METER_TO_MILE = 0.000621371192;
 
-    private TextView mButtonBack;
+    private TextView mButtonHome;
     private View mButtonEndingEarly;
     private View mButtonShowDrawing;
     private View mButtonShowTrace;
@@ -114,7 +115,7 @@ public class MapActivity extends Activity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonBack = (TextView) findViewById(R.id.button_back);
+        mButtonHome = (TextView) findViewById(R.id.button_home);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 
@@ -282,7 +283,7 @@ public class MapActivity extends Activity implements
         mTextMiles.setVisibility(View.VISIBLE);
         mButtonShowDrawing.setVisibility(View.INVISIBLE);
         mButtonShowTrace.setVisibility(View.INVISIBLE);
-        mButtonBack.setText(getString(R.string.back));
+        mButtonHome.setText(getString(R.string.back));
         mDirectionMarker.setVisible(true);
 
         // Clear annotation markers.
@@ -303,7 +304,7 @@ public class MapActivity extends Activity implements
         mTextMiles.setVisibility(View.INVISIBLE);
         mButtonShowDrawing.setVisibility(View.VISIBLE);
         mButtonShowTrace.setVisibility(View.VISIBLE);
-        mButtonBack.setText(getString(R.string.resume));
+        mButtonHome.setText(getString(R.string.resume));
         mDirectionMarker.setVisible(false);
 
         // Show all future path
@@ -336,14 +337,16 @@ public class MapActivity extends Activity implements
             }
         });
 
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsEndingEarly) {
                     mIsEndingEarly = false;
                     disableStateEndingEarly();
                 } else {
-                    finish();
+                    Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
             }
         });

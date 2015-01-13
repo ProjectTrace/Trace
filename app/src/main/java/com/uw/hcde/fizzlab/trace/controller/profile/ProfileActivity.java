@@ -3,12 +3,14 @@ package com.uw.hcde.fizzlab.trace.controller.profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.main.DispatchActivity;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 
 /**
  * Profile activity that displays user information
@@ -16,7 +18,7 @@ import com.uw.hcde.fizzlab.trace.controller.main.DispatchActivity;
 public class ProfileActivity extends Activity {
 
     private static final String TAG = "ProfileActivity";
-    private View mButtonBack;
+    private View mButtonHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,13 @@ public class ProfileActivity extends Activity {
         userName.setText(ParseUser.getCurrentUser().getUsername());
 
         // Back button
-        mButtonBack = findViewById(R.id.button_back);
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.controller.map.MapActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
@@ -31,7 +32,7 @@ public class ChooseDurationActivity extends Activity {
             130, 140, 150, 160, 170, 180, 190, 200};
 
     private View mButtonGo;
-    private View mButtonBack;
+    private View mButtonHome;
     private NumberPicker mPickerDistance;
     private Context mActivityContext;
 
@@ -51,7 +52,7 @@ public class ChooseDurationActivity extends Activity {
 
         // Buttons
         mButtonGo = findViewById(R.id.button_go);
-        mButtonBack = findViewById(R.id.button_back);
+        mButtonHome = findViewById(R.id.button_home);
         setupButtons();
     }
 
@@ -59,10 +60,12 @@ public class ChooseDurationActivity extends Activity {
      * Sets up buttons
      */
     private void setupButtons() {
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ChooseDurationActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

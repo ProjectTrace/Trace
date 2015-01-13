@@ -45,7 +45,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     private static final int TITLE_TEXT_SIZE_SP = 20;
 
     private View mButtonSend;
-    private View mButtonBack;
+    private View mButtonHome;
 
     private List<Point> mRawPoints; // Used to display path
     private List<TracePoint> mTracePoints; // Trace points
@@ -61,7 +61,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotate);
 
-        mButtonBack = findViewById(R.id.button_back);
+        mButtonHome = findViewById(R.id.button_home);
         mButtonSend = findViewById(R.id.button_send);
 
         Intent intent = getIntent();
@@ -101,10 +101,13 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
      * Sets up buttons
      */
     private void setupButtons() {
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
             }
         });
 
@@ -172,7 +175,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
      */
     private void showProgressDialog() {
         mProgressDialog.show();
-        mButtonBack.setVisibility(View.INVISIBLE);
+        mButtonHome.setVisibility(View.INVISIBLE);
         mButtonSend.setVisibility(View.INVISIBLE);
     }
 
@@ -181,7 +184,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
      */
     private void dismissProgressDialog() {
         mProgressDialog.dismiss();
-        mButtonBack.setVisibility(View.VISIBLE);
+        mButtonHome.setVisibility(View.VISIBLE);
         mButtonSend.setVisibility(View.VISIBLE);
     }
 

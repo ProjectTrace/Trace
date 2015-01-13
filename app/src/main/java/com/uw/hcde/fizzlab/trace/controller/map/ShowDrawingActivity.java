@@ -2,6 +2,7 @@ package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawUtil;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class ShowDrawingActivity extends Activity {
     private static final String TAG = "ShowDrawingActivity";
 
     // Main buttons
-    private View mButtonBack;
+    private View mButtonHome;
     private List<Point> mPoints;
 
     @Override
@@ -40,11 +42,14 @@ public class ShowDrawingActivity extends Activity {
         // Set navigation title and back button
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.show_drawing));
-        mButtonBack = findViewById(R.id.button_back);
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ShowDrawingActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
             }
         });
 

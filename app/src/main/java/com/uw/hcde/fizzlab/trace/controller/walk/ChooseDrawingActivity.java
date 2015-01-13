@@ -13,6 +13,7 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawUtil;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
@@ -34,7 +35,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
     private static final String TAG = "ChooseDrawingActivity";
     private static final String EXTRA_INT_DRAWING_IDENTIFIER = "drawing_identifier";
 
-    private View mButtonBack;
+    private View mButtonHome;
     private View mButtonNext;
 
     // Drawing selector content
@@ -69,7 +70,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mDescription = (TextView) findViewById(R.id.description);
         mDate = (TextView) findViewById(R.id.date);
         mButtonNext = findViewById(R.id.button_next);
-        mButtonBack = findViewById(R.id.button_back);
+        mButtonHome = findViewById(R.id.button_home);
         setupButtons();
 
         // Sets up progress dialog
@@ -87,10 +88,12 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
      * Sets up buttons
      */
     private void setupButtons() {
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ChooseDrawingActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

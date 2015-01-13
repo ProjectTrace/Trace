@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class DrawActivity extends Activity {
     // Main buttons
     private View mButtonClear;
     private View mButtonNext;
-    private View mButtonBack;
+    private View mButtonHome;
     private DrawingView mDrawingView;
 
     @Override
@@ -40,7 +41,7 @@ public class DrawActivity extends Activity {
         // Set up buttons
         mButtonClear = findViewById(R.id.button_clear);
         mButtonNext = findViewById(R.id.button_next);
-        mButtonBack = findViewById(R.id.button_back);
+        mButtonHome = findViewById(R.id.button_home);
         setupListener();
 
         mDrawingView = (DrawingView) findViewById(R.id.drawing_view_annotation);
@@ -58,10 +59,12 @@ public class DrawActivity extends Activity {
             }
         });
 
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(DrawActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

@@ -42,7 +42,7 @@ public class ShowDrawingActivity extends Activity {
         // Set navigation title and back button
         TextView title = (TextView) findViewById(R.id.navigation_title);
         title.setText(getString(R.string.show_drawing));
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

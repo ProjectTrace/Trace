@@ -115,7 +115,7 @@ public class MapActivity extends Activity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonHome = (TextView) findViewById(R.id.button_home);
+        mButtonHome = (TextView) findViewById(R.id.navigation_button);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 

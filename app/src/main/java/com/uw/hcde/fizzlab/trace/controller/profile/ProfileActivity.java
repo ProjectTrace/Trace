@@ -3,7 +3,6 @@ package com.uw.hcde.fizzlab.trace.controller.profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ public class ProfileActivity extends Activity {
         userName.setText(ParseUser.getCurrentUser().getUsername());
 
         // Back button
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,7 +6,7 @@
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
     </style>
 
-    <style name="WhiteTheme" parent="android:Theme.NoTitleBar.Fullscreen">
+    <style name="LightTheme" parent="android:Theme.NoTitleBar.Fullscreen">
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
     </style>
 

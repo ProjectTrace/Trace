@@ -41,7 +41,7 @@ public class DrawActivity extends Activity {
         // Set up buttons
         mButtonClear = findViewById(R.id.button_clear);
         mButtonNext = findViewById(R.id.button_next);
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         setupListener();
 
         mDrawingView = (DrawingView) findViewById(R.id.drawing_view_annotation);

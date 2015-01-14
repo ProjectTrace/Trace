@@ -41,14 +41,7 @@
             android:name=".controller.main.WelcomeActivity"
             android:label="@string/welcome"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme" />
-
-        <!-- Sign up screen -->
-        <activity
-            android:name=".controller.main.SignUpActivity"
-            android:label="@string/sign_up"
-            android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme" />
+            android:theme="@style/LightTheme" />
 
         <!-- Main activity -->
         <activity

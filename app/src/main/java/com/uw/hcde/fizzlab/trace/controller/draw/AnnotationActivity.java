@@ -61,7 +61,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotate);
 
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         mButtonSend = findViewById(R.id.button_send);
 
         Intent intent = getIntent();

@@ -52,7 +52,7 @@ public class ChooseDurationActivity extends Activity {
 
         // Buttons
         mButtonGo = findViewById(R.id.button_go);
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         setupButtons();
     }
 

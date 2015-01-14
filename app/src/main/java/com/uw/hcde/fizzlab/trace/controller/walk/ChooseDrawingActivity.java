@@ -70,7 +70,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mDescription = (TextView) findViewById(R.id.description);
         mDate = (TextView) findViewById(R.id.date);
         mButtonNext = findViewById(R.id.button_next);
-        mButtonHome = findViewById(R.id.button_home);
+        mButtonHome = findViewById(R.id.navigation_button);
         setupButtons();
 
         // Sets up progress dialog

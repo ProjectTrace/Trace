@@ -105,7 +105,7 @@
         <!-- Profile activity -->
         <activity
             android:name=".controller.profile.ProfileActivity"
-            android:label="@string/you"
+            android:label="@string/profile"
             android:screenOrientation="portrait" />
     </application>
 

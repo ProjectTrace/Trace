@@ -21,7 +21,7 @@
     <string name="progress_sign_up">signing you up&#8230;</string>
 
     <!-- Titles -->
-    <string name="you">You</string>
+    <string name="profile">Profile</string>
     <string name="draw">Draw</string>
     <string name="choose_duration">Choose Duration</string>
     <string name="choose_distance">Choose Distance</string>

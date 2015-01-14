@@ -1,21 +1,21 @@
 package com.uw.hcde.fizzlab.trace.controller;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.provider.Settings;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.uw.hcde.fizzlab.trace.R;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Contains utils for Trace project.
@@ -73,23 +73,29 @@ public class TraceUtil {
         boolean enabled = netInfo != null && netInfo.isConnectedOrConnecting();
 
         if (!enabled) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, android.R.style.Theme_Holo_Dialog));
-            builder.setTitle(context.getString(R.string.network_service_disabled));
-            builder.setCancelable(false);
-            builder.setMessage(context.getString(R.string.enable_network));
+            final MaterialDialog dialog = new MaterialDialog(context);
+            dialog.setTitle(R.string.network_service_disabled);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setMessage(R.string.enable_network);
 
             // Negative button
-            builder.setNegativeButton(context.getString(R.string.cancel), null);
+            dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
             // Positive button
-            builder.setPositiveButton(context.getString(R.string.settings), new DialogInterface.OnClickListener() {
+            dialog.setPositiveButton(R.string.settings, new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(View v) {
                     Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                     context.startActivity(intent);
                 }
             });
-            builder.create().show();
+
+            dialog.show();
         }
         return enabled;
     }
@@ -104,23 +110,28 @@ public class TraceUtil {
         LocationManager service = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!enabled) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(context.getString(R.string.location_service_disabled));
-            builder.setCancelable(false);
-            builder.setMessage(context.getString(R.string.enable_gps));
+            final MaterialDialog dialog = new MaterialDialog(context);
+            dialog.setTitle(R.string.location_service_disabled);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setMessage(R.string.enable_gps);
 
             // Negative button
-            builder.setNegativeButton(context.getString(R.string.cancel), null);
+            dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
             // Positive button
-            builder.setPositiveButton(context.getString(R.string.settings), new DialogInterface.OnClickListener() {
+            dialog.setPositiveButton(R.string.settings, new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(View v) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     context.startActivity(intent);
                 }
             });
-            builder.create().show();
+            dialog.show();
         }
         return enabled;
     }
@@ -136,14 +147,18 @@ public class TraceUtil {
         if (ConnectionResult.SUCCESS == resultCode) {
             return true;
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(context.getString(R.string.google_play_required));
-            builder.setCancelable(false);
-            builder.setMessage(context.getString(R.string.enable_google_play));
+            final MaterialDialog dialog = new MaterialDialog(context);
+            dialog.setTitle(R.string.google_play_required);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setMessage(R.string.enable_google_play);
 
-            builder.setNegativeButton(context.getString(R.string.cancel), null);
-            builder.setPositiveButton(context.getString(R.string.ok), null);
-            builder.create().show();
+            dialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
             return false;
         }
     }

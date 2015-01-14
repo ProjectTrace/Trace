@@ -1,7 +1,6 @@
 package com.uw.hcde.fizzlab.trace.controller.draw;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,16 +32,17 @@ import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.drakeet.materialdialog.MaterialDialog;
+
 /**
- * Activity that handles annotation. Drawing activity
- * and annotation activity are separated in current design.
+ * Fragment that handles annotation.
  *
  * @author tianchi
  */
-public class AnnotationActivity extends Activity implements ParseSendCallback {
+public class AnnotationFragment extends Fragment implements ParseSendCallback {
 
-    private static final String TAG = "AnnotateActivity";
-    private static final int TITLE_TEXT_SIZE_SP = 20;
+    private static final String TAG = "AnnotationFragment";
+    private static final int TITLE_TEXT_SIZE_SP = 19;
 
     private View mButtonSend;
     private View mButtonHome;
@@ -56,16 +56,14 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     private String mDescription;
     private ProgressDialog mProgressDialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_annotate);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_annotation, container, false);
 
-        mButtonHome = findViewById(R.id.button_home);
-        mButtonSend = findViewById(R.id.button_send);
+        mButtonHome = view.findViewById(R.id.navigation_button);
+        mButtonSend = view.findViewById(R.id.button_send);
 
-        Intent intent = getIntent();
-        mRawPoints = intent.getParcelableArrayListExtra(DrawActivity.INTENT_EXTRA_RAW_POINTS);
+        Bundle args = getArguments();
+        mRawPoints = args.getParcelableArrayList(DrawFragment.KEY_RAW_POINTS);
 
         // More pipelines can be added here
         List<Point> normalizedPoints = DrawUtil.normalizePoints(mRawPoints);
@@ -77,23 +75,25 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
-        TextView title = (TextView) findViewById(R.id.navigation_title);
+        TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.touch_to_annotate));
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_TEXT_SIZE_SP);
 
         // Set up drawing view path
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);
-        layout.addView(new DrawingViewPath(this));
+        RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);
+        layout.addView(new DrawingViewPath(getActivity()));
 
-        final AnnotationView annotationView = (AnnotationView) findViewById(R.id.drawing_view_annotation);
+        final AnnotationView annotationView = (AnnotationView) view.findViewById(R.id.drawing_view_annotation);
         annotationView.setTracePoints(mTracePoints);
         setupButtons();
 
         mReceivers = null;
         mReceiverNames = null;
         mDescription = null;
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_sending));
+
+        return view;
 
     }
 
@@ -104,10 +104,8 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -116,29 +114,21 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
             public void onClick(View v) {
                 Log.d(TAG, "Button send clicked");
 
-                // Send dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(AnnotationActivity.this);
-                builder.setTitle(AnnotationActivity.this.getString(R.string.send));
+                final MaterialDialog dialog = new MaterialDialog(getActivity());
+                dialog.setTitle(R.string.send);
 
                 // Set up dialog view
-                LayoutInflater inflater = (LayoutInflater) AnnotationActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view = inflater.inflate(R.layout.dialog_send, null);
                 final EditText inputNames = (EditText) view.findViewById(R.id.input_username);
                 final EditText inputDescription = (EditText) view.findViewById(R.id.input_description);
 
                 // Build dialog
-                builder.setView(view);
-                builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), null);
-                builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-                // Sets positive button
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener() {
+                dialog.setContentView(view);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         // Get list of username
                         mReceiverNames = new ArrayList<String>();
                         for (String s : inputNames.getText().toString().split(",")) {
@@ -150,22 +140,30 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
 
                         // Empty list
                         if (mReceiverNames.isEmpty()) {
-                            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_username));
+                            TraceUtil.showToast(getActivity(), getString(R.string.toast_enter_username));
                             return;
                         }
 
                         // Get description
                         mDescription = inputDescription.getText().toString().trim();
                         if (mDescription.length() == 0) {
-                            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_enter_description));
+                            TraceUtil.showToast(getActivity(), getString(R.string.toast_enter_description));
                             return;
                         }
 
                         // Send data
                         sendData();
-                        alertDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
+
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -226,14 +224,14 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                 }
 
                 dismissProgressDialog();
-                TraceUtil.showToast(this, sb.toString());
+                TraceUtil.showToast(getActivity(), sb.toString());
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }
 
         } else {
             dismissProgressDialog();
-            TraceUtil.showToast(this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }
 
@@ -243,7 +241,7 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
             ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
         } else {
             dismissProgressDialog();
-            TraceUtil.showToast(this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }
 
@@ -251,20 +249,19 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
     public void sendDrawingCallback(int returnCode) {
         if (returnCode == ParseConstant.SUCCESS) {
             mProgressDialog.dismiss();
-            TraceUtil.showToast(AnnotationActivity.this, getString(R.string.toast_success));
+            TraceUtil.showToast(getActivity(), getString(R.string.toast_success));
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(AnnotationActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    getActivity().finish();
                 }
             }, TraceUtil.TOAST_MESSAGE_TIME);
 
         } else {
             dismissProgressDialog();
-            TraceUtil.showToast(this, getString(R.string.toast_network_error));
+            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }
 

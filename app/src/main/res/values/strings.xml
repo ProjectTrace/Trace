@@ -21,8 +21,9 @@
     <string name="progress_sign_up">signing you up&#8230;</string>
 
     <!-- Titles -->
-    <string name="you">You</string>
+    <string name="profile">Profile</string>
     <string name="draw">Draw</string>
+    <string name="walk">Walk</string>
     <string name="choose_duration">Choose Duration</string>
     <string name="choose_distance">Choose Distance</string>
     <string name="choose_drawing">Choose Drawing</string>
@@ -34,7 +35,6 @@
     <string name="clear">Clear</string>
     <string name="annotate">Annotate</string>
     <string name="done">Done</string>
-    <string name="walk">Walk</string>
     <string name="next">Next</string>
     <string name="back">&lt; Back</string>
     <string name="home">&lt; Home</string>
@@ -46,7 +46,7 @@
     <string name="settings">Settings</string>
     <string name="less_than">&lt;&lt;</string>
     <string name="greater_than">&gt;&gt;</string>
-    <string name="touch_to_annotate">Touch to annotate</string>
+    <string name="touch_to_annotate">Touch line to annotate</string>
 
     <!-- Other -->
     <string name="toast_draw_larger">please draw larger</string>
@@ -82,6 +82,7 @@
     <string name="trace_success_message">Congratulations, you finished a trace!</string>
     <string name="resume">&lt; Resume</string>
     <string name="no_trace">you do not have any trace yet</string>
+    <string name="hint_enter_annotation">enter annotation here</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

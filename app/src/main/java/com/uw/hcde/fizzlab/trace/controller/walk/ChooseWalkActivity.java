@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.controller.draw;
+package com.uw.hcde.fizzlab.trace.controller.walk;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,20 +8,18 @@ import android.os.Bundle;
 import com.uw.hcde.fizzlab.trace.R;
 
 /**
- * Activity that handles drawing and annotation.
+ * Choose walk activity that controls choose drawing and distance fragments.
  *
  * @author tianchi
  */
-public class DrawActivity extends Activity {
-
-    private static final String TAG = "DrawActivity";
+public class ChooseWalkActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_draw);
+        setContentView(R.layout.activity_choose_walk);
 
-        Fragment fragment = new DrawFragment();
+        Fragment fragment = new ChooseDrawingFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
 

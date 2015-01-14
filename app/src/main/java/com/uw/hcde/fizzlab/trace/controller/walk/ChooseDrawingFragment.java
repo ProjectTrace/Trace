@@ -1,12 +1,15 @@
 package com.uw.hcde.fizzlab.trace.controller.walk;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
@@ -26,14 +29,13 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Choose drawing
+ * Choose drawing fragments.
  *
  * @author tianchi
  */
-public class ChooseDrawingActivity extends Activity implements ParseRetrieveCallback {
+public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCallback {
 
-    private static final String TAG = "ChooseDrawingActivity";
-    private static final String EXTRA_INT_DRAWING_IDENTIFIER = "drawing_identifier";
+    private static final String TAG = "ChooseDrawingFragment";
 
     private View mButtonHome;
     private View mButtonNext;
@@ -54,27 +56,26 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
     private ProgressDialog mProgressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_drawing);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_choose_drawing, container, false);
 
         // Set navigation title
-        TextView title = (TextView) findViewById(R.id.navigation_title);
+        TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.choose_drawing));
 
-        mEmptyContentView = findViewById(R.id.empty_message);
-        mContentView = findViewById(R.id.content);
-        mButtonLeft = findViewById(R.id.button_left);
-        mButtonRight = findViewById(R.id.button_right);
-        mCreator = (TextView) findViewById(R.id.creator);
-        mDescription = (TextView) findViewById(R.id.description);
-        mDate = (TextView) findViewById(R.id.date);
-        mButtonNext = findViewById(R.id.button_next);
-        mButtonHome = findViewById(R.id.button_home);
+        mEmptyContentView = view.findViewById(R.id.empty_message);
+        mContentView = view.findViewById(R.id.content);
+        mButtonLeft = view.findViewById(R.id.button_left);
+        mButtonRight = view.findViewById(R.id.button_right);
+        mCreator = (TextView) view.findViewById(R.id.creator);
+        mDescription = (TextView) view.findViewById(R.id.description);
+        mDate = (TextView) view.findViewById(R.id.date);
+        mButtonNext = view.findViewById(R.id.button_next);
+        mButtonHome = view.findViewById(R.id.navigation_button);
         setupButtons();
 
         // Sets up progress dialog
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.progress_retrieving));
         mProgressDialog.show();
@@ -82,6 +83,8 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mDrawingIndex = 0;
         mDrawings = null;
         ParseDataFactory.retrieveDrawings(ParseUser.getCurrentUser(), this);
+
+        return view;
     }
 
     /**
@@ -91,8 +94,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseDrawingActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -105,10 +107,15 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
                 TraceDataContainer.rawTracePoints = points;
                 TraceDataContainer.tracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
-
                 Log.d(TAG, "trimmed trace points: " + TraceDataContainer.tracePoints.size());
-                Intent intent = new Intent(ChooseDrawingActivity.this, ChooseDurationActivity.class);
-                startActivity(intent);
+
+                // Fragment transaction
+                Fragment fragment = new ChooseDurationFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
+                        .add(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -211,7 +218,7 @@ public class ChooseDrawingActivity extends Activity implements ParseRetrieveCall
      */
     public void showNetworkError() {
         mProgressDialog.dismiss();
-        TraceUtil.showToast(this, getString(R.string.toast_network_error));
+        TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         mEmptyContentView.setVisibility(View.VISIBLE);
     }
 

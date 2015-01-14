@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_cyan1"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/app_logo" />
+
+    <EditText
+        android:id="@+id/text_username"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:hint="@string/username"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:singleLine="true"/>
+
+    <EditText
+        android:id="@+id/text_password"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/button_login"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/button_blue_bar_clickable"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/log_in" />
+
+    <TextView
+        android:id="@+id/button_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingTop="15dp"
+        android:text="@string/new_to_trace"
+        android:textColor="@drawable/text_clickable"
+        android:textSize="15sp" />
+
+</LinearLayout>

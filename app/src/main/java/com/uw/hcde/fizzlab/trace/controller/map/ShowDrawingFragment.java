@@ -1,20 +1,21 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawUtil;
-import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 
 import java.util.List;
@@ -22,46 +23,46 @@ import java.util.List;
 
 /**
  * Shows drawing at receiver side.
- * TODO: need refactor on drawing view path.
  *
  * @author tianchi
  */
-public class ShowDrawingActivity extends Activity {
+public class ShowDrawingFragment extends Fragment {
 
-    private static final String TAG = "ShowDrawingActivity";
+    private static final String TAG = "ShowDrawingFragment";
 
     // Main buttons
-    private View mButtonHome;
+    private TextView mButtonBack;
     private List<Point> mPoints;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_drawing);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_show_drawing, container, false);
 
         // Set navigation title and back button
-        TextView title = (TextView) findViewById(R.id.navigation_title);
+        TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.show_drawing));
-        mButtonHome = findViewById(R.id.button_home);
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
+        mButtonBack = (TextView) view.findViewById(R.id.navigation_button);
+        mButtonBack.setText(getString(R.string.back));
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowDrawingActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
+                getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
             }
         });
-
         mPoints = DrawUtil.tracePointsToPoints(TraceDataContainer.rawTracePoints);
 
         // Set up drawing view path
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.drawing_view_path);
-        layout.addView(new DrawingViewPath(this));
+        RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);
+        layout.addView(new DrawingViewPath(getActivity()));
+
+        return view;
     }
 
     /**
      * Inner class to draw the path obtained from DrawingView activity, using rawPoints.
+     * TODO: possible code reuse from drawing module.
      */
     private class DrawingViewPath extends View {
         private Paint mPaint;

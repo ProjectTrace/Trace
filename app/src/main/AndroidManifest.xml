@@ -41,14 +41,7 @@
             android:name=".controller.main.WelcomeActivity"
             android:label="@string/welcome"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme" />
-
-        <!-- Sign up screen -->
-        <activity
-            android:name=".controller.main.SignUpActivity"
-            android:label="@string/sign_up"
-            android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme" />
+            android:theme="@style/LightTheme" />
 
         <!-- Main activity -->
         <activity
@@ -67,28 +60,13 @@
             android:label="@string/draw"
             android:screenOrientation="portrait" />
 
-        <!-- Annotate activity -->
-        <activity
-            android:name=".controller.draw.AnnotationActivity"
-            android:label="@string/annotate"
-            android:screenOrientation="portrait" />
-
-
         <!-- ============================================ -->
         <!-- ======= Walk related activities ============ -->
         <!-- ============================================ -->
 
         <activity
-            android:name=".controller.walk.ChooseDurationActivity"
+            android:name=".controller.walk.ChooseWalkActivity"
             android:label="@string/choose_distance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.walk.ChooseDrawingActivity"
-            android:label="@string/choose_drawing"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.map.ShowDrawingActivity"
-            android:label="@string/show_drawing"
             android:screenOrientation="portrait" />
 
         <activity
@@ -112,7 +90,7 @@
         <!-- Profile activity -->
         <activity
             android:name=".controller.profile.ProfileActivity"
-            android:label="@string/you"
+            android:label="@string/profile"
             android:screenOrientation="portrait" />
     </application>
 

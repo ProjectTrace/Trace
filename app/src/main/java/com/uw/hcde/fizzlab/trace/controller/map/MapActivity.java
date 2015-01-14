@@ -1,7 +1,8 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
@@ -46,6 +47,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import me.drakeet.materialdialog.MaterialDialog;
+
 /**
  * Represents map direction screen.
  *
@@ -70,7 +73,7 @@ public class MapActivity extends Activity implements
 
     private static final double METER_TO_MILE = 0.000621371192;
 
-    private TextView mButtonHome;
+    private TextView mButtonNavigation;
     private View mButtonEndingEarly;
     private View mButtonShowDrawing;
     private View mButtonShowTrace;
@@ -115,7 +118,7 @@ public class MapActivity extends Activity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonHome = (TextView) findViewById(R.id.button_home);
+        mButtonNavigation = (TextView) findViewById(R.id.navigation_button);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 
@@ -186,6 +189,17 @@ public class MapActivity extends Activity implements
 
         if (mIsTraceSuccess) {
             mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+            getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -283,7 +297,7 @@ public class MapActivity extends Activity implements
         mTextMiles.setVisibility(View.VISIBLE);
         mButtonShowDrawing.setVisibility(View.INVISIBLE);
         mButtonShowTrace.setVisibility(View.INVISIBLE);
-        mButtonHome.setText(getString(R.string.back));
+        mButtonNavigation.setText(getString(R.string.home));
         mDirectionMarker.setVisible(true);
 
         // Clear annotation markers.
@@ -304,7 +318,7 @@ public class MapActivity extends Activity implements
         mTextMiles.setVisibility(View.INVISIBLE);
         mButtonShowDrawing.setVisibility(View.VISIBLE);
         mButtonShowTrace.setVisibility(View.VISIBLE);
-        mButtonHome.setText(getString(R.string.resume));
+        mButtonNavigation.setText(getString(R.string.resume));
         mDirectionMarker.setVisible(false);
 
         // Show all future path
@@ -332,12 +346,16 @@ public class MapActivity extends Activity implements
         mButtonShowDrawing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, ShowDrawingActivity.class);
-                startActivity(intent);
+                Fragment fragment = new ShowDrawingFragment();
+                getFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .add(R.id.showing_drawing_content, fragment)
+                        .addToBackStack(null).commit();
+                getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.INVISIBLE);
             }
         });
 
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
+        mButtonNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsEndingEarly) {
@@ -345,7 +363,6 @@ public class MapActivity extends Activity implements
                     disableStateEndingEarly();
                 } else {
                     Intent intent = new Intent(MapActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }
@@ -392,13 +409,19 @@ public class MapActivity extends Activity implements
      */
     private void traceSuccess() {
         mIsTraceSuccess = true;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.trace_success));
-        builder.setMessage(getString(R.string.trace_success_message));
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle(R.string.trace_success);
+        dialog.setMessage(R.string.trace_success_message);
+        dialog.setCanceledOnTouchOutside(false);
 
         // Positive button
-        builder.setPositiveButton(getString(R.string.ok), null);
-        builder.create().show();
+        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
         mProviderApi.removeLocationUpdates(mGoogleApiClient, this);
         mGoogleApiClient.disconnect();
@@ -469,8 +492,9 @@ public class MapActivity extends Activity implements
      * @param annotation
      */
     private void showAnnotationDialog(TraceAnnotation annotation) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.message));
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle(R.string.message);
+        dialog.setCanceledOnTouchOutside(true);
 
         // Sets up message window
         TextView text = new TextView(this);
@@ -478,11 +502,16 @@ public class MapActivity extends Activity implements
         text.setLines(3);
         text.setSingleLine(false);
         text.setGravity(Gravity.CENTER);
-        builder.setView(text);
+        dialog.setContentView(text);
 
         // Positive button
-        builder.setPositiveButton(getString(R.string.ok), null);
-        builder.create().show();
+        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     /**
@@ -504,8 +533,6 @@ public class MapActivity extends Activity implements
                     return true;
                 }
                 TraceAnnotation annotation = mMarkerToAnnotation.get(marker);
-                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                builder.setTitle(getString(R.string.message));
                 showAnnotationDialog(annotation);
                 return true;
             }

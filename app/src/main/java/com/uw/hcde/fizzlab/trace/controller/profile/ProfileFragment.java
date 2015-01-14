@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.main.DispatchActivity;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 
 /**
  * Profile fragment.
@@ -39,7 +40,8 @@ public class ProfileFragment extends Fragment {
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
 

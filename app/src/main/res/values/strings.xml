@@ -23,6 +23,7 @@
     <!-- Titles -->
     <string name="profile">Profile</string>
     <string name="draw">Draw</string>
+    <string name="walk">Walk</string>
     <string name="choose_duration">Choose Duration</string>
     <string name="choose_distance">Choose Distance</string>
     <string name="choose_drawing">Choose Drawing</string>
@@ -34,7 +35,6 @@
     <string name="clear">Clear</string>
     <string name="annotate">Annotate</string>
     <string name="done">Done</string>
-    <string name="walk">Walk</string>
     <string name="next">Next</string>
     <string name="back">&lt; Back</string>
     <string name="home">&lt; Home</string>

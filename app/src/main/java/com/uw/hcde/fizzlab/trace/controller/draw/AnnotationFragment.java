@@ -3,6 +3,7 @@ package com.uw.hcde.fizzlab.trace.controller.draw;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
+import com.uw.hcde.fizzlab.trace.controller.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.model.parse.ParseConstant;
@@ -39,7 +41,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  */
 public class AnnotationFragment extends Fragment implements ParseSendCallback {
 
-    private static final String TAG = "AnnotateActivity";
+    private static final String TAG = "AnnotationFragment";
     private static final int TITLE_TEXT_SIZE_SP = 19;
 
     private View mButtonSend;
@@ -102,7 +104,8 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
 

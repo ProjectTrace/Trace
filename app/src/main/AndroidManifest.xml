@@ -65,16 +65,8 @@
         <!-- ============================================ -->
 
         <activity
-            android:name=".controller.walk.ChooseDurationActivity"
+            android:name=".controller.walk.ChooseWalkActivity"
             android:label="@string/choose_distance"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.walk.ChooseDrawingActivity"
-            android:label="@string/choose_drawing"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controller.map.ShowDrawingActivity"
-            android:label="@string/show_drawing"
             android:screenOrientation="portrait" />
 
         <activity

@@ -126,6 +126,11 @@
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/showing_drawing_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.MapFragment"

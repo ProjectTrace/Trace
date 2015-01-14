@@ -10,11 +10,12 @@ import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.controller.TraceUtil;
 import com.uw.hcde.fizzlab.trace.controller.draw.DrawActivity;
 import com.uw.hcde.fizzlab.trace.controller.profile.ProfileActivity;
-import com.uw.hcde.fizzlab.trace.controller.walk.ChooseDrawingActivity;
+import com.uw.hcde.fizzlab.trace.controller.walk.ChooseDrawingFragment;
+import com.uw.hcde.fizzlab.trace.controller.walk.ChooseWalkActivity;
 
 
 /**
- * Main application screen
+ * Main application screen.
  *
  * @author tianchi
  */
@@ -62,7 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button walk clicked");
-                Intent intent = new Intent(MainActivity.this, ChooseDrawingActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChooseWalkActivity.class);
                 startActivity(intent);
             }
         });

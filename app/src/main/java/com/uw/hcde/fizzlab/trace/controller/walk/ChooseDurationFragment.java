@@ -1,12 +1,13 @@
 package com.uw.hcde.fizzlab.trace.controller.walk;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -20,13 +21,13 @@ import com.uw.hcde.fizzlab.trace.model.object.TraceDataContainer;
 import java.lang.reflect.Field;
 
 /**
- * Choose walking duration
+ * Choose walking duration fragment.
  *
  * @author tianchi
  */
-public class ChooseDurationActivity extends Activity {
+public class ChooseDurationFragment extends Fragment {
 
-    private static final String TAG = "ChooseDistanceActivity";
+    private static final String TAG = "ChooseDurationFragment";
 
     // Average speeds
     private static final int AVERAGE_SPEED_METER_PER_MINUTE = 80;
@@ -36,26 +37,24 @@ public class ChooseDurationActivity extends Activity {
     private View mButtonGo;
     private View mButtonHome;
     private NumberPicker mPickerDistance;
-    private Context mActivityContext;
-
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_duration);
-        mActivityContext = this;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_choose_duration, container, false);
 
         // Set navigation title
-        TextView title = (TextView) findViewById(R.id.navigation_title);
+        TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.choose_duration));
 
-        mPickerDistance = (NumberPicker) findViewById(R.id.picker_duration);
+        mPickerDistance = (NumberPicker) view.findViewById(R.id.picker_duration);
         initializePicker();
 
         // Buttons
-        mButtonGo = findViewById(R.id.button_go);
-        mButtonHome = findViewById(R.id.navigation_button);
+        mButtonGo = view.findViewById(R.id.button_go);
+        mButtonHome = view.findViewById(R.id.navigation_button);
         setupButtons();
+
+        return view;
     }
 
     /**
@@ -65,8 +64,7 @@ public class ChooseDurationActivity extends Activity {
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChooseDurationActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -77,15 +75,15 @@ public class ChooseDurationActivity extends Activity {
                 Log.d(TAG, "Button go clicked");
 
                 // Check connection, gps status and google play status
-                if (!TraceUtil.checkGPSStatus(mActivityContext)
-                        || !TraceUtil.checkNetworkStatus(mActivityContext)
-                        || !TraceUtil.checkGooglePlayService(mActivityContext)) {
+                if (!TraceUtil.checkGPSStatus(getActivity())
+                        || !TraceUtil.checkNetworkStatus(getActivity())
+                        || !TraceUtil.checkGooglePlayService(getActivity())) {
                     return;
                 }
 
                 TraceDataContainer.distance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
                 Log.d(TAG, "Distance : " + TraceDataContainer.distance);
-                Intent intent = new Intent(ChooseDurationActivity.this, MapActivity.class);
+                Intent intent = new Intent(getActivity(), MapActivity.class);
                 startActivity(intent);
             }
         });

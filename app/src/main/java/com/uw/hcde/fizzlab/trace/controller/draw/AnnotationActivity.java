@@ -42,7 +42,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 public class AnnotationActivity extends Activity implements ParseSendCallback {
 
     private static final String TAG = "AnnotateActivity";
-    private static final int TITLE_TEXT_SIZE_SP = 20;
+    private static final int TITLE_TEXT_SIZE_SP = 19;
 
     private View mButtonSend;
     private View mButtonHome;

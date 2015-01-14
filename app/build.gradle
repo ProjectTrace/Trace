@@ -22,4 +22,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:+'
     compile 'com.google.maps.android:android-maps-utils:+'
     compile 'com.google.code.gson:gson:+'
+
+    // Material view dialog
+    compile 'me.drakeet.materialdialog:library:1.2.2'
 }

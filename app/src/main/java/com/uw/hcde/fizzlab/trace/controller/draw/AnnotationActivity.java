@@ -1,7 +1,6 @@
 package com.uw.hcde.fizzlab.trace.controller.draw;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +30,8 @@ import com.uw.hcde.fizzlab.trace.model.parse.callback.ParseSendCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Activity that handles annotation. Drawing activity
@@ -116,9 +116,8 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
             public void onClick(View v) {
                 Log.d(TAG, "Button send clicked");
 
-                // Send dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(AnnotationActivity.this);
-                builder.setTitle(AnnotationActivity.this.getString(R.string.send));
+                final MaterialDialog dialog = new MaterialDialog(AnnotationActivity.this);
+                dialog.setTitle(R.string.send);
 
                 // Set up dialog view
                 LayoutInflater inflater = (LayoutInflater) AnnotationActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -127,18 +126,11 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
                 final EditText inputDescription = (EditText) view.findViewById(R.id.input_description);
 
                 // Build dialog
-                builder.setView(view);
-                builder.setPositiveButton(AnnotationActivity.this.getText(R.string.ok), null);
-                builder.setNegativeButton(AnnotationActivity.this.getText(R.string.cancel), null);
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-                // Sets positive button
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener() {
+                dialog.setContentView(view);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         // Get list of username
                         mReceiverNames = new ArrayList<String>();
                         for (String s : inputNames.getText().toString().split(",")) {
@@ -163,9 +155,17 @@ public class AnnotationActivity extends Activity implements ParseSendCallback {
 
                         // Send data
                         sendData();
-                        alertDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
+
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }

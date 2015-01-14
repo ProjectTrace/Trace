@@ -3,9 +3,11 @@ package com.uw.hcde.fizzlab.trace.controller.walk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -105,7 +107,7 @@ public class ChooseDurationActivity extends Activity {
         }
         mPickerDistance.setDisplayedValues(displayed);
 
-        // Change divider color, bad way
+        // Change divider color and text color, bad way
         Field[] pickerFields = NumberPicker.class.getDeclaredFields();
         for (Field pf : pickerFields) {
             if (pf.getName().equals("mSelectionDivider")) {
@@ -116,7 +118,20 @@ public class ChooseDurationActivity extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                break;
+            } else if (pf.getName().equals("mSelectorWheelPaint")) {
+                pf.setAccessible(true);
+                try {
+                    ((Paint) pf.get(mPickerDistance)).setColor(getResources().getColor(R.color.solid_white));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (pf.getName().equals("mInputText")) {
+                pf.setAccessible(true);
+                try {
+                    ((EditText) pf.get(mPickerDistance)).setTextColor(getResources().getColor(R.color.solid_white));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

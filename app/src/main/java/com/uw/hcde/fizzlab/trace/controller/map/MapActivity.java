@@ -1,7 +1,6 @@
 package com.uw.hcde.fizzlab.trace.controller.map;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
@@ -45,6 +44,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Represents map direction screen.
@@ -392,13 +393,19 @@ public class MapActivity extends Activity implements
      */
     private void traceSuccess() {
         mIsTraceSuccess = true;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.trace_success));
-        builder.setMessage(getString(R.string.trace_success_message));
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle(R.string.trace_success);
+        dialog.setMessage(R.string.trace_success_message);
+        dialog.setCanceledOnTouchOutside(false);
 
         // Positive button
-        builder.setPositiveButton(getString(R.string.ok), null);
-        builder.create().show();
+        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
         mProviderApi.removeLocationUpdates(mGoogleApiClient, this);
         mGoogleApiClient.disconnect();
@@ -469,8 +476,9 @@ public class MapActivity extends Activity implements
      * @param annotation
      */
     private void showAnnotationDialog(TraceAnnotation annotation) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.message));
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle(R.string.message);
+        dialog.setCanceledOnTouchOutside(true);
 
         // Sets up message window
         TextView text = new TextView(this);
@@ -478,11 +486,16 @@ public class MapActivity extends Activity implements
         text.setLines(3);
         text.setSingleLine(false);
         text.setGravity(Gravity.CENTER);
-        builder.setView(text);
+        dialog.setContentView(text);
 
         // Positive button
-        builder.setPositiveButton(getString(R.string.ok), null);
-        builder.create().show();
+        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     /**
@@ -504,8 +517,6 @@ public class MapActivity extends Activity implements
                     return true;
                 }
                 TraceAnnotation annotation = mMarkerToAnnotation.get(marker);
-                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                builder.setTitle(getString(R.string.message));
                 showAnnotationDialog(annotation);
                 return true;
             }

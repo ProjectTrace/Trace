@@ -4,17 +4,28 @@
     <!-- Base application theme -->
     <style name="HoloTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:editTextStyle">@style/RobotoEditTextViewStyle</item>
     </style>
 
+    <!-- light edit text style for sign in and sign up screen -->
     <style name="LightTheme" parent="android:Theme.NoTitleBar.Fullscreen">
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:editTextStyle">@style/RobotoEditTextViewStyle</item>
     </style>
 
-    <!-- Text theme -->
+    <!-- Text style -->
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/solid_white</item>
         <item name="android:fontFamily">sans-serif-light</item>
+
+    </style>
+
+    <!-- Edit text style -->
+    <style name="RobotoEditTextViewStyle" parent="android:Widget.EditText">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/solid_black</item>
+        <item name="android:textCursorDrawable">@null</item>
     </style>
 
 </resources>

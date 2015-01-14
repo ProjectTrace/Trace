@@ -82,6 +82,7 @@
     <string name="trace_success_message">Congratulations, you finished a trace!</string>
     <string name="resume">&lt; Resume</string>
     <string name="no_trace">you do not have any trace yet</string>
+    <string name="hint_enter_annotation">enter annotation here</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

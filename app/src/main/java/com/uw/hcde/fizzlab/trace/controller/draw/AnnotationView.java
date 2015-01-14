@@ -1,6 +1,5 @@
 package com.uw.hcde.fizzlab.trace.controller.draw;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
@@ -10,9 +9,9 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.uw.hcde.fizzlab.trace.R;
@@ -21,6 +20,8 @@ import com.uw.hcde.fizzlab.trace.model.object.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.model.object.TracePoint;
 
 import java.util.List;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Adds annotation to the existing path
@@ -38,7 +39,7 @@ public class AnnotationView extends View {
     private List<TracePoint> mTracePoints;
 
     private Paint mPaint;
-    private Context mAppContext;
+    private Context mContext;
 
     private float mCircle_radius_bg;
     private float mCircle_radius_small;
@@ -46,7 +47,7 @@ public class AnnotationView extends View {
 
     public AnnotationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mAppContext = context;
+        mContext = context;
 
         mCircle_radius_bg = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 CIRCLE_RADIUS_BG_DP, getResources().getDisplayMetrics());
@@ -131,15 +132,15 @@ public class AnnotationView extends View {
      * @param tracePoint
      */
     private void promptInput(final TracePoint tracePoint) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mAppContext);
-        builder.setTitle(mAppContext.getString(R.string.annotate));
+        final MaterialDialog dialog = new MaterialDialog(mContext);
 
-        // Set up edit text
-        final EditText input = new EditText(mAppContext);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setLines(3);
-        input.setSingleLine(false);
-        input.setGravity(Gravity.LEFT | Gravity.TOP);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        dialog.setTitle(R.string.annotate);
+
+        // Set up dialog view
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.dialog_annotate, null);
+        final EditText input = (EditText) view.findViewById(R.id.annotate_content);
 
         // Set up edit text message
         String msg = tracePoint.annotation.msg;
@@ -147,12 +148,13 @@ public class AnnotationView extends View {
             input.setText(msg);
             input.setSelection(msg.length());
         }
-        builder.setView(input);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
 
-        // Cancel
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        // Dismiss
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onCancel(DialogInterface arg0) {
+            public void onDismiss(DialogInterface dialog) {
                 // Delete this annotation if it is invalid
                 if (tracePoint.annotation.msg == null) {
                     tracePoint.annotation = null;
@@ -161,35 +163,27 @@ public class AnnotationView extends View {
             }
         });
 
-        // Delete
-        builder.setNegativeButton(mAppContext.getText(R.string.delete), new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(R.string.delete, new OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tracePoint.annotation = null;
-                invalidate();
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
-        builder.setPositiveButton(mAppContext.getText(R.string.set), null);
 
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        // Positive button
-        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(new View.OnClickListener() {
+        dialog.setPositiveButton(R.string.set, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String text = input.getText().toString();
                 if (text.length() != 0) {
                     tracePoint.annotation.msg = text;
-                    alertDialog.dismiss();
+                    dialog.dismiss();
                     invalidate();
                 } else {
-                    TraceUtil.showToast(mAppContext, mAppContext.getString(R.string.toast_enter_annotation));
+                    TraceUtil.showToast(mContext, mContext.getString(R.string.toast_enter_annotation));
                 }
             }
         });
 
-
+        dialog.show();
     }
 }

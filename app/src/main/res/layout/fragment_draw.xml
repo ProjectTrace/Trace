@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_red1">
+
+    <!-- Navigation bar -->
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigation_bar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/draw_instruction"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/button_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:clickable="true"
+            android:text="@string/clear"
+            android:textColor="@drawable/text_clickable" />
+
+        <TextView
+            android:id="@+id/button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:clickable="true"
+            android:text="@string/next"
+            android:textColor="@drawable/text_clickable" />
+
+    </RelativeLayout>
+
+    <com.uw.hcde.fizzlab.trace.controller.draw.DrawingView
+        android:id="@+id/drawing_view_annotation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_menu"
+        android:layout_below="@id/navigation_bar" />
+
+</RelativeLayout>

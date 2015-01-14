@@ -68,7 +68,7 @@ public class SignInFragment extends Fragment {
                 Fragment fragment = new SignUpFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
-                        .replace(R.id.fragment_container, fragment)
+                        .add(R.id.fragment_container, fragment)
                         .addToBackStack(null)
                         .commit();
             }

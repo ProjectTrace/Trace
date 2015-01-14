@@ -60,13 +60,6 @@
             android:label="@string/draw"
             android:screenOrientation="portrait" />
 
-        <!-- Annotate activity -->
-        <activity
-            android:name=".controller.draw.AnnotationActivity"
-            android:label="@string/annotate"
-            android:screenOrientation="portrait" />
-
-
         <!-- ============================================ -->
         <!-- ======= Walk related activities ============ -->
         <!-- ============================================ -->

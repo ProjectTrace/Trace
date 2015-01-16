@@ -3,7 +3,7 @@ Trace
 
 _University of Washington, Department of HCDE_
 
-__
+______________________________________________
 
 Project prototype demo:
 http://faculty.washington.edu/dkrosner/research/Trace-UW.mp4

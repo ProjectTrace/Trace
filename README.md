@@ -1,10 +1,13 @@
 Trace
 =====
 
-_FizzLab, HCDE Department_
+_University of Washington, Department of HCDE_
 
-_University of Washington_
+__
 
-To contribute, install Android Studio and import project. We are following this code style: https://source.android.com/source/code-style.html. Make sure you read it through.
+Project prototype demo:
+http://faculty.washington.edu/dkrosner/research/Trace-UW.mp4
 
-Please contact FizzLab or Tianchi (tliu24@uw.edu) for project details.
+To contribute, install Android Studio and import project. We are strictly following this code style: https://source.android.com/source/code-style.html. 
+
+Please contact FizzLab for project details.

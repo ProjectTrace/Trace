@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -101,6 +102,7 @@ public class MapActivity extends Activity implements
     private List<List<LatLng>> mDisplayedSegments;
     private List<LatLng> mWalkedPoints;
     private Marker mDirectionMarker;
+    private float mDirectionBearing;
 
     private Polyline mDisplayedPolyline;
     private Polyline mWalkedPolyline;
@@ -131,7 +133,6 @@ public class MapActivity extends Activity implements
         MapFragment fm = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mGoogleMap = fm.getMap();
         mGoogleMap.setMyLocationEnabled(true);
-
 
         // Location client and latLng request object
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -170,6 +171,17 @@ public class MapActivity extends Activity implements
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.show();
+
+        // Camera change listener for direction arrow
+        mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                if (mDirectionMarker != null) {
+                    float heading = mDirectionMarker.getRotation();
+                    mDirectionMarker.setRotation(mDirectionBearing - cameraPosition.bearing);
+                }
+            }
+        });
     }
 
     @Override
@@ -549,13 +561,21 @@ public class MapActivity extends Activity implements
         }
         mDisplayedPolyline.setPoints(points);
 
-
         LatLng p1 = points.get(points.size() - 2);
         LatLng p2 = points.get(points.size() - 1);
+        updateDirectionArrow(p1, p2);
+    }
 
-        double heading = SphericalUtil.computeHeading(p1, p2);
-        mDirectionMarker.setRotation((float) heading);
+    /**
+     * Updates direction arrow position and orientation.
+     * @param p1
+     * @param p2
+     */
+    private void updateDirectionArrow(LatLng p1, LatLng p2) {
         mDirectionMarker.setPosition(p2);
+        mDirectionBearing = (float) SphericalUtil.computeHeading(p1, p2);
+        float cameraBearing = mGoogleMap.getCameraPosition().bearing;
+        mDirectionMarker.setRotation(mDirectionBearing - cameraBearing);
     }
 
     public class FetchDirectionTask extends AsyncTask<String, Void, String> {

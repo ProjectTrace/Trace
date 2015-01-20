@@ -339,7 +339,7 @@ public class MapActivity extends Activity implements
         allPath.addAll(mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
-        // displayWayPoints();
+        displayWayPoints();
         setAllAnnotationMarkers();
     }
 

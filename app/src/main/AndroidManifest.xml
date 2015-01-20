@@ -25,7 +25,7 @@
 
     <!-- Application and activities-->
     <application
-        android:name=".controller.main.TraceApplication"
+        android:name=".main.TraceApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/HoloTheme">
@@ -36,7 +36,7 @@
         <!-- ============================================ -->
         <!-- Dispatch sign up or main activity -->
         <activity
-            android:name=".controller.main.DispatchActivity"
+            android:name=".main.DispatchActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,14 +46,14 @@
 
         <!-- Welcome screen -->
         <activity
-            android:name=".controller.main.WelcomeActivity"
+            android:name=".main.WelcomeActivity"
             android:label="@string/welcome"
             android:screenOrientation="portrait"
             android:theme="@style/LightTheme" />
 
         <!-- Main activity -->
         <activity
-            android:name=".controller.main.MainActivity"
+            android:name=".main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
@@ -64,7 +64,7 @@
         <!-- ============================================ -->
         <!-- Draw activity -->
         <activity
-            android:name=".controller.draw.DrawActivity"
+            android:name=".userInterface.drawing.DrawActivity"
             android:label="@string/draw"
             android:screenOrientation="portrait" />
 
@@ -73,12 +73,12 @@
         <!-- ============================================ -->
 
         <activity
-            android:name=".controller.walk.ChooseWalkActivity"
+            android:name=".userInterface.walking.ChooseWalkActivity"
             android:label="@string/choose_distance"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".controller.map.MapActivity"
+            android:name=".navigation.MapActivity"
             android:label="@string/map"
             android:screenOrientation="portrait" />
 
@@ -97,7 +97,7 @@
         <!-- ============================================ -->
         <!-- Profile activity -->
         <activity
-            android:name=".controller.profile.ProfileActivity"
+            android:name=".userInterface.profile.ProfileActivity"
             android:label="@string/profile"
             android:screenOrientation="portrait" />
     </application>

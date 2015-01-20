@@ -52,6 +52,7 @@ public class TraceDataFactory {
         Log.d(TAG, "distanceMeter: " + distanceMeter);
         Log.d(TAG, "distancePixel: " + distancePixel);
         Log.d(TAG, "scaleFactor: " + scaleFactor);
+        
 
         List<TraceLocation> traceLocations = new ArrayList<TraceLocation>();
         for (int i = 1; i < tracePoints.size(); i++) {

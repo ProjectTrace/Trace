@@ -68,7 +68,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         // More pipelines can be added here
         List<Point> normalizedPoints = DrawUtil.normalizePoints(mRawPoints);
 
-        // Get tracePoints
+        // Get trimmedTracePoints
         mTracePoints = DrawUtil.pointsToTracePoints(normalizedPoints);
 
         Log.d(TAG, "raw points size: " + mRawPoints.size());

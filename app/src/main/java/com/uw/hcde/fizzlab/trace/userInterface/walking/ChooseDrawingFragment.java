@@ -105,9 +105,9 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
                 Log.d(TAG, "Button next clicked");
                 List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
                 TraceDataContainer.rawTracePoints = points;
-                TraceDataContainer.tracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainer.trimmedTracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
-                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.tracePoints.size());
+                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.trimmedTracePoints.size());
 
                 // Fragment transaction
                 Fragment fragment = new ChooseDurationFragment();

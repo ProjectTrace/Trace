@@ -32,9 +32,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
-import com.uw.hcde.fizzlab.trace.graphProcessing.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
@@ -239,7 +239,7 @@ public class MapActivity extends Activity implements
                     .visible(false);
             mDirectionMarker = mGoogleMap.addMarker(markerOption);
 
-            mTraceLocations = TraceDataFactory.getLocations(mCurrentLatLng);
+            mTraceLocations = DrawingToRouteFactory.getLocations(mCurrentLatLng);
             for (TraceLocation traceLocation : mTraceLocations) {
                 if (traceLocation.annotation != null) {
                     mLatLngToAnnotation.put(traceLocation.latLng, traceLocation.annotation);

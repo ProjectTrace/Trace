@@ -9,7 +9,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,12 +31,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
-import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
+import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
+import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import org.json.JSONObject;
 
@@ -339,7 +338,7 @@ public class MapActivity extends Activity implements
         allPath.addAll(mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
-        displayWayPoints();
+        //displayWayPoints();
         setAllAnnotationMarkers();
     }
 
@@ -422,6 +421,7 @@ public class MapActivity extends Activity implements
     private void traceSuccess() {
         mIsTraceSuccess = true;
         final MaterialDialog dialog = new MaterialDialog(this);
+
         dialog.setTitle(R.string.trace_success);
         dialog.setMessage(R.string.trace_success_message);
         dialog.setCanceledOnTouchOutside(false);
@@ -506,15 +506,8 @@ public class MapActivity extends Activity implements
     private void showAnnotationDialog(TraceAnnotation annotation) {
         final MaterialDialog dialog = new MaterialDialog(this);
         dialog.setTitle(R.string.message);
+        dialog.setMessage(annotation.msg);
         dialog.setCanceledOnTouchOutside(true);
-
-        // Sets up message window
-        TextView text = new TextView(this);
-        text.setText(annotation.msg);
-        text.setLines(3);
-        text.setSingleLine(false);
-        text.setGravity(Gravity.CENTER);
-        dialog.setContentView(text);
 
         // Positive button
         dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
@@ -568,6 +561,7 @@ public class MapActivity extends Activity implements
 
     /**
      * Updates direction arrow position and orientation.
+     *
      * @param p1
      * @param p2
      */

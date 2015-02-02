@@ -1,4 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/navigation_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true">
@@ -14,21 +17,38 @@
         android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/navigation_button"
+        android:id="@+id/navigation_button_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
         android:clickable="true"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
         android:text="@string/home"
         android:textColor="@drawable/text_clickable" />
+
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/navigation_button_report"
+        android:layout_width="75dp"
+        android:layout_height="38dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:text="report a problem"
+        android:textSize="13sp"
+        fbutton:buttonColor="@color/rose_dark"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="2dp" />
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignBottom="@id/navigation_title"
         android:alpha="0.2"
-        android:background="@color/solid_black" />
+        android:background="@color/black" />
+
 
 </RelativeLayout>

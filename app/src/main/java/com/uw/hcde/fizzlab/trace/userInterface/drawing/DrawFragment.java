@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
 
 import java.util.ArrayList;
 
@@ -36,13 +37,12 @@ public class DrawFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_draw, container, false);
 
         // Set navigation title
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.draw));
+       // ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.draw);
 
         // Get views
         mButtonClear = view.findViewById(R.id.button_clear);
         mButtonNext = view.findViewById(R.id.button_next);
-        mButtonHome = view.findViewById(R.id.navigation_button);
+
         mDrawingView = (DrawingView) view.findViewById(R.id.drawing_view_annotation);
 
         setupListener();
@@ -58,14 +58,6 @@ public class DrawFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "Button clear clicked");
                 mDrawingView.clear();
-            }
-        });
-
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
             }
         });
 

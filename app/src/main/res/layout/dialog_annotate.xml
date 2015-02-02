@@ -13,6 +13,6 @@
         android:inputType="textMultiLine"
         android:lines="2"
         android:minLines="3"
-        android:textColor="@color/solid_black" />
+        android:textColor="@color/black" />
 
 </LinearLayout>

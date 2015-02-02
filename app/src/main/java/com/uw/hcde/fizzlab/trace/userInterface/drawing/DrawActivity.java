@@ -6,20 +6,23 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
 
 /**
  * Activity that handles drawing and annotation.
  *
  * @author tianchi
  */
-public class DrawActivity extends Activity {
+public class DrawActivity extends TraceBaseActivity {
 
     private static final String TAG = "DrawActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_draw);
+
+        setNavigationTitle(R.string.draw);
+        setNavigationBackground(R.color.rose);
 
         Fragment fragment = new DrawFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();

@@ -51,7 +51,7 @@ public class ChooseDurationFragment extends Fragment {
 
         // Buttons
         mButtonGo = view.findViewById(R.id.button_go);
-        mButtonHome = view.findViewById(R.id.navigation_button);
+        mButtonHome = view.findViewById(R.id.navigation_button_home);
         setupButtons();
 
         return view;
@@ -119,14 +119,14 @@ public class ChooseDurationFragment extends Fragment {
             } else if (pf.getName().equals("mSelectorWheelPaint")) {
                 pf.setAccessible(true);
                 try {
-                    ((Paint) pf.get(mPickerDistance)).setColor(getResources().getColor(R.color.solid_white));
+                    ((Paint) pf.get(mPickerDistance)).setColor(getResources().getColor(R.color.white));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (pf.getName().equals("mInputText")) {
                 pf.setAccessible(true);
                 try {
-                    ((EditText) pf.get(mPickerDistance)).setTextColor(getResources().getColor(R.color.solid_white));
+                    ((EditText) pf.get(mPickerDistance)).setTextColor(getResources().getColor(R.color.white));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -41,7 +41,7 @@ public class ShowDrawingFragment extends Fragment {
         // Set navigation title and back button
         TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.show_drawing));
-        mButtonBack = (TextView) view.findViewById(R.id.navigation_button);
+        mButtonBack = (TextView) view.findViewById(R.id.navigation_button_home);
         mButtonBack.setText(getString(R.string.back));
         mButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override

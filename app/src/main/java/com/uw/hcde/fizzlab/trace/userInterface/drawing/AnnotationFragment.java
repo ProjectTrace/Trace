@@ -59,7 +59,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_annotation, container, false);
 
-        mButtonHome = view.findViewById(R.id.navigation_button);
+        mButtonHome = view.findViewById(R.id.navigation_button_home);
         mButtonSend = view.findViewById(R.id.button_send);
 
         Bundle args = getArguments();

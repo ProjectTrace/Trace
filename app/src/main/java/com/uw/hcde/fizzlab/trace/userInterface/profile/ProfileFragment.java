@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment {
         userName.setText(ParseUser.getCurrentUser().getUsername());
 
         // Back button
-        mButtonHome = view.findViewById(R.id.navigation_button);
+        mButtonHome = view.findViewById(R.id.navigation_button_home);
         mButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -119,7 +119,7 @@ public class MapActivity extends Activity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonNavigation = (TextView) findViewById(R.id.navigation_button);
+        mButtonNavigation = (TextView) findViewById(R.id.navigation_button_home);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 
@@ -161,7 +161,7 @@ public class MapActivity extends Activity implements
         mDisplayedPolyline = mGoogleMap.addPolyline(line);
 
         PolylineOptions line2 = new PolylineOptions();
-        line2.color(getResources().getColor(R.color.main_red1));
+        line2.color(getResources().getColor(R.color.rose));
         mWalkedPolyline = mGoogleMap.addPolyline(line2);
         mWalkedPolyline.setVisible(false);
 

@@ -71,7 +71,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
         mDescription = (TextView) view.findViewById(R.id.description);
         mDate = (TextView) view.findViewById(R.id.date);
         mButtonNext = view.findViewById(R.id.button_next);
-        mButtonHome = view.findViewById(R.id.navigation_button);
+        mButtonHome = view.findViewById(R.id.navigation_button_home);
         setupButtons();
 
         // Sets up progress dialog

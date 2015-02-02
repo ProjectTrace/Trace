@@ -30,19 +30,15 @@ public class DrawFragment extends Fragment {
     // Main buttons
     private View mButtonClear;
     private View mButtonNext;
-    private View mButtonHome;
     private DrawingView mDrawingView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_draw, container, false);
-
-        // Set navigation title
-       // ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.draw);
+        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.draw);
 
         // Get views
         mButtonClear = view.findViewById(R.id.button_clear);
         mButtonNext = view.findViewById(R.id.button_next);
-
         mDrawingView = (DrawingView) view.findViewById(R.id.drawing_view_annotation);
 
         setupListener();

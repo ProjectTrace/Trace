@@ -3,11 +3,6 @@
     android:layout_height="match_parent"
     android:background="@color/rose">
 
-    <!-- Navigation bar -->
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_bar" />
-
     <TextView
         android:id="@+id/button_send"
         android:layout_width="wrap_content"

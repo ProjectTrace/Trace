@@ -3,7 +3,6 @@ package com.uw.hcde.fizzlab.trace.userInterface.drawing;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -11,23 +10,21 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendCallback;
+import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +37,9 @@ import me.drakeet.materialdialog.MaterialDialog;
  * @author tianchi
  */
 public class AnnotationFragment extends Fragment implements ParseSendCallback {
-
-    private static final String TAG = "AnnotationFragment";
-    private static final int TITLE_TEXT_SIZE_SP = 19;
+    public static final String TAG = "AnnotationFragment";
 
     private View mButtonSend;
-    private View mButtonHome;
-
     private List<Point> mRawPoints; // Used to display path
     private List<TracePoint> mTracePoints; // Trace points
 
@@ -58,8 +51,6 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_annotation, container, false);
-
-        mButtonHome = view.findViewById(R.id.navigation_button_home);
         mButtonSend = view.findViewById(R.id.button_send);
 
         Bundle args = getArguments();
@@ -75,9 +66,8 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.touch_to_annotate));
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_TEXT_SIZE_SP);
+        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate,
+                TraceBaseActivity.NAVIGATION_BAR_TITLE_SIZE_SMALL_SP);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);
@@ -92,6 +82,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         mDescription = null;
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_sending));
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         return view;
 
@@ -101,13 +92,6 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
      * Sets up buttons
      */
     private void setupButtons() {
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,30 +153,11 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
     }
 
     /**
-     * Shows progress dialog, disable buttons
-     */
-    private void showProgressDialog() {
-        mProgressDialog.show();
-        mButtonHome.setVisibility(View.INVISIBLE);
-        mButtonSend.setVisibility(View.INVISIBLE);
-    }
-
-    /**
-     * Dismiss progress dialog, enable buttons
-     */
-    private void dismissProgressDialog() {
-        mProgressDialog.dismiss();
-        mButtonHome.setVisibility(View.VISIBLE);
-        mButtonSend.setVisibility(View.VISIBLE);
-    }
-
-
-    /**
      * Sends all data to parse database and sets up progress dialog
      * Get name -> send annotation -> send drawing
      */
     private void sendData() {
-        showProgressDialog();
+        mProgressDialog.show();
         ParseDataFactory.convertNameToParseUser(mReceiverNames, this);
     }
 
@@ -223,14 +188,14 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
                     }
                 }
 
-                dismissProgressDialog();
+                mProgressDialog.dismiss();
                 TraceUtil.showToast(getActivity(), sb.toString());
             } else {
                 ParseDataFactory.sendAnnotation(mTracePoints, this);
             }
 
         } else {
-            dismissProgressDialog();
+            mProgressDialog.dismiss();
             TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }
@@ -240,7 +205,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         if (returnCode == ParseConstant.SUCCESS) {
             ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
         } else {
-            dismissProgressDialog();
+            mProgressDialog.dismiss();
             TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }
@@ -260,7 +225,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
             }, TraceUtil.TOAST_MESSAGE_TIME);
 
         } else {
-            dismissProgressDialog();
+            mProgressDialog.dismiss();
             TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
         }
     }

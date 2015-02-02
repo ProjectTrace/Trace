@@ -20,9 +20,7 @@ public class DrawActivity extends TraceBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setNavigationTitle(R.string.draw);
-        setNavigationBackground(R.color.rose);
+        setNavigationBarType(TraceBaseActivity.NAVIGATION_BAR_TYPE_DRAW);
 
         Fragment fragment = new DrawFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -33,6 +31,8 @@ public class DrawActivity extends TraceBaseActivity {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
+            setNavigationTitle(R.string.draw);
+
         } else {
             super.onBackPressed();
         }

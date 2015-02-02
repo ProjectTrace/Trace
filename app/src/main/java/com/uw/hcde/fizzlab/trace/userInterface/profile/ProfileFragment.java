@@ -11,8 +11,7 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
 
 /**
  * Profile fragment.
@@ -27,7 +26,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Sets navigation title
-        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.profile);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.profile);
 
         // Sets displayed username
         TextView userName = (TextView) view.findViewById(R.id.text_username);

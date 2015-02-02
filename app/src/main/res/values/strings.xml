@@ -70,7 +70,7 @@
     <string name="network_service_disabled">Network service disabled</string>
     <string name="enable_gps">Trace needs access to your location. Please turn on location access.</string>
     <string name="enable_network">Trace needs access to network. Please check network connection.</string>
-    <string name="mile">miles</string>
+    <string name="miles_traveled">miles traveled</string>
     <string name="ending_early">Ending early</string>
     <string name="show_drawing">Show drawing</string>
     <string name="show_trace">Show trace</string>
@@ -81,8 +81,11 @@
     <string name="trace_success">Trace success!</string>
     <string name="trace_success_message">Congratulations, you finished a trace!</string>
     <string name="resume">&lt; Resume</string>
-    <string name="no_trace">you do not have any trace yet</string>
+    <string name="no_trace">you did not leave any trace yet</string>
     <string name="hint_enter_annotation">enter annotation here</string>
+    <string name="report_problem">Report a problem</string>
+    <string name="enter_here">please enter here</string>
+    <string name="thanks">thanks!</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

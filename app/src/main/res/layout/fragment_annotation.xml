@@ -19,14 +19,12 @@
         android:id="@+id/drawing_view_path"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_above="@id/button_send" />
 
     <com.uw.hcde.fizzlab.trace.userInterface.drawing.AnnotationView
         android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_above="@id/button_send" />
 
 </RelativeLayout>

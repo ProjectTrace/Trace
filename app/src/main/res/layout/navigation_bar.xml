@@ -16,17 +16,39 @@
         android:paddingTop="12dp"
         android:textSize="22sp" />
 
-    <TextView
+    <!--<TextView-->
+    <!--android:id="@+id/navigation_button_home"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:clickable="true"-->
+    <!--android:paddingLeft="10dp"-->
+    <!--android:text="@string/home"-->
+    <!--android:textColor="@drawable/text_clickable" />-->
+
+    <ImageView
         android:id="@+id/navigation_button_home"
+        android:layout_width="28dp"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/home_button" />
+
+    <TextView
+        android:id="@+id/navigation_button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:clickable="true"
         android:paddingLeft="10dp"
-        android:text="@string/home"
-        android:textColor="@drawable/text_clickable" />
-
+        android:text="@string/back"
+        android:textColor="@drawable/text_clickable"
+        android:visibility="invisible" />
 
     <info.hoang8f.widget.FButton
         android:id="@+id/navigation_button_report"
@@ -35,9 +57,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:text="report a problem"
+        android:text="@string/report_problem"
         android:textSize="13sp"
-        fbutton:buttonColor="@color/rose_dark"
         fbutton:cornerRadius="5dp"
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="2dp" />

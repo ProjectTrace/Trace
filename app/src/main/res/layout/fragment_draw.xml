@@ -6,7 +6,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/navigation_bar"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="@string/draw_instruction"
@@ -45,7 +44,6 @@
         android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_menu"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_above="@id/button_menu" />
 
 </RelativeLayout>

@@ -3,15 +3,9 @@
     android:layout_height="match_parent"
     android:background="@color/cyan">
 
-    <!-- Navigation bar -->
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_bar" />
-
     <RelativeLayout
         android:id="@+id/drawing_view_path"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

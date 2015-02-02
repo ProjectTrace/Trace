@@ -2,18 +2,15 @@ package com.uw.hcde.fizzlab.trace.userInterface.drawing;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -34,7 +31,7 @@ public class DrawFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_draw, container, false);
-        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.draw);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.draw);
 
         // Get views
         mButtonClear = view.findViewById(R.id.button_clear);

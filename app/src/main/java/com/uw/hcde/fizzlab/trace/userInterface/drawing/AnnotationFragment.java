@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.userInterface.drawing;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,7 +24,7 @@ import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendCallback;
-import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.util.ArrayList;
@@ -66,8 +67,8 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
-        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate,
-                TraceBaseActivity.NAVIGATION_BAR_TITLE_SIZE_SMALL_SP);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate,
+                BaseActivity.NAVIGATION_BAR_TITLE_SIZE_SMALL_SP);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);

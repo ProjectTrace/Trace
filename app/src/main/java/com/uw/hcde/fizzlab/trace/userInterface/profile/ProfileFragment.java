@@ -12,6 +12,7 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.userInterface.TraceBaseActivity;
 
 /**
  * Profile fragment.
@@ -19,31 +20,18 @@ import com.uw.hcde.fizzlab.trace.main.MainActivity;
  * @author tianchi
  */
 public class ProfileFragment extends Fragment {
-
     private static final String TAG = "ProfileFragment";
-    private View mButtonHome;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Sets navigation title
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.profile));
+        ((TraceBaseActivity) getActivity()).setNavigationTitle(R.string.profile);
 
         // Sets displayed username
         TextView userName = (TextView) view.findViewById(R.id.text_username);
         userName.setText(ParseUser.getCurrentUser().getUsername());
-
-        // Back button
-        mButtonHome = view.findViewById(R.id.navigation_button_home);
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Sets up the log out button click handler
         View buttonLogout = view.findViewById(R.id.button_logout);

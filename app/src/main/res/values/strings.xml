@@ -41,6 +41,7 @@
     <string name="log_out">Log out</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
     <string name="delete">Delete</string>
     <string name="set">Set</string>
     <string name="settings">Settings</string>
@@ -86,6 +87,7 @@
     <string name="report_problem">Report a problem</string>
     <string name="enter_here">please enter here</string>
     <string name="thanks">thanks!</string>
+    <string name="ending_early_message">If ending early, you won\'t be able to resume tracing. Are you sure?</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester,

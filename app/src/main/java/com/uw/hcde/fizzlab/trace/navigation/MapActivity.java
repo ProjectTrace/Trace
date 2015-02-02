@@ -347,10 +347,34 @@ public class MapActivity extends BaseActivity implements
      */
     private void setupListeners() {
         mButtonEndingEarly.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-                mIsEndingEarly = true;
-                setStateEndingEarly();
+
+                final MaterialDialog dialog = new MaterialDialog(MapActivity.this);
+                dialog.setTitle(R.string.ending_early);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setMessage(R.string.ending_early_message);
+
+                // Negative button
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // Positive button
+                dialog.setPositiveButton(R.string.yes, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsEndingEarly = true;
+                        setStateEndingEarly();
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 

@@ -1,9 +1,7 @@
 package com.uw.hcde.fizzlab.trace.userInterface;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
@@ -76,6 +73,13 @@ public abstract class BaseActivity extends Activity {
                 final EditText input = (EditText) view.findViewById(R.id.report_content);
                 dialog.setContentView(view);
                 dialog.setCanceledOnTouchOutside(true);
+
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
                     @Override

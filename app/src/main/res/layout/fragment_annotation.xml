@@ -1,12 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_red1">
-
-    <!-- Navigation bar -->
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_bar" />
+    android:background="@color/rose">
 
     <TextView
         android:id="@+id/button_send"
@@ -24,14 +19,12 @@
         android:id="@+id/drawing_view_path"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_above="@id/button_send" />
 
     <com.uw.hcde.fizzlab.trace.userInterface.drawing.AnnotationView
         android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send"
-        android:layout_below="@id/navigation_bar" />
+        android:layout_above="@id/button_send" />
 
 </RelativeLayout>

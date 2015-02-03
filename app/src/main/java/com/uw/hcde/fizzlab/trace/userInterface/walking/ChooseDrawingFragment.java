@@ -3,7 +3,6 @@ package com.uw.hcde.fizzlab.trace.userInterface.walking;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -14,9 +13,9 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawUtil;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
@@ -34,10 +33,8 @@ import java.util.List;
  * @author tianchi
  */
 public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCallback {
-
     private static final String TAG = "ChooseDrawingFragment";
 
-    private View mButtonHome;
     private View mButtonNext;
 
     // Drawing selector content
@@ -60,8 +57,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
         View view = inflater.inflate(R.layout.fragment_choose_drawing, container, false);
 
         // Set navigation title
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.choose_drawing));
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.choose_drawing);
 
         mEmptyContentView = view.findViewById(R.id.empty_message);
         mContentView = view.findViewById(R.id.content);
@@ -71,7 +67,6 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
         mDescription = (TextView) view.findViewById(R.id.description);
         mDate = (TextView) view.findViewById(R.id.date);
         mButtonNext = view.findViewById(R.id.button_next);
-        mButtonHome = view.findViewById(R.id.navigation_button);
         setupButtons();
 
         // Sets up progress dialog
@@ -91,23 +86,15 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
      * Sets up buttons
      */
     private void setupButtons() {
-        mButtonHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         mButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button next clicked");
                 List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
                 TraceDataContainer.rawTracePoints = points;
-                TraceDataContainer.tracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainer.trimmedTracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
-                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.tracePoints.size());
+                Log.d(TAG, "trimmed trace points: " + TraceDataContainer.trimmedTracePoints.size());
 
                 // Fragment transaction
                 Fragment fragment = new ChooseDurationFragment();

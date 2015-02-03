@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Factory class to generate data points for map routing.
+ * Converts px data to geo data.
  *
  * @author tianchi
  */
-public class TraceDataFactory {
-    private static final String TAG = "TraceDataFactory";
+public class DrawingToRouteFactory {
+    private static final String TAG = "DrawingToRouteFactory";
     private static final double WGS84_RADIUS_METER = 6371200;
     private static final double EARTH_CIRCUMFERENCE_METER = 2 * WGS84_RADIUS_METER * Math.PI;
 
@@ -42,7 +42,7 @@ public class TraceDataFactory {
         Log.d(TAG, "degrees per meter long: " + degreesPerMeterLong);
 
         // Points data
-        List<TracePoint> tracePoints = TraceDataContainer.tracePoints;
+        List<TracePoint> tracePoints = TraceDataContainer.trimmedTracePoints;
         TracePoint startingPoint = tracePoints.get(0);
 
         // Gets scale factor

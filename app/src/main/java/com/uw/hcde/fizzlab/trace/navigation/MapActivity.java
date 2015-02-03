@@ -1,16 +1,14 @@
 package com.uw.hcde.fizzlab.trace.navigation;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,12 +30,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.main.MainActivity;
-import com.uw.hcde.fizzlab.trace.graphProcessing.TraceDataFactory;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
+import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import org.json.JSONObject;
 
@@ -55,7 +53,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  *
  * @author sonagrigoryan, tianchi
  */
-public class MapActivity extends Activity implements
+public class MapActivity extends BaseActivity implements
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -74,7 +72,8 @@ public class MapActivity extends Activity implements
 
     private static final double METER_TO_MILE = 0.000621371192;
 
-    private TextView mButtonNavigation;
+    private View mButtonHome;
+
     private View mButtonEndingEarly;
     private View mButtonShowDrawing;
     private View mButtonShowTrace;
@@ -110,17 +109,18 @@ public class MapActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
+        getLayoutInflater().inflate(R.layout.activity_map, frameLayout, true);
 
         // Sets navigation title
-        TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.map));
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_WALK);
+        setNavigationTitle(R.string.map);
 
         // Buttons
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonNavigation = (TextView) findViewById(R.id.navigation_button);
+        mButtonHome = findViewById(R.id.navigation_button_home);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 
@@ -162,7 +162,7 @@ public class MapActivity extends Activity implements
         mDisplayedPolyline = mGoogleMap.addPolyline(line);
 
         PolylineOptions line2 = new PolylineOptions();
-        line2.color(getResources().getColor(R.color.main_red1));
+        line2.color(getResources().getColor(R.color.rose));
         mWalkedPolyline = mGoogleMap.addPolyline(line2);
         mWalkedPolyline.setVisible(false);
 
@@ -205,13 +205,14 @@ public class MapActivity extends Activity implements
     }
 
     @Override
-    public void onBackPressed() {
+    protected void handleBackButton() {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
+            setNavigationTitle(R.string.map);
             getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
         } else {
-            super.onBackPressed();
+            super.handleBackButton();
         }
     }
 
@@ -239,7 +240,7 @@ public class MapActivity extends Activity implements
                     .visible(false);
             mDirectionMarker = mGoogleMap.addMarker(markerOption);
 
-            mTraceLocations = TraceDataFactory.getLocations(mCurrentLatLng);
+            mTraceLocations = DrawingToRouteFactory.getLocations(mCurrentLatLng);
             for (TraceLocation traceLocation : mTraceLocations) {
                 if (traceLocation.annotation != null) {
                     mLatLngToAnnotation.put(traceLocation.latLng, traceLocation.annotation);
@@ -300,26 +301,25 @@ public class MapActivity extends Activity implements
         finish();
     }
 
-    /**
-     * Returns from ending early state.
-     */
-    private void disableStateEndingEarly() {
-        mButtonEndingEarly.setVisibility(View.VISIBLE);
-        mTextDistance.setVisibility(View.VISIBLE);
-        mTextMiles.setVisibility(View.VISIBLE);
-        mButtonShowDrawing.setVisibility(View.INVISIBLE);
-        mButtonShowTrace.setVisibility(View.INVISIBLE);
-        mButtonNavigation.setText(getString(R.string.home));
-        mDirectionMarker.setVisible(true);
-
-        // Clear annotation markers.
-        for (Marker m : mMarkerToAnnotation.keySet()) {
-            m.remove();
-        }
-        mMarkerToAnnotation.clear();
-        mWalkedPolyline.setVisible(false);
-        updateDisplayedPolyLine(mDisplayedSegments);
-    }
+//    /**
+//     * Returns from ending early state.
+//     */
+//    private void disableStateEndingEarly() {
+//        mButtonEndingEarly.setVisibility(View.VISIBLE);
+//        mTextDistance.setVisibility(View.VISIBLE);
+//        mTextMiles.setVisibility(View.VISIBLE);
+//        mButtonShowDrawing.setVisibility(View.INVISIBLE);
+//        mButtonShowTrace.setVisibility(View.INVISIBLE);
+//        mDirectionMarker.setVisible(true);
+//
+//        // Clear annotation markers.
+//        for (Marker m : mMarkerToAnnotation.keySet()) {
+//            m.remove();
+//        }
+//        mMarkerToAnnotation.clear();
+//        mWalkedPolyline.setVisible(false);
+//        updateDisplayedPolyLine(mDisplayedSegments);
+//    }
 
     /**
      * Sets state to ending early.
@@ -330,7 +330,6 @@ public class MapActivity extends Activity implements
         mTextMiles.setVisibility(View.INVISIBLE);
         mButtonShowDrawing.setVisibility(View.VISIBLE);
         mButtonShowTrace.setVisibility(View.VISIBLE);
-        mButtonNavigation.setText(getString(R.string.resume));
         mDirectionMarker.setVisible(false);
 
         // Show all future path
@@ -339,7 +338,7 @@ public class MapActivity extends Activity implements
         allPath.addAll(mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
-        displayWayPoints();
+        //displayWayPoints();
         setAllAnnotationMarkers();
     }
 
@@ -348,10 +347,34 @@ public class MapActivity extends Activity implements
      */
     private void setupListeners() {
         mButtonEndingEarly.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-                mIsEndingEarly = true;
-                setStateEndingEarly();
+
+                final MaterialDialog dialog = new MaterialDialog(MapActivity.this);
+                dialog.setTitle(R.string.ending_early);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setMessage(R.string.ending_early_message);
+
+                // Negative button
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // Positive button
+                dialog.setPositiveButton(R.string.yes, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsEndingEarly = true;
+                        setStateEndingEarly();
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 
@@ -367,18 +390,12 @@ public class MapActivity extends Activity implements
             }
         });
 
-        mButtonNavigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mIsEndingEarly) {
-                    mIsEndingEarly = false;
-                    disableStateEndingEarly();
-                } else {
-                    Intent intent = new Intent(MapActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
+//        mButtonBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                disableStateEndingEarly();
+//            }
+//        });
 
         mButtonShowTrace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -422,6 +439,7 @@ public class MapActivity extends Activity implements
     private void traceSuccess() {
         mIsTraceSuccess = true;
         final MaterialDialog dialog = new MaterialDialog(this);
+
         dialog.setTitle(R.string.trace_success);
         dialog.setMessage(R.string.trace_success_message);
         dialog.setCanceledOnTouchOutside(false);
@@ -506,15 +524,8 @@ public class MapActivity extends Activity implements
     private void showAnnotationDialog(TraceAnnotation annotation) {
         final MaterialDialog dialog = new MaterialDialog(this);
         dialog.setTitle(R.string.message);
+        dialog.setMessage(annotation.msg);
         dialog.setCanceledOnTouchOutside(true);
-
-        // Sets up message window
-        TextView text = new TextView(this);
-        text.setText(annotation.msg);
-        text.setLines(3);
-        text.setSingleLine(false);
-        text.setGravity(Gravity.CENTER);
-        dialog.setContentView(text);
 
         // Positive button
         dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
@@ -568,6 +579,7 @@ public class MapActivity extends Activity implements
 
     /**
      * Updates direction arrow position and orientation.
+     *
      * @param p1
      * @param p2
      */

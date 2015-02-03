@@ -1,6 +1,6 @@
 <resources>
 
-    <integer name="fragment_slide_time_milli">400</integer>
+    <integer name="fragment_slide_time_milli">300</integer>
     <integer name="screen_width_px">720</integer>
 
 </resources>

@@ -5,14 +5,13 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/annotate_content"
+        android:id="@+id/report_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top|left"
-        android:hint="@string/hint_enter_annotation"
+        android:hint="@string/enter_here"
         android:inputType="textMultiLine"
-        android:lines="2"
-        android:minLines="3"
+        android:minLines="4"
         android:textColor="@color/black" />
 
 </LinearLayout>

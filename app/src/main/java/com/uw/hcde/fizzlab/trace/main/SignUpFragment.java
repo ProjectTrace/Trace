@@ -47,7 +47,7 @@ public class SignUpFragment extends Fragment {
         TextView title = (TextView) view.findViewById(R.id.navigation_title);
         title.setText(getString(R.string.sign_up));
 
-        TextView buttonBack = (TextView) view.findViewById(R.id.navigation_button);
+        TextView buttonBack = (TextView) view.findViewById(R.id.navigation_button_home);
         buttonBack.setText(getString(R.string.back));
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override

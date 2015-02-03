@@ -57,7 +57,7 @@ public class AnnotationView extends View {
         // Set up paint
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.main_cyan2));
+        mPaint.setColor(getResources().getColor(R.color.cyan_light));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStyle(Paint.Style.FILL);
     }
@@ -82,9 +82,9 @@ public class AnnotationView extends View {
      * @param p
      */
     private void drawCircle(Canvas canvas, Point p) {
-        mPaint.setColor(getResources().getColor(R.color.main_cyan2));
+        mPaint.setColor(getResources().getColor(R.color.cyan_light));
         canvas.drawCircle(p.x, p.y, mCircle_radius_bg, mPaint);
-        mPaint.setColor(getResources().getColor(R.color.main_cyan1));
+        mPaint.setColor(getResources().getColor(R.color.cyan));
         canvas.drawCircle(p.x, p.y, mCircle_radius_small, mPaint);
     }
 

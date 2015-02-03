@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
 import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 
@@ -31,7 +32,6 @@ public class ShowDrawingFragment extends Fragment {
     private static final String TAG = "ShowDrawingFragment";
 
     // Main buttons
-    private TextView mButtonBack;
     private List<Point> mPoints;
 
     @Override
@@ -39,18 +39,10 @@ public class ShowDrawingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_drawing, container, false);
 
         // Set navigation title and back button
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.show_drawing));
-        mButtonBack = (TextView) view.findViewById(R.id.navigation_button);
-        mButtonBack.setText(getString(R.string.back));
-        mButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                fm.popBackStack();
-                getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
-            }
-        });
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.show_drawing);
+        ((BaseActivity) getActivity()).enableBackButton();
+
+
         mPoints = DrawUtil.tracePointsToPoints(TraceDataContainer.rawTracePoints);
 
         // Set up drawing view path
@@ -58,6 +50,12 @@ public class ShowDrawingFragment extends Fragment {
         layout.addView(new DrawingViewPath(getActivity()));
 
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((BaseActivity) getActivity()).enableHomeButton();
     }
 
     /**

@@ -99,7 +99,7 @@ public class DrawUtil {
     }
 
     /**
-     * Converts tracePoints to points.
+     * Converts trimmedTracePoints to points.
      * @param tracePoints
      * @return
      */
@@ -115,7 +115,7 @@ public class DrawUtil {
      * Converts points to TracePoints
      *
      * @param points
-     * @return tracePoints
+     * @return trimmedTracePoints
      */
     public static List<TracePoint> pointsToTracePoints(List<Point> points) {
         List<TracePoint> tracePoints = new ArrayList<TracePoint>();

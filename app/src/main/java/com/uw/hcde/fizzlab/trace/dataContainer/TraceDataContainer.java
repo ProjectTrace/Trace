@@ -11,6 +11,6 @@ public class TraceDataContainer {
     public static int distance;
 
     public static List<TracePoint> rawTracePoints;
-    public static List<TracePoint> tracePoints;
+    public static List<TracePoint> trimmedTracePoints;
     public static String description;
 }

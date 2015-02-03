@@ -25,4 +25,7 @@ dependencies {
 
     // Material view dialog
     compile 'me.drakeet.materialdialog:library:1.2.2'
+
+    // Buttons
+    compile 'info.hoang8f:fbutton:+'
 }

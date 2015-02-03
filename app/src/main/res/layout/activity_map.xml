@@ -1,20 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_cyan1"
-
-    >
-
-    <!-- Navigation bar -->
-    <include
-        android:id="@+id/navigation_bar"
-        layout="@layout/navigation_bar" />
+    android:background="@color/cyan">
 
     <FrameLayout
         android:id="@+id/drawing_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/navigation_bar">
+        android:layout_height="40dp">
 
         <TextView
             android:id="@+id/description_text"
@@ -31,35 +23,6 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical">
-
-        <!-- Direction message -->
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:text="@string/less_than" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/map_direction"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:text="direction goes here"-->
-        <!--android:textSize="20sp" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:text="@string/greater_than" />-->
 
         <LinearLayout
 
@@ -82,7 +45,7 @@
                 android:id="@+id/text_miles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mile"
+                android:text="@string/miles_traveled"
                 android:visibility="visible" />
 
         </LinearLayout>

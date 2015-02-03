@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -250,6 +253,12 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         if (returnCode == ParseConstant.SUCCESS) {
             mProgressDialog.dismiss();
             TraceUtil.showToast(getActivity(), getString(R.string.toast_success));
+
+            // send notification to users
+            ParsePush parsePush = new ParsePush();
+            ParseQuery pQuery = ParseInstallation.getQuery();
+            pQuery.whereContainedIn("username", mReceiverNames);
+            parsePush.sendMessageInBackground("Hello!", pQuery);
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

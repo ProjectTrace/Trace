@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -69,7 +72,7 @@ public class SignUpFragment extends Fragment {
      * Signs up this user account if all input is valid.
      */
     private void signUp() {
-        String username = usernameEditText.getText().toString().trim();
+        final String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String passwordAgain = passwordAgainEditText.getText().toString().trim();
 
@@ -122,6 +125,20 @@ public class SignUpFragment extends Fragment {
                     // Show the error message
                     TraceUtil.showToast(getActivity(), e.getMessage());
                 } else {
+                    // add username to installation table
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("username", ParseUser.getCurrentUser());
+                    installation.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d(TAG, "Success add username to installation table");
+                            } else {
+                                Log.e(TAG, "Failed add username to installation table");
+                            }
+                        }
+                    });
+
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(getActivity(), DispatchActivity.class);
 

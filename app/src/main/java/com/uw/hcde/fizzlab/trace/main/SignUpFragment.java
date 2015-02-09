@@ -119,6 +119,7 @@ public class SignUpFragment extends Fragment {
         ParseUser user = new ParseUser();
         user.setUsername(email);
         user.setPassword(password);
+        user.setEmail(email);
 
         // Call Parse sign up method
         user.signUpInBackground(new SignUpCallback() {
@@ -167,13 +168,8 @@ public class SignUpFragment extends Fragment {
                                                     }
                                                 }
                                             });
-                                            /*
-                                            // send by channel
-                                            ParsePush push = new ParsePush();
-                                            push.setChannel(email);
-                                            push.setMessage("Welcome to trace");
-                                            push.sendInBackground();
-                                            */
+
+
                                         } else {
                                             Log.e(TAG, "Failed add email to installation table");
                                         }

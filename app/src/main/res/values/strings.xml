@@ -8,11 +8,11 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="new_to_trace">New to Trace?</string>
-    <string name="username">username</string>
+    <string name="email" >email address</string>
     <string name="password">password</string>
     <string name="password_again">password again</string>
     <string name="error_intro">"please "</string>
-    <string name="error_blank_username">enter a username</string>
+    <string name="error_blank_email">enter a email</string>
     <string name="error_blank_password">enter a password</string>
     <string name="error_mismatched_passwords">enter the same password twice</string>
     <string name="error_join">", and "</string>

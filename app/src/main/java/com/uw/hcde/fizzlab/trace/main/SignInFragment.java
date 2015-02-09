@@ -27,7 +27,7 @@ public class SignInFragment extends Fragment {
     private static final String TAG = "SignInFragment";
 
     // UI references.
-    private EditText mUsernameEditText;
+    private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private View mButtonSignUp;
     private View mButtonLogin;
@@ -37,7 +37,7 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         // Sets up the login form
-        mUsernameEditText = (EditText) view.findViewById(R.id.text_username);
+        mEmailEditText = (EditText) view.findViewById(R.id.text_email);
         mPasswordEditText = (EditText) view.findViewById(R.id.text_password);
 
         // Sets up the submit button click handler
@@ -79,15 +79,15 @@ public class SignInFragment extends Fragment {
      * Handles login logic
      */
     private void login() {
-        String username = mUsernameEditText.getText().toString().trim();
+        String email = mEmailEditText.getText().toString().trim();
         String password = mPasswordEditText.getText().toString().trim();
 
         // Validate the log in data
         boolean validationError = false;
         StringBuilder validationErrorMessage = new StringBuilder(getString(R.string.error_intro));
-        if (username.length() == 0) {
+        if (email.length() == 0) {
             validationError = true;
-            validationErrorMessage.append(getString(R.string.error_blank_username));
+            validationErrorMessage.append(getString(R.string.error_blank_email));
         }
         if (password.length() == 0) {
             if (validationError) {
@@ -112,7 +112,7 @@ public class SignInFragment extends Fragment {
 
 
         // Call the Parse login method
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
+        ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
                 dialog.dismiss();

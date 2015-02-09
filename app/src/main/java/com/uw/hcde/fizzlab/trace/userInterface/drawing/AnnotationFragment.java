@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SendCallback;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
@@ -221,11 +223,25 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
             TraceUtil.showToast(getActivity(), getString(R.string.toast_success));
 
             // send notification to users
-            ParsePush parsePush = new ParsePush();
-            ParseQuery pQuery = ParseInstallation.getQuery();
-            pQuery.whereContainedIn("username", mReceiverNames);
-            parsePush.sendMessageInBackground("Hello!", pQuery);
+            ParseQuery pushQuery = ParseInstallation.getQuery();
+            pushQuery.whereContainedIn("username", mReceiverNames); // Set the target email
 
+            // Send push notification to query by email
+            ParsePush push = new ParsePush();
+            push.setQuery(pushQuery);
+            push.setMessage(ParseUser.getCurrentUser().getUsername() + " send you a new drawing: " + mDescription);
+            push.sendInBackground(new SendCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        Log.d(TAG, "Success send welcome notification");
+                    } else {
+                        Log.e(TAG, "Failed send welcome notification");
+                    }
+                }
+            });
+
+            //
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

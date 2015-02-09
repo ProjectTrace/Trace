@@ -13,12 +13,12 @@
         android:src="@drawable/app_logo" />
 
     <EditText
-        android:id="@+id/text_username"
+        android:id="@+id/text_email"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:hint="@string/username"
+        android:layout_marginTop="50dp"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:singleLine="true"/>

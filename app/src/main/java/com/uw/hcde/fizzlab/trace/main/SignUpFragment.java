@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParsePush;
 import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -30,7 +34,7 @@ public class SignUpFragment extends Fragment {
     private static final String TAG = "SignUpFragment";
 
     // UI references.
-    private EditText usernameEditText;
+    private EditText emailEditText;
     private EditText passwordEditText;
     private EditText passwordAgainEditText;
 
@@ -39,7 +43,7 @@ public class SignUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         // Get buttons
-        usernameEditText = (EditText) view.findViewById(R.id.text_username);
+        emailEditText = (EditText) view.findViewById(R.id.text_email);
         passwordEditText = (EditText) view.findViewById(R.id.text_password);
         passwordAgainEditText = (EditText) view.findViewById(R.id.text_password_again);
 
@@ -72,16 +76,16 @@ public class SignUpFragment extends Fragment {
      * Signs up this user account if all input is valid.
      */
     private void signUp() {
-        final String username = usernameEditText.getText().toString().trim();
+        final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String passwordAgain = passwordAgainEditText.getText().toString().trim();
 
         // Validate the sign up data
         boolean validationError = false;
         StringBuilder validationErrorMessage = new StringBuilder(getString(R.string.error_intro));
-        if (username.length() == 0) {
+        if (email.length() == 0) {
             validationError = true;
-            validationErrorMessage.append(getString(R.string.error_blank_username));
+            validationErrorMessage.append(getString(R.string.error_blank_email));
         }
         if (password.length() == 0) {
             if (validationError) {
@@ -113,7 +117,7 @@ public class SignUpFragment extends Fragment {
 
         // Set up a new Parse user
         ParseUser user = new ParseUser();
-        user.setUsername(username);
+        user.setUsername(email);
         user.setPassword(password);
 
         // Call Parse sign up method
@@ -126,17 +130,58 @@ public class SignUpFragment extends Fragment {
                     TraceUtil.showToast(getActivity(), e.getMessage());
                 } else {
                     // add username to installation table
-                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                    installation.put("username", ParseUser.getCurrentUser());
-                    installation.saveInBackground(new SaveCallback() {
+                    ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d(TAG, "Success add username to installation table");
+                            if (e != null) {
+                                Log.d(TAG, "save installation error");
                             } else {
-                                Log.e(TAG, "Failed add username to installation table");
+                                Log.d(TAG, "Success save installation");
+                                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                installation.put("username", email);
+                                ParsePush.subscribeInBackground(email);
+                                //installation.put(email, ParseUser.getCurrentUser());
+                                installation.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            Log.d(TAG, "Success add email to installation table");
+                                            Log.d(TAG, "Send notification");
+                                            // test notification by say hello from trace team
+
+                                            // Create our Installation query
+                                            ParseQuery pushQuery = ParseInstallation.getQuery();
+                                            pushQuery.whereEqualTo("username", email); // Set the target email
+
+                                            // Send push notification to query
+                                            ParsePush push = new ParsePush();
+                                            push.setQuery(pushQuery);
+                                            push.setMessage("Welcome to Trace!");
+                                            push.sendInBackground(new SendCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        Log.d(TAG, "Success send welcome notification");
+                                                    } else {
+                                                        Log.e(TAG, "Failed send welcome notification");
+                                                    }
+                                                }
+                                            });
+                                            /*
+                                            // send by channel
+                                            ParsePush push = new ParsePush();
+                                            push.setChannel(email);
+                                            push.setMessage("Welcome to trace");
+                                            push.sendInBackground();
+                                            */
+                                        } else {
+                                            Log.e(TAG, "Failed add email to installation table");
+                                        }
+                                    }
+                                });
                             }
                         }
+
                     });
 
                     // Start an intent for the dispatch activity

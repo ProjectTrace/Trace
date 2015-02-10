@@ -76,7 +76,7 @@ public class DrawFragment extends Fragment {
                 // Fragment transaction
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
-                        .add(R.id.fragment_container, fragment)
+                        .add(R.id.fragment_container, fragment, DrawActivity.ANNOTATION_FRAGMENT_TAG)
                         .addToBackStack(null)
                         .commit();
             }

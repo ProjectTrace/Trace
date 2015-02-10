@@ -90,6 +90,7 @@ public class TraceUtil {
             dialog.setPositiveButton(R.string.settings, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dialog.dismiss();
                     Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                     context.startActivity(intent);
                 }
@@ -127,6 +128,7 @@ public class TraceUtil {
             dialog.setPositiveButton(R.string.settings, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dialog.dismiss();
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     context.startActivity(intent);
                 }

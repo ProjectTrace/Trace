@@ -100,7 +100,7 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View v) {
                 String report = input.getText().toString();
                 if (report.length() != 0) {
-                    // Send to database
+                    //TODO: Send to database
                 }
                 dialog.dismiss();
                 TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));

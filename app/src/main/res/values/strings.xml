@@ -88,10 +88,9 @@
     <string name="enter_here">please enter here</string>
     <string name="thanks">thanks!</string>
     <string name="ending_early_message">If ending early, you won\'t be able to resume tracing. Are you sure?</string>
+    <string name="tutorial">Tutorial</string>
 
     <!-- Test only -->
-    <string name="draw_instruction"> Dear tester,
-        \nThe first drawing point will be used as trace starting point.
-        \nTop -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>
+    <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>
 
 </resources>

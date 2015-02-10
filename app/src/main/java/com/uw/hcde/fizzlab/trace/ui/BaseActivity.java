@@ -1,0 +1,186 @@
+package com.uw.hcde.fizzlab.trace.ui;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.main.MainActivity;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
+
+import org.w3c.dom.Text;
+
+import info.hoang8f.widget.FButton;
+import me.drakeet.materialdialog.MaterialDialog;
+
+/**
+ * Base activity.
+ *
+ * @author tianchi
+ */
+public abstract class BaseActivity extends Activity {
+    public static final String TAG = "TraceBaseActivity";
+    public static final int NAVIGATION_BAR_TYPE_CYAN = 1;
+    public static final int NAVIGATION_BAR_TYPE_ROSE = 2;
+    public static final int NAVIGATION_BAR_TITLE_SIZE_SMALL_SP = 17;
+    public static final int NAVIGATION_BAR_TITLE_SIZE_SP = 22;
+
+    ViewGroup mNavigationBar;
+    TextView mNavigationTitle;
+    View mNavigationDivider;
+
+    View mButtonHome;
+    View mButtonBack;
+    View mButtonReport;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trace_base);
+
+        mNavigationBar = (ViewGroup) findViewById(R.id.navigation_content);
+        mNavigationTitle = (TextView) findViewById(R.id.navigation_title);
+        mNavigationDivider = findViewById(R.id.navigation_divider);
+
+        mButtonHome = findViewById(R.id.navigation_button_home);
+        mButtonBack = findViewById(R.id.navigation_button_back);
+        mButtonReport = findViewById(R.id.navigation_button_report);
+        setupListener();
+    }
+
+    private void setupListener() {
+        mButtonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BaseActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleBackButton();
+            }
+        });
+
+        mButtonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MaterialDialog dialog = new MaterialDialog(BaseActivity.this);
+                dialog.setTitle(R.string.report_problem);
+
+                // Set up dialog view
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.dialog_report_problem, null);
+                final EditText input = (EditText) view.findViewById(R.id.report_content);
+                dialog.setContentView(view);
+                dialog.setCanceledOnTouchOutside(true);
+
+                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String report = input.getText().toString();
+                        if (report.length() != 0) {
+                            // Send to database
+                        }
+                        dialog.dismiss();
+                        TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));
+                    }
+                });
+                dialog.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Checks if network connection is available
+        TraceUtil.checkNetworkStatus(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        handleBackButton();
+    }
+
+    protected void handleBackButton() {
+        finish();
+    }
+
+    public void enableHomeButton() {
+        mButtonHome.setVisibility(View.VISIBLE);
+        mButtonBack.setVisibility(View.INVISIBLE);
+    }
+
+    public void enableBackButton() {
+        mButtonBack.setVisibility(View.VISIBLE);
+        mButtonHome.setVisibility(View.INVISIBLE);
+    }
+
+    public void enableReportButton() {
+        mButtonReport.setVisibility(View.VISIBLE);
+    }
+
+    public void disableReportButton() {
+        mButtonReport.setVisibility(View.INVISIBLE);
+    }
+
+    public void enableNavigationBar() {
+        mNavigationTitle.setVisibility(View.VISIBLE);
+        mNavigationDivider.setVisibility(View.VISIBLE);
+    }
+
+    public void disableNavigationBar() {
+        for (int i = 0; i < mNavigationBar.getChildCount(); i++) {
+            mNavigationBar.getChildAt(i).setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    /**
+     * Sets navigation color
+     *
+     * @param type
+     */
+    public void setNavigationBarType(int type) {
+
+        if (type == NAVIGATION_BAR_TYPE_ROSE) {
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.rose));
+            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.rose_dark));
+        } else {
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.cyan));
+            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.cyan_dark));
+        }
+    }
+
+    /**
+     * Sets navigation title
+     */
+    public void setNavigationTitle(int resId) {
+        setNavigationTitle(resId, NAVIGATION_BAR_TITLE_SIZE_SP);
+    }
+
+    /**
+     * Sets navigation title
+     */
+    public void setNavigationTitle(int resId, float sizeSp) {
+        mNavigationTitle.setText(getString(resId));
+        mNavigationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp);
+    }
+}

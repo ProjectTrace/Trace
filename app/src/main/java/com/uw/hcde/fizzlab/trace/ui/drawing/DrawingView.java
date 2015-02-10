@@ -55,6 +55,12 @@ public class DrawingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
+        // Fill with rose color
+        if (points.isEmpty()) {
+            canvas.drawColor(getResources().getColor(R.color.rose));
+            return;
+        }
+
         // Use Quadratic Bézier curves to draw path
         Path path = DrawUtil.getBezierPath(points);
         if (mIsFinish) {

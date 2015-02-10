@@ -3,14 +3,6 @@
     android:layout_height="match_parent"
     android:background="@color/rose">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/draw_instruction"
-        android:textSize="12sp" />
-
     <RelativeLayout
         android:id="@+id/button_menu"
         android:layout_width="match_parent"

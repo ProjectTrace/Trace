@@ -9,15 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
-import org.w3c.dom.Text;
-
-import info.hoang8f.widget.FButton;
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
@@ -36,9 +34,9 @@ public abstract class BaseActivity extends Activity {
     TextView mNavigationTitle;
     View mNavigationDivider;
 
-    View mButtonHome;
+    ImageView mButtonHome;
     View mButtonBack;
-    View mButtonReport;
+    ImageView mButtonReport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +47,9 @@ public abstract class BaseActivity extends Activity {
         mNavigationTitle = (TextView) findViewById(R.id.navigation_title);
         mNavigationDivider = findViewById(R.id.navigation_divider);
 
-        mButtonHome = findViewById(R.id.navigation_button_home);
+        mButtonHome = (ImageView) findViewById(R.id.navigation_button_home);
         mButtonBack = findViewById(R.id.navigation_button_back);
-        mButtonReport = findViewById(R.id.navigation_button_report);
+        mButtonReport = (ImageView) findViewById(R.id.navigation_button_report);
         setupListener();
     }
 
@@ -74,38 +72,43 @@ public abstract class BaseActivity extends Activity {
         mButtonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final MaterialDialog dialog = new MaterialDialog(BaseActivity.this);
-                dialog.setTitle(R.string.report_problem);
-
-                // Set up dialog view
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.dialog_report_problem, null);
-                final EditText input = (EditText) view.findViewById(R.id.report_content);
-                dialog.setContentView(view);
-                dialog.setCanceledOnTouchOutside(true);
-
-                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String report = input.getText().toString();
-                        if (report.length() != 0) {
-                            // Send to database
-                        }
-                        dialog.dismiss();
-                        TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));
-                    }
-                });
-                dialog.show();
+                handleReportButton();
             }
         });
     }
+
+    protected void handleReportButton() {
+        final MaterialDialog dialog = new MaterialDialog(BaseActivity.this);
+        dialog.setTitle(R.string.report_problem);
+
+        // Set up dialog view
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.dialog_report_problem, null);
+        final EditText input = (EditText) view.findViewById(R.id.report_content);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String report = input.getText().toString();
+                if (report.length() != 0) {
+                    // Send to database
+                }
+                dialog.dismiss();
+                TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));
+            }
+        });
+        dialog.show();
+    }
+
 
     @Override
     protected void onResume() {
@@ -162,10 +165,13 @@ public abstract class BaseActivity extends Activity {
 
         if (type == NAVIGATION_BAR_TYPE_ROSE) {
             mNavigationBar.setBackgroundColor(getResources().getColor(R.color.rose));
-            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.rose_dark));
+            mButtonReport.setImageResource(R.drawable.report_rose);
+            mButtonHome.setImageResource(R.drawable.home_rose);
+
         } else {
             mNavigationBar.setBackgroundColor(getResources().getColor(R.color.cyan));
-            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.cyan_dark));
+            mButtonReport.setImageResource(R.drawable.report_cyan);
+            mButtonHome.setImageResource(R.drawable.home_cyan);
         }
     }
 

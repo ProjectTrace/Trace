@@ -27,7 +27,7 @@
     <!--android:text="@string/home"-->
     <!--android:textColor="@drawable/text_clickable" />-->
 
-    <TextView
+    <ImageView
         android:id="@+id/navigation_button_home"
         android:layout_width="28dp"
         android:layout_height="25dp"
@@ -36,7 +36,8 @@
         android:layout_marginLeft="10dp"
         android:clickable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/home_button" />
+        android:src="@drawable/home_button"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/navigation_button_back"
@@ -59,12 +60,14 @@
         android:layout_marginRight="10dp"
         android:text="@string/report_problem"
         android:textSize="13sp"
+        android:visibility="invisible"
         fbutton:cornerRadius="5dp"
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="2dp" />
 
 
     <View
+        android:id="@+id/navigation_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"

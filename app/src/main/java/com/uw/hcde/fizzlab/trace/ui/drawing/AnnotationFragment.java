@@ -1,7 +1,6 @@
-package com.uw.hcde.fizzlab.trace.userInterface.drawing;
+package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -29,7 +28,7 @@ import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendCallback;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.util.ArrayList;

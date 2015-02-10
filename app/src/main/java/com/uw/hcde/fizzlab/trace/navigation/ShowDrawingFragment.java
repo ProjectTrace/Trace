@@ -1,7 +1,6 @@
 package com.uw.hcde.fizzlab.trace.navigation;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,11 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawUtil;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 
 import java.util.List;

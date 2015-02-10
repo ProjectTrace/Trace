@@ -1,7 +1,6 @@
-package com.uw.hcde.fizzlab.trace.main;
+package com.uw.hcde.fizzlab.trace.ui.welcome;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.ParseInstallation;
@@ -22,6 +19,8 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 /**
@@ -48,19 +47,9 @@ public class SignUpFragment extends Fragment {
         passwordAgainEditText = (EditText) view.findViewById(R.id.text_password_again);
 
         // Set navigation bar
-        TextView title = (TextView) view.findViewById(R.id.navigation_title);
-        title.setText(getString(R.string.sign_up));
-
-        TextView buttonBack = (TextView) view.findViewById(R.id.navigation_button_home);
-        buttonBack.setText(getString(R.string.back));
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Do I need to check stack count here?
-                FragmentManager fm = getFragmentManager();
-                fm.popBackStack();
-            }
-        });
+        ((BaseActivity)getActivity()).enableNavigationBar();
+        ((BaseActivity)getActivity()).enableBackButton();
+        ((BaseActivity)getActivity()).setNavigationTitle(R.string.sign_up);
 
         View buttonSignUp = view.findViewById(R.id.button_sign_up);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {

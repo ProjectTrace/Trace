@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.parse.ParseUser;
+import com.uw.hcde.fizzlab.trace.ui.welcome.WelcomeActivity;
+
 /**
  * Activity which starts an intent for either Welcome activity
  * or Main activity.

@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.drawing;
+package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 import java.util.ArrayList;
 

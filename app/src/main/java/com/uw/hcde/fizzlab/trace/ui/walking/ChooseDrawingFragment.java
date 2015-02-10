@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.walking;
+package com.uw.hcde.fizzlab.trace.ui.walking;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawUtil;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
@@ -141,7 +141,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
      */
     private void setEmptyContent() {
         mEmptyContentView.setVisibility(View.VISIBLE);
-        mButtonNext.setOnClickListener(null);
+        mButtonNext.setVisibility(View.INVISIBLE);
     }
 
     // Retrieve drawings -> annotations -> creators

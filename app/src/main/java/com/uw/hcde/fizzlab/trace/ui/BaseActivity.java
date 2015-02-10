@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface;
+package com.uw.hcde.fizzlab.trace.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
+
+import org.w3c.dom.Text;
 
 import info.hoang8f.widget.FButton;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -24,11 +27,14 @@ import me.drakeet.materialdialog.MaterialDialog;
  */
 public abstract class BaseActivity extends Activity {
     public static final String TAG = "TraceBaseActivity";
-    public static final int NAVIGATION_BAR_TYPE_DRAW = 1;
-    public static final int NAVIGATION_BAR_TYPE_WALK = 2;
-    public static final int NAVIGATION_BAR_TYPE_PROFILE = 3;
+    public static final int NAVIGATION_BAR_TYPE_CYAN = 1;
+    public static final int NAVIGATION_BAR_TYPE_ROSE = 2;
     public static final int NAVIGATION_BAR_TITLE_SIZE_SMALL_SP = 17;
     public static final int NAVIGATION_BAR_TITLE_SIZE_SP = 22;
+
+    ViewGroup mNavigationBar;
+    TextView mNavigationTitle;
+    View mNavigationDivider;
 
     View mButtonHome;
     View mButtonBack;
@@ -38,6 +44,10 @@ public abstract class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trace_base);
+
+        mNavigationBar = (ViewGroup) findViewById(R.id.navigation_content);
+        mNavigationTitle = (TextView) findViewById(R.id.navigation_title);
+        mNavigationDivider = findViewById(R.id.navigation_divider);
 
         mButtonHome = findViewById(R.id.navigation_button_home);
         mButtonBack = findViewById(R.id.navigation_button_back);
@@ -98,6 +108,13 @@ public abstract class BaseActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Checks if network connection is available
+        TraceUtil.checkNetworkStatus(this);
+    }
+
+    @Override
     public void onBackPressed() {
         handleBackButton();
     }
@@ -116,21 +133,39 @@ public abstract class BaseActivity extends Activity {
         mButtonHome.setVisibility(View.INVISIBLE);
     }
 
+    public void enableReportButton() {
+        mButtonReport.setVisibility(View.VISIBLE);
+    }
+
+    public void disableReportButton() {
+        mButtonReport.setVisibility(View.INVISIBLE);
+    }
+
+    public void enableNavigationBar() {
+        mNavigationTitle.setVisibility(View.VISIBLE);
+        mNavigationDivider.setVisibility(View.VISIBLE);
+    }
+
+    public void disableNavigationBar() {
+        for (int i = 0; i < mNavigationBar.getChildCount(); i++) {
+            mNavigationBar.getChildAt(i).setVisibility(View.INVISIBLE);
+        }
+    }
+
+
     /**
      * Sets navigation color
      *
      * @param type
      */
     public void setNavigationBarType(int type) {
-        View bar = findViewById(R.id.navigation_content);
-        FButton button = (FButton) findViewById(R.id.navigation_button_report);
 
-        if (type == NAVIGATION_BAR_TYPE_DRAW) {
-            bar.setBackgroundColor(getResources().getColor(R.color.rose));
-            button.setButtonColor(getResources().getColor(R.color.rose_dark));
+        if (type == NAVIGATION_BAR_TYPE_ROSE) {
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.rose));
+            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.rose_dark));
         } else {
-            bar.setBackgroundColor(getResources().getColor(R.color.cyan));
-            button.setButtonColor(getResources().getColor(R.color.cyan_dark));
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.cyan));
+            ((FButton) mButtonReport).setButtonColor(getResources().getColor(R.color.cyan_dark));
         }
     }
 
@@ -145,8 +180,7 @@ public abstract class BaseActivity extends Activity {
      * Sets navigation title
      */
     public void setNavigationTitle(int resId, float sizeSp) {
-        TextView title = (TextView) findViewById(R.id.navigation_title);
-        title.setText(getString(resId));
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp);
+        mNavigationTitle.setText(getString(resId));
+        mNavigationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp);
     }
 }

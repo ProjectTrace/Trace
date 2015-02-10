@@ -1,10 +1,10 @@
-package com.uw.hcde.fizzlab.trace.userInterface.profile;
+package com.uw.hcde.fizzlab.trace.ui.profile;
 
 import android.app.Fragment;
 import android.os.Bundle;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 /**
  * Profile activity.
@@ -18,7 +18,10 @@ public class ProfileActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_PROFILE);
+
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
+        enableReportButton();
+        enableHomeButton();
 
         Fragment fragment = new ProfileFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();

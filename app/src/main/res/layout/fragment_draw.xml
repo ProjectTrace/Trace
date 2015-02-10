@@ -40,7 +40,7 @@
 
     </RelativeLayout>
 
-    <com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawingView
+    <com.uw.hcde.fizzlab.trace.ui.drawing.DrawingView
         android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

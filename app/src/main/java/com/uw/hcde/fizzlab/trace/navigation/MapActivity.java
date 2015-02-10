@@ -34,7 +34,7 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import org.json.JSONObject;
@@ -113,7 +113,7 @@ public class MapActivity extends BaseActivity implements
         getLayoutInflater().inflate(R.layout.activity_map, frameLayout, true);
 
         // Sets navigation title
-        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_WALK);
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_ROSE);
         setNavigationTitle(R.string.map);
 
         // Buttons

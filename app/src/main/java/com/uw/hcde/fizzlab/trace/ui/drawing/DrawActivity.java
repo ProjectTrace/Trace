@@ -1,11 +1,11 @@
-package com.uw.hcde.fizzlab.trace.userInterface.drawing;
+package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 /**
  * Activity that handles drawing and annotation.
@@ -19,7 +19,10 @@ public class DrawActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_DRAW);
+
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_ROSE);
+        enableHomeButton();
+        enableReportButton();
 
         Fragment fragment = new DrawFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();

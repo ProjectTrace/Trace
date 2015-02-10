@@ -8,9 +8,9 @@ import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.profile.ProfileActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.walking.ChooseWalkActivity;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawActivity;
+import com.uw.hcde.fizzlab.trace.ui.profile.ProfileActivity;
+import com.uw.hcde.fizzlab.trace.ui.walking.ChooseWalkActivity;
 
 
 /**

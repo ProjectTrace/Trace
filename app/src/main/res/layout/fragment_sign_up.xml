@@ -5,9 +5,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <!-- Navigation bar -->
-    <include layout="@layout/navigation_bar" />
-
     <EditText
         android:id="@+id/text_email"
         android:layout_width="300dp"

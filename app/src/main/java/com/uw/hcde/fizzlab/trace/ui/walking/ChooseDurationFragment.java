@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.walking;
+package com.uw.hcde.fizzlab.trace.ui.walking;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.NumberPicker;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.navigation.MapActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.lang.reflect.Field;

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,6 @@ public abstract class BaseActivity extends Activity {
     public static final String TAG = "TraceBaseActivity";
     public static final int NAVIGATION_BAR_TYPE_CYAN = 1;
     public static final int NAVIGATION_BAR_TYPE_ROSE = 2;
-    public static final int NAVIGATION_BAR_TITLE_SIZE_SMALL_SP = 17;
-    public static final int NAVIGATION_BAR_TITLE_SIZE_SP = 22;
 
     ViewGroup mNavigationBar;
     TextView mNavigationTitle;
@@ -179,14 +176,6 @@ public abstract class BaseActivity extends Activity {
      * Sets navigation title
      */
     public void setNavigationTitle(int resId) {
-        setNavigationTitle(resId, NAVIGATION_BAR_TITLE_SIZE_SP);
-    }
-
-    /**
-     * Sets navigation title
-     */
-    public void setNavigationTitle(int resId, float sizeSp) {
         mNavigationTitle.setText(getString(resId));
-        mNavigationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp);
     }
 }

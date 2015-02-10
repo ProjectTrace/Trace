@@ -113,7 +113,7 @@ public class MapActivity extends BaseActivity implements
         getLayoutInflater().inflate(R.layout.activity_map, frameLayout, true);
 
         // Sets navigation title
-        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_ROSE);
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
         setNavigationTitle(R.string.map);
 
         // Buttons

@@ -71,8 +71,7 @@ public class AnnotationFragment extends Fragment implements ParseSendCallback {
         Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate,
-                BaseActivity.NAVIGATION_BAR_TITLE_SIZE_SMALL_SP);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);

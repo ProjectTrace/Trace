@@ -2,7 +2,7 @@
 
     android:id="@+id/navigation_content"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="50dp"
     android:layout_alignParentTop="true">
 
     <TextView
@@ -14,17 +14,6 @@
         android:paddingBottom="8dp"
         android:paddingTop="12dp"
         android:textSize="22sp" />
-
-    <!--<TextView-->
-    <!--android:id="@+id/navigation_button_home"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentLeft="true"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:clickable="true"-->
-    <!--android:paddingLeft="10dp"-->
-    <!--android:text="@string/home"-->
-    <!--android:textColor="@drawable/text_clickable" />-->
 
     <ImageView
         android:id="@+id/navigation_button_home"
@@ -63,9 +52,8 @@
     <View
         android:id="@+id/navigation_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
-        android:alpha="0.2"
         android:background="@color/black" />
 
 

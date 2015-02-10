@@ -3,26 +3,30 @@ package com.uw.hcde.fizzlab.trace.ui.walking;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
-import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveCallback;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,20 +39,9 @@ import java.util.List;
 public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCallback {
     private static final String TAG = "ChooseDrawingFragment";
 
-    private View mButtonNext;
-
-    // Drawing selector content
     private View mEmptyContentView;
-    private View mContentView;
-
-    // Drawing selector fields
-    private View mButtonLeft;
-    private View mButtonRight;
-    private TextView mCreator;
-    private TextView mDescription;
-    private TextView mDate;
-
-    private int mDrawingIndex;
+    private ListView mDrawingListView;
+    private ChooseDrawingAdapter mAdapter;
     private List<ParseDrawing> mDrawings;
     private ProgressDialog mProgressDialog;
 
@@ -60,40 +53,16 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
         ((BaseActivity) getActivity()).setNavigationTitle(R.string.choose_drawing);
 
         mEmptyContentView = view.findViewById(R.id.empty_message);
-        mContentView = view.findViewById(R.id.content);
-        mButtonLeft = view.findViewById(R.id.button_left);
-        mButtonRight = view.findViewById(R.id.button_right);
-        mCreator = (TextView) view.findViewById(R.id.creator);
-        mDescription = (TextView) view.findViewById(R.id.description);
-        mDate = (TextView) view.findViewById(R.id.date);
-        mButtonNext = view.findViewById(R.id.button_next);
-        setupButtons();
-
-        // Sets up progress dialog
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage(getString(R.string.progress_retrieving));
-        mProgressDialog.show();
-
-        mDrawingIndex = 0;
-        mDrawings = null;
-        ParseDataFactory.retrieveDrawings(ParseUser.getCurrentUser(), this);
-
-        return view;
-    }
-
-    /**
-     * Sets up buttons
-     */
-    private void setupButtons() {
-        mButtonNext.setOnClickListener(new View.OnClickListener() {
+        mAdapter = null;
+        mDrawingListView = (ListView) view.findViewById(R.id.choose_drawing_list);
+        mDrawingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Button next clicked");
-                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(mDrawingIndex));
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "drawing on click");
+                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(position));
                 TraceDataContainer.rawTracePoints = points;
                 TraceDataContainer.trimmedTracePoints = DrawUtil.trimPoints(points);
-                TraceDataContainer.description = mDrawings.get(mDrawingIndex).getDescription();
+                TraceDataContainer.description = mDrawings.get(position).getDescription();
                 Log.d(TAG, "trimmed trace points: " + TraceDataContainer.trimmedTracePoints.size());
 
                 // Fragment transaction
@@ -106,34 +75,15 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
             }
         });
 
+        // Sets up progress dialog
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(getString(R.string.progress_retrieving));
+        mProgressDialog.show();
 
-        mButtonLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawingIndex > 0) {
-                    mDrawingIndex--;
-                    updateDrawingDisplay();
-                }
-            }
-        });
-
-        mButtonRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawingIndex < mDrawings.size() - 1) {
-                    mDrawingIndex++;
-                    updateDrawingDisplay();
-                }
-            }
-        });
-    }
-
-
-    /**
-     * Sets up drawing content
-     */
-    private void setDrawingContent() {
-        mContentView.setVisibility(View.VISIBLE);
+        mDrawings = null;
+        ParseDataFactory.retrieveDrawings(ParseUser.getCurrentUser(), this);
+        return view;
     }
 
     /**
@@ -141,7 +91,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
      */
     private void setEmptyContent() {
         mEmptyContentView.setVisibility(View.VISIBLE);
-        mButtonNext.setVisibility(View.INVISIBLE);
+        mDrawingListView.setVisibility(View.INVISIBLE);
     }
 
     // Retrieve drawings -> annotations -> creators
@@ -166,7 +116,6 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
 
             } else {
                 ParseDataFactory.retrieveAnnotations(mDrawings, this);
-                mButtonNext.setVisibility(View.VISIBLE);
             }
         } else {
             showNetworkError();
@@ -190,9 +139,12 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
     @Override
     public void retrieveCreatorsCallback(int returnCode) {
         if (returnCode == ParseConstant.SUCCESS) {
-            updateDrawingDisplay();
             mProgressDialog.dismiss();
-            setDrawingContent();
+
+            // Finished retrieving
+            mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.choose_drawing_item, mDrawings);
+            mDrawingListView.setAdapter(mAdapter);
+
         } else {
             showNetworkError();
             mProgressDialog.dismiss();
@@ -209,18 +161,46 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCall
         mEmptyContentView.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Sets drawing display
-     */
-    public void updateDrawingDisplay() {
-        ParseDrawing drawing = mDrawings.get(mDrawingIndex);
-        mCreator.setText(drawing.getCreator().getUsername());
-        mDescription.setText(drawing.getDescription());
+    private class ChooseDrawingAdapter extends ArrayAdapter<ParseDrawing> {
 
-        // yyyy-MM-dd hh:mm:ss
-        CharSequence s = DateFormat.format("yyyy-MM-dd", drawing.getCreatedAt());
-        mDate.setText(s.toString());
+        // Use view holder pattern to improve performance
+        private class ViewHolder {
+            TextView mTitle;
+            TextView mDate;
+            TextView mSender;
+        }
 
-        Log.d(TAG, "update drawing: " + mDrawingIndex);
+        public ChooseDrawingAdapter(Context context, int textViewResourceId, List<ParseDrawing> items) {
+            super(context, textViewResourceId, items);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.choose_drawing_item, parent, false);
+
+                viewHolder = new ViewHolder();
+                viewHolder.mTitle = (TextView) convertView.findViewById(R.id.item_title);
+                viewHolder.mDate = (TextView) convertView.findViewById(R.id.item_date);
+                viewHolder.mSender = (TextView) convertView.findViewById(R.id.item_sender);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            ParseDrawing item = getItem(position);
+            if (position % 2 == 0) {
+                convertView.setBackground(getResources().getDrawable(R.color.cyan_dark));
+            } else {
+                convertView.setBackground(getResources().getDrawable(R.color.cyan));
+            }
+
+            if (item != null) {
+                viewHolder.mTitle.setText(item.getDescription());
+                viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
+                viewHolder.mSender.setText(item.getCreator().getUsername());
+            }
+            return convertView;
+        }
     }
 }

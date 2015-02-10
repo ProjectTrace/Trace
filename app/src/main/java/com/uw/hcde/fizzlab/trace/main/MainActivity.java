@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawActivity;
@@ -36,6 +39,8 @@ public class MainActivity extends Activity {
         mButtonWalk = findViewById(R.id.button_walk);
         mButtonYou = findViewById(R.id.button_you);
         setupListener();
+
+
     }
 
     @Override

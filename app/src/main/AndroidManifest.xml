@@ -145,6 +145,7 @@
                 <category android:name="com.uw.hcde.fizzlab.trace" />
             </intent-filter>
         </receiver>
+        <!--
         <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -152,10 +153,19 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-
-        <!--notification icon setting
-            <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/push_icon"/>
         -->
+        <receiver
+            android:name="com.uw.hcde.fizzlab.trace.main.Receiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+
+        <!--notification icon setting-->
+            <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/push_ic"/>
     </application>
 
 </manifest>

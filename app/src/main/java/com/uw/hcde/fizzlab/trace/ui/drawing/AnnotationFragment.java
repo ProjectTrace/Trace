@@ -27,7 +27,7 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseSendCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
@@ -41,7 +41,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  *
  * @author tianchi
  */
-public class AnnotationFragment extends Fragment implements ParseSendCallback {
+public class AnnotationFragment extends Fragment implements ParseSendDrawingCallback {
     public static final String TAG = "AnnotationFragment";
 
     private View mButtonSend;

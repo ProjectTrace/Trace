@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author tianchi
  */
-public interface ParseSendCallback {
+public interface ParseSendDrawingCallback {
     /**
      * Finished sending annotation to database.
      *

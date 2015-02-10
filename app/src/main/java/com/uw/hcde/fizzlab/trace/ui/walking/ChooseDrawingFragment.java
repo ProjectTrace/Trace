@@ -21,7 +21,7 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author tianchi
  */
-public class ChooseDrawingFragment extends Fragment implements ParseRetrieveCallback {
+public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDrawingCallback {
     private static final String TAG = "ChooseDrawingFragment";
 
     private View mEmptyContentView;

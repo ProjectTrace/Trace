@@ -9,4 +9,5 @@ package com.uw.hcde.fizzlab.trace.database;
 public class ParseConstant {
     public static final int SUCCESS = 0;
     public static final int FAILED = 1;
+    public static final String KEY_FRIEND_LIST = "key_friend_list";
 }

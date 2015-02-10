@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author tianchi
  */
-public interface ParseRetrieveCallback {
+public interface ParseRetrieveDrawingCallback {
     /**
      * Retrieves drawings
      *

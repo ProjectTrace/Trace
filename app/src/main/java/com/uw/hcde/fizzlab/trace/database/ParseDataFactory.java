@@ -11,8 +11,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveCallback;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseSendCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseNameToUserCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ParseDataFactory {
      * @param drawings
      * @param callback
      */
-    public static void retrieveAnnotations(List<ParseDrawing> drawings, final ParseRetrieveCallback callback) {
+    public static void retrieveAnnotations(List<ParseDrawing> drawings, final ParseRetrieveDrawingCallback callback) {
         List<ParseAnnotation> annotations = new ArrayList<ParseAnnotation>();
         for (ParseDrawing drawing : drawings) {
             annotations.addAll(drawing.getAnnotationList());
@@ -56,7 +57,7 @@ public class ParseDataFactory {
      * @param drawings
      * @param callback
      */
-    public static void retrieveCreators(List<ParseDrawing> drawings, final ParseRetrieveCallback callback) {
+    public static void retrieveCreators(List<ParseDrawing> drawings, final ParseRetrieveDrawingCallback callback) {
         List<ParseUser> creators = new ArrayList<ParseUser>();
         for (ParseDrawing drawing : drawings) {
             creators.add(drawing.getCreator());
@@ -80,7 +81,7 @@ public class ParseDataFactory {
      * @param user
      * @return list of parse drawings or empty list
      */
-    public static void retrieveDrawings(ParseUser user, final ParseRetrieveCallback callback) {
+    public static void retrieveDrawings(ParseUser user, final ParseRetrieveDrawingCallback callback) {
         // Set up query
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, user);
@@ -104,7 +105,7 @@ public class ParseDataFactory {
      * @param tracePoints
      * @param callback
      */
-    public static void sendAnnotation(List<TracePoint> tracePoints, final ParseSendCallback callback) {
+    public static void sendAnnotation(List<TracePoint> tracePoints, final ParseSendDrawingCallback callback) {
 
         // Initialize annotation list
         final List<ParseAnnotation> parseAnnotations = new ArrayList<ParseAnnotation>();
@@ -141,13 +142,37 @@ public class ParseDataFactory {
         });
     }
 
+    public static void convertNameToParseUser(String name, final ParseNameToUserCallback callback) {
+        // Get user query
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        Log.d(TAG, "Names : " + name.toString());
+        query.whereEqualTo("username", name);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null) {
+                    // Success
+                    if (parseUsers.size() > 0) {
+                        callback.nameToUserCallback(ParseConstant.SUCCESS, parseUsers.get(0));
+                    } else {
+                        callback.nameToUserCallback(ParseConstant.FAILED, null);
+                    }
+                } else {
+                    // Something went wrong.
+                    Log.e(TAG, "find users failed " + e.getMessage());
+                    callback.nameToUserCallback(ParseConstant.FAILED, null);
+                }
+            }
+        });
+    }
+
     /**
      * Converts name list to ParseUser list
      *
      * @param names
      * @param callback
      */
-    public static void convertNameToParseUser(List<String> names, final ParseSendCallback callback) {
+    public static void convertNameToParseUser(List<String> names, final ParseSendDrawingCallback callback) {
 
         // Get user query
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -179,7 +204,7 @@ public class ParseDataFactory {
      */
     public static void sendDrawing(String description, List<ParseUser> receivers,
                                    List<TracePoint> tracePoints, List<ParseAnnotation> annotations,
-                                   final ParseSendCallback callback) {
+                                   final ParseSendDrawingCallback callback) {
 
         // Initialize drawing
         final ParseDrawing parseDrawing = new ParseDrawing();

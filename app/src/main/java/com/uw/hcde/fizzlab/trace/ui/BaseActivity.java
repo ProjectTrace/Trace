@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface;
+package com.uw.hcde.fizzlab.trace.ui;
 
 import android.app.Activity;
 import android.content.Context;

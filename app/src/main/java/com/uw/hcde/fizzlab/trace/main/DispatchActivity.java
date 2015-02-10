@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
-import com.uw.hcde.fizzlab.trace.userInterface.walking.ChooseWalkActivity;
+import com.uw.hcde.fizzlab.trace.ui.welcome.WelcomeActivity;
 
 /**
  * Activity which starts an intent for either Welcome activity

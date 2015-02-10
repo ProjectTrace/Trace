@@ -1,10 +1,10 @@
-package com.uw.hcde.fizzlab.trace.userInterface.profile;
+package com.uw.hcde.fizzlab.trace.ui.profile;
 
 import android.app.Fragment;
 import android.os.Bundle;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 /**
  * Profile activity.

@@ -1,18 +1,11 @@
 package com.uw.hcde.fizzlab.trace.main;
 
 import android.app.Application;
-import android.content.Intent;
-import android.util.Log;
 
 import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
-import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
-import com.uw.hcde.fizzlab.trace.userInterface.walking.ChooseWalkActivity;
 
 /**
  * Configures Parse.

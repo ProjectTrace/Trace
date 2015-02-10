@@ -70,7 +70,7 @@
 
         <!-- Welcome screen -->
         <activity
-            android:name=".main.WelcomeActivity"
+            android:name=".ui.welcome.WelcomeActivity"
             android:label="@string/welcome"
             android:screenOrientation="portrait"
             android:theme="@style/LightTheme" />
@@ -88,7 +88,7 @@
         <!-- ============================================ -->
         <!-- Draw activity -->
         <activity
-            android:name=".userInterface.drawing.DrawActivity"
+            android:name=".ui.drawing.DrawActivity"
             android:label="@string/draw"
             android:screenOrientation="portrait" />
 
@@ -97,7 +97,7 @@
         <!-- ============================================ -->
 
         <activity
-            android:name=".userInterface.walking.ChooseWalkActivity"
+            android:name=".ui.walking.ChooseWalkActivity"
             android:label="@string/choose_distance"
             android:screenOrientation="portrait" />
 
@@ -121,7 +121,7 @@
         <!-- ============================================ -->
         <!-- Profile activity -->
         <activity
-            android:name=".userInterface.profile.ProfileActivity"
+            android:name=".ui.profile.ProfileActivity"
             android:label="@string/profile"
             android:screenOrientation="portrait" />
 

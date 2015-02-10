@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.main;
+package com.uw.hcde.fizzlab.trace.ui.welcome;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -14,10 +14,9 @@ import android.widget.EditText;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 /**

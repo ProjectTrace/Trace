@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.walking;
+package com.uw.hcde.fizzlab.trace.ui.walking;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 /**
  * Choose walk activity that controls choose drawing and distance fragments.

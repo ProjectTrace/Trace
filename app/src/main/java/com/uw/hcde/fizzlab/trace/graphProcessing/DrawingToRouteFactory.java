@@ -3,7 +3,7 @@ package com.uw.hcde.fizzlab.trace.graphProcessing;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.uw.hcde.fizzlab.trace.userInterface.drawing.DrawUtil;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;

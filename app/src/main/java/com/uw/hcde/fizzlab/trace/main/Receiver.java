@@ -2,10 +2,9 @@ package com.uw.hcde.fizzlab.trace.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
-import com.uw.hcde.fizzlab.trace.userInterface.walking.ChooseWalkActivity;
+import com.uw.hcde.fizzlab.trace.ui.walking.ChooseWalkActivity;
 
 /**
  * Created by ethan on 2/8/15.

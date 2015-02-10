@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.drawing;
+package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.content.Context;
 import android.content.DialogInterface;

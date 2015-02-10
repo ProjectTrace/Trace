@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.userInterface.profile;
+package com.uw.hcde.fizzlab.trace.ui.profile;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
-import com.uw.hcde.fizzlab.trace.userInterface.BaseActivity;
+import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
 /**
  * Profile fragment.

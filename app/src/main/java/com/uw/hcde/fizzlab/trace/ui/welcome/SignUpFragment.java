@@ -1,4 +1,4 @@
-package com.uw.hcde.fizzlab.trace.main;
+package com.uw.hcde.fizzlab.trace.ui.welcome;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -22,6 +22,7 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 /**

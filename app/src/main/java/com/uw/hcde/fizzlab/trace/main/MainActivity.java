@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
         mButtonWalk = findViewById(R.id.button_walk);
         mButtonYou = findViewById(R.id.button_you);
         setupListener();
+
+
     }
 
     @Override

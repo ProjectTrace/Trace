@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.parse.ParseException;
-import com.parse.ParsePush;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -47,9 +47,9 @@ public class SignUpFragment extends Fragment {
         passwordAgainEditText = (EditText) view.findViewById(R.id.text_password_again);
 
         // Set navigation bar
-        ((BaseActivity)getActivity()).enableNavigationBar();
-        ((BaseActivity)getActivity()).enableBackButton();
-        ((BaseActivity)getActivity()).setNavigationTitle(R.string.sign_up);
+        ((BaseActivity) getActivity()).enableNavigationBar();
+        ((BaseActivity) getActivity()).enableBackButton();
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.sign_up);
 
         View buttonSignUp = view.findViewById(R.id.button_sign_up);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {

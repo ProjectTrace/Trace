@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
+
 /**
  * Welcome activity that contains sign in and sign up fragments.
  *

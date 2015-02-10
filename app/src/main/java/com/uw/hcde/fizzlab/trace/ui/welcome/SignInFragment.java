@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
@@ -80,7 +81,7 @@ public class SignInFragment extends Fragment {
      * Handles login logic
      */
     private void login() {
-        String email = mEmailEditText.getText().toString().trim();
+        final String email = mEmailEditText.getText().toString().trim();
         String password = mPasswordEditText.getText().toString().trim();
 
         // Validate the log in data
@@ -121,6 +122,10 @@ public class SignInFragment extends Fragment {
                     // Show the error message
                     TraceUtil.showToast(getActivity(), e.getMessage());
                 } else {
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("username", email);
+                    installation.saveInBackground();
+
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(getActivity(), DispatchActivity.class);
 

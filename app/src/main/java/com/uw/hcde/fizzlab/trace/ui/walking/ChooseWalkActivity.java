@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 
@@ -21,6 +23,10 @@ public class ChooseWalkActivity extends BaseActivity {
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
         enableReportButton();
         enableHomeButton();
+
+        //track statistics about each app opened
+        ParseAnalytics.trackAppOpened(getIntent());
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         Fragment fragment = new ChooseDrawingFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();

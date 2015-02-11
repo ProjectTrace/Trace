@@ -19,6 +19,7 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -118,7 +119,7 @@ public class SignUpFragment extends Fragment {
         user.setUsername(email);
         user.setPassword(password);
         user.setEmail(email);
-        user.put("name", name);
+        user.put(ParseConstant.KEY_FULL_NAME, name);
 
         // Call Parse sign up method
         user.signUpInBackground(new SignUpCallback() {

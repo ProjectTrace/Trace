@@ -3,7 +3,8 @@
     android:id="@+id/navigation_content"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:layout_alignParentTop="true">
+    android:layout_alignParentTop="true"
+    android:background="@color/cyan_navigation_title">
 
     <TextView
         android:id="@+id/navigation_title"

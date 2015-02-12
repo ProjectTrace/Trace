@@ -13,13 +13,14 @@
     <color name="cyan">#ff2aada8</color>
     <color name="cyan_light">#52C2C1</color>
     <color name="cyan_dark">#ff1e8985</color>
+    <color name="cyan_navigation_title">#ff1e8985</color>
 
     <!-- friends list -->
-    <color name="gray_light1">#DCE4E4</color>
-    <color name="gray_light2">#EAEAEA</color>
+    <color name="gray">#DCE4E4</color>
+    <color name="gray_light">#EAEAEA</color>
 
     <!-- Color for draw screen -->
     <color name="rose">#F37159</color>
-    <color name="rose_dark">#ffe14d51</color>
+    <color name="rose_navigation_title">#ffe14d51</color>
 
 </resources>

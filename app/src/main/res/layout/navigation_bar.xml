@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/navigation_content"
     android:layout_width="match_parent"
@@ -13,41 +14,44 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif"
         android:paddingBottom="8dp"
-        android:text="@string/draw_step_2"
         android:paddingTop="13dp"
         android:textSize="19sp" />
 
     <ImageView
         android:id="@+id/navigation_button_home"
-        android:layout_width="28dp"
-        android:layout_height="25dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:clickable="true"
-        android:scaleType="fitXY"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/navigation_button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:clickable="true"
         android:paddingLeft="10dp"
+        android:scaleType="fitXY" />
+
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/navigation_button_back"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:gravity="center"
         android:text="@string/back"
-        android:textColor="@drawable/text_clickable"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        fbutton:buttonColor="@color/cyan_light"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/cyan_dark"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="3dp" />
 
     <ImageView
-
         android:id="@+id/navigation_button_report"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
+        android:paddingRight="10dp"
         android:text="@string/report_problem"
         android:textSize="13sp" />
 

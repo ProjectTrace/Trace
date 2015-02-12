@@ -38,7 +38,7 @@
     <string name="annotate">Annotate</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
-    <string name="back">&lt; Back</string>
+    <string name="back">Back</string>
     <string name="home">&lt; Home</string>
     <string name="log_out">Log out</string>
     <string name="ok">OK</string>

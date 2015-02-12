@@ -43,9 +43,13 @@ public class DrawActivity extends BaseActivity {
     @Override
     protected void handleBackButton() {
         FragmentManager fm = getFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
+        if (fm.getBackStackEntryCount() == 1) {
             fm.popBackStack();
-            setNavigationTitle(R.string.draw);
+            setNavigationTitle(R.string.draw_step_1);
+
+        } else if (fm.getBackStackEntryCount() == 2) {
+            fm.popBackStack();
+            setNavigationTitle(R.string.draw_step_2);
 
         } else {
             super.handleBackButton();

@@ -31,7 +31,7 @@ public class DrawFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_draw, container, false);
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.draw);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.draw_step_1);
 
         // Get views
         mButtonClear = view.findViewById(R.id.button_clear);

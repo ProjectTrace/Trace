@@ -71,7 +71,7 @@ public class AnnotationFragment extends Fragment implements ParseSendDrawingCall
         Log.d(TAG, "trace points size: " + mTracePoints.size());
 
         // Set navigation title
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.touch_to_annotate);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.draw_step_2);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);

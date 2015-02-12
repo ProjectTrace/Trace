@@ -100,6 +100,10 @@
     <string name="add">Add</string>
     <string name="please_enter_something">please enter something!</string>
     <string name="invalid_trace_user">invalid trace user!</string>
+    
+    <string name="draw_step_1">Step 1: Draw A Path</string>
+    <string name="draw_step_2">Step 2: Touch Line To Annotate</string>
+    <string name="draw_step_3">Step 3: Send</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>

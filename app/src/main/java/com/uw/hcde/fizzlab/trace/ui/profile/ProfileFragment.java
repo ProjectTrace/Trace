@@ -35,9 +35,12 @@ public class ProfileFragment extends Fragment {
         // Sets navigation title
         ((BaseActivity) getActivity()).setNavigationTitle(R.string.profile);
 
-        // Sets displayed username
+        // Sets displayed name and email
         TextView name = (TextView) view.findViewById(R.id.profile_name);
         name.setText(ParseUser.getCurrentUser().getString(ParseConstant.KEY_FULL_NAME));
+
+        TextView email = (TextView) view.findViewById(R.id.profile_email);
+        email.setText(ParseUser.getCurrentUser().getEmail());
 
         // Sets up the log out button click handler
         View buttonLogout = view.findViewById(R.id.profile_log_out);

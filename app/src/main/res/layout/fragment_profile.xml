@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:fontFamily="sans-serif"
-            android:text="Tianchi Liu"
             android:textSize="30sp" />
 
         <info.hoang8f.widget.FButton
@@ -43,8 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/profile_name"
-            android:text="tliu24@uw.edu" />
+            android:layout_below="@id/profile_name" />
 
     </RelativeLayout>
 

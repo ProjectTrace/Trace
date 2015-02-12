@@ -27,6 +27,26 @@ import java.util.List;
 public class ParseDataFactory {
     public static final String TAG = "ParseDataFactory";
 
+    public static void retrieveMyDrawings(ParseUser user, final ParseRetrieveDrawingCallback callback) {
+        // Set up query
+        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
+        query.whereEqualTo(ParseDrawing.KEY_CREATOR, user);
+        query.include(ParseDrawing.KEY_RECEIVER_LIST);
+        query.include(ParseDrawing.KEY_ANNOTATION_LIST);
+
+        // Start query
+        query.findInBackground(new FindCallback<ParseDrawing>() {
+            public void done(List<ParseDrawing> drawingList, ParseException e) {
+                if (e == null) {
+                    callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
+                } else {
+                    Log.e(TAG, "Retrieve drawings failed " + e.getMessage());
+                    callback.retrieveDrawingsCallback(ParseConstant.FAILED, null);
+                }
+            }
+        });
+    }
+
     /**
      * Gets list of parse drawings or empty list given user.
      *

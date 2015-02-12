@@ -1,6 +1,5 @@
 package com.uw.hcde.fizzlab.trace.database.callback;
 
-import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 
 import java.util.List;

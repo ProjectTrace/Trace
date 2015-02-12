@@ -114,6 +114,7 @@ public class MapActivity extends BaseActivity implements
 
         // Sets navigation title
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
+        enableHomeButton();
         setNavigationTitle(R.string.map);
 
         // Buttons

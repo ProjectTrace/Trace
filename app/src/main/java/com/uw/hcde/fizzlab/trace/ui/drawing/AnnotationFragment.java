@@ -38,7 +38,6 @@ public class AnnotationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_annotation, container, false);
         mButtonNext = view.findViewById(R.id.button_next);
 
-
         mRawPoints = TraceDataContainerSender.rawPoints;
         mTracePoints = DrawUtil.pointsToTracePoints(DrawUtil.normalizePoints(mRawPoints));
         TraceDataContainerSender.tracePoints = mTracePoints;
@@ -58,7 +57,6 @@ public class AnnotationFragment extends Fragment {
         setupButtons();
 
         return view;
-
     }
 
     /**
@@ -78,163 +76,7 @@ public class AnnotationFragment extends Fragment {
                         .commit();
             }
         });
-
-//        mButtonNext.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "Button send clicked");
-//
-//                final MaterialDialog dialog = new MaterialDialog(getActivity());
-//                dialog.setTitle(R.string.send);
-//
-//                // Set up dialog view
-//                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                View view = inflater.inflate(R.layout.dialog_send, null);
-//                final EditText inputNames = (EditText) view.findViewById(R.id.input_username);
-//                final EditText inputDescription = (EditText) view.findViewById(R.id.input_description);
-//
-//                // Build dialog
-//                dialog.setContentView(view);
-//                dialog.setCanceledOnTouchOutside(true);
-//                dialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        // Get list of username
-//                        mReceiverNames = new ArrayList<String>();
-//                        for (String s : inputNames.getText().toString().split(",")) {
-//                            String name = s.trim();
-//                            if (name.length() > 0) {
-//                                mReceiverNames.add(name);
-//                            }
-//                        }
-//
-//                        // Empty list
-//                        if (mReceiverNames.isEmpty()) {
-//                            TraceUtil.showToast(getActivity(), getString(R.string.toast_enter_username));
-//                            return;
-//                        }
-//
-//                        // Get description
-//                        mDescription = inputDescription.getText().toString().trim();
-//                        if (mDescription.length() == 0) {
-//                            TraceUtil.showToast(getActivity(), getString(R.string.toast_enter_description));
-//                            return;
-//                        }
-//
-//                        // Send data
-//                        sendData();
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-//            }
-//        });
     }
-
-    /**
-     * Sends all data to parse database and sets up progress dialog
-     * Get name -> send annotation -> send drawing
-     //     */
-//    private void sendData() {
-//        mProgressDialog.show();
-//        ParseDataFactory.convertNameToParseUser(mReceiverNames, this);
-//    }
-
-//    @Override
-//    public void convertNameToUserCallback(int returnCode, List<ParseUser> users) {
-//        if (returnCode == ParseConstant.SUCCESS) {
-//            mReceivers = users;
-//
-//            // Contains invalid names
-//            if (mReceivers.size() != mReceiverNames.size()) {
-//
-//                // Gets failed names
-//                List<String> failedNames = new ArrayList<String>(mReceiverNames);
-//                for (ParseUser user : mReceivers) {
-//                    if (mReceiverNames.contains(user.getUsername())) {
-//                        failedNames.remove(user.getUsername());
-//                    }
-//                }
-//
-//                // Finds out invalid usernames
-//                StringBuilder sb = new StringBuilder();
-//                sb.append(getString(R.string.toast_invalid_username));
-//                sb.append(" ");
-//                for (int i = 0; i < failedNames.size(); i++) {
-//                    sb.append(failedNames.get(i));
-//                    if (i < failedNames.size() - 1) {
-//                        sb.append(", ");
-//                    }
-//                }
-//
-//                mProgressDialog.dismiss();
-//                TraceUtil.showToast(getActivity(), sb.toString());
-//            } else {
-//                ParseDataFactory.sendAnnotation(mTracePoints, this);
-//            }
-//
-//        } else {
-//            mProgressDialog.dismiss();
-//            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
-//        }
-//    }
-
-//    @Override
-//    public void sendAnnotationCallback(int returnCode, List<ParseAnnotation> annotations) {
-//        if (returnCode == ParseConstant.SUCCESS) {
-//            ParseDataFactory.sendDrawing(mDescription, mReceivers, mTracePoints, annotations, this);
-//        } else {
-//            mProgressDialog.dismiss();
-//            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
-//        }
-//    }
-
-//    @Override
-//    public void sendDrawingCallback(int returnCode) {
-//        if (returnCode == ParseConstant.SUCCESS) {
-//            mProgressDialog.dismiss();
-//            TraceUtil.showToast(getActivity(), getString(R.string.toast_success));
-//
-//            // send notification to users
-//            ParseQuery pushQuery = ParseInstallation.getQuery();
-//            pushQuery.whereContainedIn("username", mReceiverNames); // Set the target email
-//
-//            // Send push notification to query by email
-//            ParsePush push = new ParsePush();
-//            push.setQuery(pushQuery);
-//            push.setMessage(ParseUser.getCurrentUser().getUsername() + " send you a new drawing: " + mDescription);
-//            push.sendInBackground(new SendCallback() {
-//                @Override
-//                public void done(ParseException e) {
-//                    if (e == null) {
-//                        Log.d(TAG, "Success send welcome notification");
-//                    } else {
-//                        Log.e(TAG, "Failed send welcome notification");
-//                    }
-//                }
-//            });
-//
-//            //
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    getActivity().finish();
-//                }
-//            }, TraceUtil.TOAST_MESSAGE_TIME);
-//
-//        } else {
-//            mProgressDialog.dismiss();
-//            TraceUtil.showToast(getActivity(), getString(R.string.toast_network_error));
-//        }
-//    }
 
     /**
      * Inner class to draw the path obtained from DrawingView activity, using rawPoints.

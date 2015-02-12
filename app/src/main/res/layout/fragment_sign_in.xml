@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:adjustViewBounds="true"
         android:src="@drawable/app_logo" />
 
@@ -17,7 +17,7 @@
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:maxLines="1"

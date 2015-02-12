@@ -131,53 +131,41 @@ public class SignUpFragment extends Fragment {
                     TraceUtil.showToast(getActivity(), e.getMessage());
                 } else {
                     // add username to installation table
-                    ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+
+
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.saveInBackground();
+                    installation.put("username", email);
+                    installation.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e != null) {
-                                Log.d(TAG, "save installation error");
-                            } else {
-                                Log.d(TAG, "Success save installation");
-                                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                                installation.put("username", email);
-                                ParsePush.subscribeInBackground(email);
-                                //installation.put(email, ParseUser.getCurrentUser());
-                                installation.saveInBackground(new SaveCallback() {
+                            if (e == null) {
+                                Log.d(TAG, "Success add email to installation table");
+                                Log.d(TAG, "Send notification");
+                                // test notification by say hello from trace team
+
+                                // Create our Installation query
+                                ParseQuery pushQuery = ParseInstallation.getQuery();
+                                pushQuery.whereEqualTo("username", email); // Set the target email
+
+                                // Send push notification to query
+                                ParsePush push = new ParsePush();
+                                push.setQuery(pushQuery);
+                                push.setMessage("Welcome to Trace!");
+                                push.sendInBackground(new SendCallback() {
                                     @Override
                                     public void done(ParseException e) {
                                         if (e == null) {
-                                            Log.d(TAG, "Success add email to installation table");
-                                            Log.d(TAG, "Send notification");
-                                            // test notification by say hello from trace team
-
-                                            // Create our Installation query
-                                            ParseQuery pushQuery = ParseInstallation.getQuery();
-                                            pushQuery.whereEqualTo("username", email); // Set the target email
-
-                                            // Send push notification to query
-                                            ParsePush push = new ParsePush();
-                                            push.setQuery(pushQuery);
-                                            push.setMessage("Welcome to Trace!");
-                                            push.sendInBackground(new SendCallback() {
-                                                @Override
-                                                public void done(ParseException e) {
-                                                    if (e == null) {
-                                                        Log.d(TAG, "Success send welcome notification");
-                                                    } else {
-                                                        Log.e(TAG, "Failed send welcome notification");
-                                                    }
-                                                }
-                                            });
-
-
+                                            Log.d(TAG, "Success send welcome notification");
                                         } else {
-                                            Log.e(TAG, "Failed add email to installation table");
+                                            Log.e(TAG, "Failed send welcome notification");
                                         }
                                     }
                                 });
+                            } else {
+                                Log.e(TAG, "Failed add email to installation table");
                             }
                         }
-
                     });
 
                     // Start an intent for the dispatch activity

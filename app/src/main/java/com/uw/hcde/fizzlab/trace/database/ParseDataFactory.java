@@ -151,7 +151,10 @@ public class ParseDataFactory {
      * @param func
      */
     public static void addFriend(ParseUser currentUser, String friendName, final ParseAddFriendCallback func) {
-
+        if (!currentUser.containsKey(ParseConstant.KEY_FRIEND_LIST))
+            currentUser.put(ParseConstant.KEY_FRIEND_LIST, new ArrayList<ParseUser>());
+        currentUser.getList(ParseConstant.KEY_FRIEND_LIST).add(friendName);
+        currentUser.saveInBackground();
     }
 
     /**
@@ -161,6 +164,20 @@ public class ParseDataFactory {
      * @param func
      */
     public static void retrieveFriends(ParseUser currentUser, final ParseRetrieveFriendsCallback func) {
+        final List<ParseUser> friendsList = new ArrayList<ParseUser>();
+        friendsList.addAll(currentUser.<ParseUser>getList(ParseConstant.KEY_FRIEND_LIST));
+        ParseObject.fetchAllInBackground(friendsList, new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null) {
+                    FindCallback.retrieveFriendCallback(ParseConstant.SUCCESS, friendsList);
+                } else {
+                    Log.e(TAG, "Retrieve friend list failed " + e.getMessage());
+                    FindCallback.retrieveFriendCallback(ParseConstant.FAILED, friendsList);
+                }
+            }
+        });
+
 
     }
 

@@ -15,8 +15,8 @@ import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 public class TraceApplication extends Application {
 
     private static final String TAG = "TraceApplication";
-    private static final String PARSE_APP_ID = "7QgrBfPkXxcgHJKSaTTVcaiQHVJV5OxV84YdRrCC";
-    private static final String PARSE_CLIENT_KEY = "6ohugWbOCsePh0QO7fC1w5ro428kupfBw7Q1k0Kz";
+    private static final String PARSE_APP_ID = "YiZKuDsei4bL3jJzPUXyE8T9yywpm8UzTE8JCRow";
+    private static final String PARSE_CLIENT_KEY = "2l5Fln20bcBdaYHH6NJ4AoC7pO41yCP3S7c4gPel";
 
     @Override
     public void onCreate() {

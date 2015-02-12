@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
-import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 import com.uw.hcde.fizzlab.trace.graphProcessing.DrawingToRouteFactory;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
@@ -128,7 +128,7 @@ public class MapActivity extends BaseActivity implements
 
         // Map description
         TextView description = (TextView) findViewById(R.id.description_text);
-        description.setText(TraceDataContainer.description);
+        description.setText(TraceDataContainerReceiver.description);
 
         // Creating an instance for being able to interact with Google Map
         MapFragment fm = (MapFragment) getFragmentManager().findFragmentById(R.id.map);

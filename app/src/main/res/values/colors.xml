@@ -17,12 +17,14 @@
 
     <!-- friends list -->
     <color name="gray">#ff5d6060</color>
-    <color name="gray_light1">#DCE4E4</color>
-    <color name="gray_light2">#EAEAEA</color>
+    <color name="gray_list_item1">#DCE4E4</color>
+    <color name="gray_list_item2">#EAEAEA</color>
     <color name="gray_divider">#ffc3caca</color>
 
     <!-- Color for draw screen -->
     <color name="rose">#F37159</color>
+    <color name="rose_light">#b0f37159</color>
+    <color name="rose_dark">#ffaa503f</color>
     <color name="rose_navigation_title">#e54b49</color>
 
 </resources>

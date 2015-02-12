@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
 import com.uw.hcde.fizzlab.trace.navigation.MapActivity;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -69,8 +69,8 @@ public class ChooseDurationFragment extends Fragment {
                     return;
                 }
 
-                TraceDataContainer.distance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
-                Log.d(TAG, "Distance : " + TraceDataContainer.distance);
+                TraceDataContainerReceiver.distance = AVERAGE_SPEED_METER_PER_MINUTE * sDurations[mPickerDistance.getValue()];
+                Log.d(TAG, "Distance : " + TraceDataContainerReceiver.distance);
                 Intent intent = new Intent(getActivity(), MapActivity.class);
                 startActivity(intent);
             }

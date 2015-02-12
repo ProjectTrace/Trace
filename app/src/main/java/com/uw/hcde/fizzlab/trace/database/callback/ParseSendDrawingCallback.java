@@ -26,11 +26,4 @@ public interface ParseSendDrawingCallback {
      * @param returnCode
      */
     public void sendDrawingCallback(int returnCode);
-
-    /**
-     * Converts name list to user list
-     * @param returnCode
-     * @param users
-     */
-    public void convertNameToUserCallback(int returnCode, List<ParseUser> users);
 }

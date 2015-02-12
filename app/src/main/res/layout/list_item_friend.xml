@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray_light1"
+    android:background="@color/gray_list_item1"
     android:orientation="vertical"
     android:paddingBottom="15dp"
     android:paddingLeft="20dp"
@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:text="Tianchi"
         android:textColor="@color/black"
         android:textSize="25sp" />
 
@@ -22,20 +21,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/friend_name"
-        android:text="tliu24@uw.edu"
         android:textColor="@color/gray" />
 
-    <!--<CheckBox-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:layout_marginRight="20dp"-->
-    <!--android:background="@drawable/checkbox"-->
-    <!--android:checked="false"-->
-    <!--android:shadowColor="@color/black"-->
-    <!--android:text="hi"-->
-    <!--android:textColor="@color/black" />-->
+    <!-- list on click item will not work if focus is on checkbox -->
+    <CheckBox
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:button="@drawable/checkbox_selector"
+        android:checked="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="10dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
 
+        android:visibility="invisible" />
 
 </RelativeLayout>

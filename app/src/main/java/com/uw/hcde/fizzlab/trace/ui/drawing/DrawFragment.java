@@ -2,7 +2,6 @@ package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerSender;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
-
-import java.util.ArrayList;
 
 /**
  * Fragment that handles drawing.
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 public class DrawFragment extends Fragment {
 
     private static final String TAG = "DrawFragment";
-    public static final String KEY_RAW_POINTS = "raw_points";
 
     // Main buttons
     private View mButtonClear;
@@ -65,15 +62,8 @@ public class DrawFragment extends Fragment {
                     return;
                 }
 
-                ArrayList<Point> points = mDrawingView.getPoints();
-
-                // Set fragment argument
+                TraceDataContainerSender.rawPoints = mDrawingView.getPoints();
                 Fragment fragment = new AnnotationFragment();
-                final Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(KEY_RAW_POINTS, points);
-                fragment.setArguments(bundle);
-
-                // Fragment transaction
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
                         .add(R.id.fragment_container, fragment, DrawActivity.ANNOTATION_FRAGMENT_TAG)

@@ -101,49 +101,6 @@ public class ParseDataFactory {
     }
 
     /**
-     * Sends annotation points to database.
-     *
-     * @param tracePoints
-     * @param callback
-     */
-    public static void sendAnnotation(List<TracePoint> tracePoints, final ParseSendDrawingCallback callback) {
-
-        // Initialize annotation list
-        final List<ParseAnnotation> parseAnnotations = new ArrayList<ParseAnnotation>();
-
-        // Get all annotation points
-        for (TracePoint tracePoint : tracePoints) {
-            Point p = tracePoint.point;
-
-            // An annotation point
-            if (tracePoint.annotation != null) {
-                ParseAnnotation annotation = new ParseAnnotation();
-                annotation.setX(p.x);
-                annotation.setY(p.y);
-                annotation.setText(tracePoint.annotation.msg);
-
-                // Add to annotation list
-                parseAnnotations.add(annotation);
-            }
-        }
-
-        // Save annotation points to cloud
-        ParseObject.saveAllInBackground(parseAnnotations, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Success
-                    callback.sendAnnotationCallback(ParseConstant.SUCCESS, parseAnnotations);
-                } else {
-                    // Something went wrong.
-                    Log.e(TAG, "save all annotations failed " + e.getMessage());
-                    callback.sendAnnotationCallback(ParseConstant.FAILED, null);
-                }
-            }
-        });
-    }
-
-    /**
      * Adds friend for target user, see ParseAddFriendCallback for details.
      *
      * @param currentUser
@@ -206,27 +163,43 @@ public class ParseDataFactory {
     }
 
     /**
-     * Converts name list to ParseUser list
+     * Sends annotation points to database.
      *
-     * @param names
+     * @param tracePoints
      * @param callback
      */
-    public static void convertNameToParseUser(List<String> names, final ParseSendDrawingCallback callback) {
+    public static void sendAnnotation(List<TracePoint> tracePoints, final ParseSendDrawingCallback callback) {
 
-        // Get user query
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        Log.d(TAG, "Names : " + names.toString());
-        query.whereContainedIn("username", names);
-        query.findInBackground(new FindCallback<ParseUser>() {
+        // Initialize annotation list
+        final List<ParseAnnotation> parseAnnotations = new ArrayList<ParseAnnotation>();
+
+        // Get all annotation points
+        for (TracePoint tracePoint : tracePoints) {
+            Point p = tracePoint.point;
+
+            // An annotation point
+            if (tracePoint.annotation != null) {
+                ParseAnnotation annotation = new ParseAnnotation();
+                annotation.setX(p.x);
+                annotation.setY(p.y);
+                annotation.setText(tracePoint.annotation.msg);
+
+                // Add to annotation list
+                parseAnnotations.add(annotation);
+            }
+        }
+
+        // Save annotation points to cloud
+        ParseObject.saveAllInBackground(parseAnnotations, new SaveCallback() {
             @Override
-            public void done(List<ParseUser> parseUsers, ParseException e) {
+            public void done(ParseException e) {
                 if (e == null) {
                     // Success
-                    callback.convertNameToUserCallback(ParseConstant.SUCCESS, parseUsers);
+                    callback.sendAnnotationCallback(ParseConstant.SUCCESS, parseAnnotations);
                 } else {
                     // Something went wrong.
-                    Log.e(TAG, "find users failed " + e.getMessage());
-                    callback.convertNameToUserCallback(ParseConstant.FAILED, null);
+                    Log.e(TAG, "save all annotations failed " + e.getMessage());
+                    callback.sendAnnotationCallback(ParseConstant.FAILED, null);
                 }
             }
         });

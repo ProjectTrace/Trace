@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
-import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ShowDrawingFragment extends Fragment {
         ((BaseActivity) getActivity()).enableBackButton();
 
 
-        mPoints = DrawUtil.tracePointsToPoints(TraceDataContainer.rawTracePoints);
+        mPoints = DrawUtil.tracePointsToPoints(TraceDataContainerReceiver.rawTracePoints);
 
         // Set up drawing view path
         RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.drawing_view_path);

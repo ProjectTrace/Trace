@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light1"
+    android:background="@color/gray_list_item1"
     android:orientation="vertical">
 
     <info.hoang8f.widget.FButton
@@ -37,6 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/gray_divider"
-        android:dividerHeight="0.5dp" />
+        android:dividerHeight="0.5dp"/>
 
 </LinearLayout>

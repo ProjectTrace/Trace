@@ -4,14 +4,14 @@
     android:background="@color/rose">
 
     <TextView
-        android:id="@+id/button_send"
+        android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:text="@string/send"
+        android:text="@string/next"
         android:textColor="@drawable/text_clickable" />
 
 
@@ -19,12 +19,12 @@
         android:id="@+id/drawing_view_path"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send" />
+        android:layout_above="@id/button_next" />
 
     <com.uw.hcde.fizzlab.trace.ui.drawing.AnnotationView
         android:id="@+id/drawing_view_annotation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button_send" />
+        android:layout_above="@id/button_next" />
 
 </RelativeLayout>

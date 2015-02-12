@@ -2,16 +2,11 @@ package com.uw.hcde.fizzlab.trace.ui.drawing;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
-import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -27,6 +22,7 @@ public class DrawActivity extends BaseActivity {
     // Use tag to identify fragments in the future.
     public static final String DRAW_FRAGMENT_TAG = "draw_fragment_tag";
     public static final String ANNOTATION_FRAGMENT_TAG = "annotation_fragment_tag";
+    public static final String SELECT_FRIEND_FRAGMENT_TAG = "select_friend_fragment_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

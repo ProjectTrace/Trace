@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
@@ -17,6 +15,7 @@ import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
+import com.uw.hcde.fizzlab.trace.ui.FriendListAdapter;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class FriendsFragment extends Fragment implements ParseRetrieveFriendsCal
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friends, container, false);
+        View view = inflater.inflate(R.layout.fragment_friends_list, container, false);
 
         mContext = getActivity();
         mAdapter = null;
@@ -95,50 +94,10 @@ public class FriendsFragment extends Fragment implements ParseRetrieveFriendsCal
     }
 
 
-    private class FriendListAdapter extends ArrayAdapter<ParseUser> {
-
-        // Use view holder pattern to improve performance
-        private class ViewHolder {
-            TextView mName;
-            TextView mEmail;
-        }
-
-        public FriendListAdapter(Context context, int textViewResourceId, List<ParseUser> items) {
-            super(context, textViewResourceId, items);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.list_item_friend, parent, false);
-
-                viewHolder = new ViewHolder();
-                viewHolder.mName = (TextView) convertView.findViewById(R.id.friend_name);
-                viewHolder.mEmail = (TextView) convertView.findViewById(R.id.friend_email);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            ParseUser item = getItem(position);
-            if (position % 2 == 0) {
-                convertView.setBackground(getResources().getDrawable(R.color.gray_light1));
-            } else {
-                convertView.setBackground(getResources().getDrawable(R.color.gray_light2));
-            }
-
-            if (item != null) {
-                viewHolder.mName.setText(item.getString(ParseConstant.KEY_FULL_NAME));
-                viewHolder.mEmail.setText(item.getEmail());
-            }
-            return convertView;
-        }
-    }
-
     @Override
     public void parseRetrieveFriendsCallback(int returnCode, List<ParseUser> friends) {
         if (returnCode == ParseConstant.SUCCESS && friends.size() > 0) {
-            mAdapter = new FriendListAdapter(mContext, R.layout.list_item_friend, friends);
+            mAdapter = new FriendListAdapter(mContext, R.layout.list_item_friend, friends, FriendListAdapter.DISABLE_CHECK_BOX);
             mFriendsList.setAdapter(mAdapter);
         }
     }

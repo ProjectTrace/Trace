@@ -56,9 +56,9 @@
     <string name="toast_draw_something">please draw something</string>
     <string name="toast_enter_annotation">empty message is not allowed</string>
     <string name="hint_enter_username">username, separate with comma</string>
-    <string name="hint_enter_description">description</string>
+    <string name="hint_enter_description">name your drawing here</string>
     <string name="toast_enter_username">please enter username</string>
-    <string name="toast_enter_description">Please enter description</string>
+    <string name="toast_enter_description">Please name your drawing</string>
     <string name="toast_success">success!</string>
     <string name="progress_sending">sending data</string>
     <string name="progress_retrieving">retrieving data</string>
@@ -104,6 +104,8 @@
     <string name="draw_step_1">Step 1: Draw A Path</string>
     <string name="draw_step_2">Step 2: Touch Line To Annotate</string>
     <string name="draw_step_3">Step 3: Send</string>
+
+    <string name="please_select_friends">please select friends</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>

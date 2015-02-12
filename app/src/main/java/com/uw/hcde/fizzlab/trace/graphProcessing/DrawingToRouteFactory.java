@@ -3,8 +3,8 @@ package com.uw.hcde.fizzlab.trace.graphProcessing;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
 import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
-import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainer;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 
@@ -42,11 +42,11 @@ public class DrawingToRouteFactory {
         Log.d(TAG, "degrees per meter long: " + degreesPerMeterLong);
 
         // Points data
-        List<TracePoint> tracePoints = TraceDataContainer.trimmedTracePoints;
+        List<TracePoint> tracePoints = TraceDataContainerReceiver.trimmedTracePoints;
         TracePoint startingPoint = tracePoints.get(0);
 
         // Gets scale factor
-        int distanceMeter = TraceDataContainer.distance;
+        int distanceMeter = TraceDataContainerReceiver.distance;
         double distancePixel = DrawUtil.getPixelLength(tracePoints);
         double scaleFactor = distanceMeter / distancePixel;
         Log.d(TAG, "distanceMeter: " + distanceMeter);

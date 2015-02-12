@@ -106,6 +106,10 @@
     <string name="draw_step_2">Step 2: Touch Line To Annotate</string>
     <string name="draw_step_3">Step 3: Send</string>
 
+    <string name="walk_step_1">Step 1: Select A Path</string>
+    <string name="walk_step_2">Step 2: Select Duration</string>
+    <string name="walk_step_3">Walk</string>
+
     <string name="please_select_friends">please select friends</string>
 
 

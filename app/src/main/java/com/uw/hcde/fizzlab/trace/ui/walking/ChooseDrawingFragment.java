@@ -48,7 +48,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
         View view = inflater.inflate(R.layout.fragment_choose_drawing, container, false);
 
         // Set navigation title
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.choose_drawing);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.walk_step_1);
 
         mEmptyContentView = view.findViewById(R.id.empty_message);
         mAdapter = null;

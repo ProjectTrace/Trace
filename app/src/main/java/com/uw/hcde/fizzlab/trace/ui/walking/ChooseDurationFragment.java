@@ -41,7 +41,7 @@ public class ChooseDurationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_choose_duration, container, false);
 
         // Set navigation title
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.choose_duration);
+        ((BaseActivity) getActivity()).setNavigationTitle(R.string.walk_step_2);
 
         mPickerDistance = (NumberPicker) view.findViewById(R.id.picker_duration);
         initializePicker();

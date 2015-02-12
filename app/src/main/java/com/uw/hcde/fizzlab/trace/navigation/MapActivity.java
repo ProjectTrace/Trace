@@ -115,7 +115,7 @@ public class MapActivity extends BaseActivity implements
         // Sets navigation title
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
         enableHomeButton();
-        setNavigationTitle(R.string.map);
+        setNavigationTitle(R.string.walk_step_3);
 
         // Buttons
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
@@ -210,7 +210,7 @@ public class MapActivity extends BaseActivity implements
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
-            setNavigationTitle(R.string.map);
+            setNavigationTitle(R.string.walk_step_3);
             getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
         } else {
             super.handleBackButton();

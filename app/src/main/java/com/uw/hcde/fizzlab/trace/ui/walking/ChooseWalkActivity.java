@@ -37,7 +37,7 @@ public class ChooseWalkActivity extends BaseActivity {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
-            setNavigationTitle(R.string.choose_drawing);
+            setNavigationTitle(R.string.walk_step_1);
         } else {
             super.handleBackButton();
         }

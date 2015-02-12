@@ -8,8 +8,8 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="new_to_trace">New to Trace?</string>
-    <string name="email" >email address</string>
-    <string name="username" >name</string>
+    <string name="email">email address</string>
+    <string name="username">name</string>
     <string name="password">password</string>
     <string name="password_again">password again</string>
     <string name="error_intro">"please "</string>
@@ -96,6 +96,10 @@
     <string name="friends">Friends</string>
     <string name="my_drawn_path">My Drawn Paths</string>
     <string name="add_friends">+ Add Friend</string>
+    <string name="enter_email">enter friend email here</string>
+    <string name="add">Add</string>
+    <string name="please_enter_something">please enter something!</string>
+    <string name="invalid_trace_user">invalid trace user!</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>

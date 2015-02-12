@@ -147,14 +147,24 @@ public class ParseDataFactory {
      * Adds friend for target user, see ParseAddFriendCallback for details.
      *
      * @param currentUser
-     * @param friendName
+     * @param friendEmail
      * @param func
      */
-    public static void addFriend(ParseUser currentUser, String friendName, final ParseAddFriendCallback func) {
-        if (!currentUser.containsKey(ParseConstant.KEY_FRIEND_LIST))
-            currentUser.put(ParseConstant.KEY_FRIEND_LIST, new ArrayList<ParseUser>());
-        currentUser.getList(ParseConstant.KEY_FRIEND_LIST).add(friendName);
-        currentUser.saveInBackground();
+    public static void addFriend(final ParseUser currentUser, String friendEmail, final ParseAddFriendCallback func) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", friendEmail);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null && parseUsers.size() > 0) {
+                    currentUser.addUnique(ParseConstant.KEY_FRIEND_LIST, parseUsers.get(0));
+                    currentUser.saveInBackground();
+                    func.parseAddFriendCallback(ParseConstant.SUCCESS, parseUsers.get(0));
+                } else {
+                    func.parseAddFriendCallback(ParseConstant.FAILED, null);
+                }
+            }
+        });
     }
 
     /**
@@ -164,21 +174,23 @@ public class ParseDataFactory {
      * @param func
      */
     public static void retrieveFriends(ParseUser currentUser, final ParseRetrieveFriendsCallback func) {
-        final List<ParseUser> friendsList = new ArrayList<ParseUser>();
-        friendsList.addAll(currentUser.<ParseUser>getList(ParseConstant.KEY_FRIEND_LIST));
+        List<ParseUser> friendsList = currentUser.getList(ParseConstant.KEY_FRIEND_LIST);
+        if (friendsList == null || friendsList.size() == 0) {
+            func.parseRetrieveFriendsCallback(ParseConstant.SUCCESS, new ArrayList<ParseUser>());
+            return;
+        }
+
         ParseObject.fetchAllInBackground(friendsList, new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> parseUsers, ParseException e) {
                 if (e == null) {
-                    FindCallback.retrieveFriendCallback(ParseConstant.SUCCESS, friendsList);
+                    func.parseRetrieveFriendsCallback(ParseConstant.SUCCESS, parseUsers);
                 } else {
                     Log.e(TAG, "Retrieve friend list failed " + e.getMessage());
-                    FindCallback.retrieveFriendCallback(ParseConstant.FAILED, friendsList);
+                    func.parseRetrieveFriendsCallback(ParseConstant.FAILED, parseUsers);
                 }
             }
         });
-
-
     }
 
     /**

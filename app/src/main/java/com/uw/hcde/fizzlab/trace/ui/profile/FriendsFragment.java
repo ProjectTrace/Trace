@@ -78,7 +78,7 @@ public class FriendsFragment extends Fragment implements ParseRetrieveFriendsCal
                             TraceUtil.showToast(mContext, getString(R.string.please_enter_something));
                             return;
                         } else {
-                            ParseDataFactory.addFriend(ParseUser.getCurrentUser(), "hi", FriendsFragment.this);
+                            ParseDataFactory.addFriend(ParseUser.getCurrentUser(), name, FriendsFragment.this);
                         }
                         dialog.dismiss();
                     }

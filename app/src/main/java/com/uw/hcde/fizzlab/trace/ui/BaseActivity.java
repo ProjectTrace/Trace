@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -97,7 +98,8 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View v) {
                 String report = input.getText().toString();
                 if (report.length() != 0) {
-                    //TODO: Send to database
+                    ParseFile file = new ParseFile("resume.txt", report.getBytes());
+                    file.saveInBackground();
                 }
                 dialog.dismiss();
                 TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));

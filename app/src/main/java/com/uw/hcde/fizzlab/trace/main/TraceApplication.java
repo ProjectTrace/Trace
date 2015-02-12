@@ -6,6 +6,7 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
+import com.uw.hcde.fizzlab.trace.database.ParseLog;
 
 /**
  * Configures Parse.
@@ -24,6 +25,7 @@ public class TraceApplication extends Application {
 
         ParseObject.registerSubclass(ParseDrawing.class);
         ParseObject.registerSubclass(ParseAnnotation.class);
+        ParseObject.registerSubclass(ParseLog.class);
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
 
     }

@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.database.ParseLog;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
@@ -98,8 +100,10 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View v) {
                 String report = input.getText().toString();
                 if (report.length() != 0) {
-                    ParseFile file = new ParseFile("resume.txt", report.getBytes());
-                    file.saveInBackground();
+                    ParseLog log = new ParseLog();
+                    log.setUser(ParseUser.getCurrentUser());
+                    log.setMessage(report);
+                    log.saveInBackground();
                 }
                 dialog.dismiss();
                 TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));

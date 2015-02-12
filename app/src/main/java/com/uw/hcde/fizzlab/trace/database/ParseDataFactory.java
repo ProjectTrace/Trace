@@ -180,6 +180,18 @@ public class ParseDataFactory {
             return;
         }
 
+        boolean isDataAvaiable = true;
+        for (ParseUser user : friendsList) {
+            if (!user.isDataAvailable()) {
+                isDataAvaiable = false;
+                break;
+            }
+        }
+        if (isDataAvaiable) {
+            func.parseRetrieveFriendsCallback(ParseConstant.SUCCESS, friendsList);
+            return;
+        }
+
         ParseObject.fetchAllInBackground(friendsList, new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> parseUsers, ParseException e) {

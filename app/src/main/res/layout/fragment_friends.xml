@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <info.hoang8f.widget.FButton
-        android:id="@+id/profile_log_out"
+        android:id="@+id/add_friend"
         android:layout_width="120dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
@@ -24,6 +24,13 @@
         fbutton:shadowColor="@color/cyan_dark"
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="3dp" />
+
+    <View
+        android:id="@+id/navigation_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_divider" />
 
     <ListView
         android:id="@+id/friend_list"

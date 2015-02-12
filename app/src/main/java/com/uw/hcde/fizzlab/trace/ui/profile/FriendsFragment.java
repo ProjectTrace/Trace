@@ -13,14 +13,17 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
+import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 
 import java.util.List;
 
 /**
  * @author tianchi
  */
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends Fragment implements ParseRetrieveFriendsCallback {
 
+    private View mAddFriendButton;
     private ListView mFriendsList;
     private FriendListAdapter mAdapter;
 
@@ -30,6 +33,9 @@ public class FriendsFragment extends Fragment {
 
         mAdapter = null;
         mFriendsList = (ListView) view.findViewById(R.id.friend_list);
+        mAddFriendButton = view.findViewById(R.id.add_friend);
+
+        ParseDataFactory.retrieveFriends(ParseUser.getCurrentUser(), this);
         return view;
     }
 
@@ -71,6 +77,14 @@ public class FriendsFragment extends Fragment {
                 viewHolder.mEmail.setText(item.getEmail());
             }
             return convertView;
+        }
+    }
+
+    @Override
+    public void callback(int returnCode, List<ParseUser> friends) {
+        if (returnCode == ParseConstant.SUCCESS && friends.size() > 0) {
+            mAdapter = new FriendListAdapter(getActivity(), R.layout.list_item_friend, friends);
+            mFriendsList.setAdapter(mAdapter);
         }
     }
 }

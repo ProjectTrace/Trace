@@ -25,7 +25,7 @@
         <info.hoang8f.widget.FButton
             android:id="@+id/profile_log_out"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:clickable="true"
@@ -42,7 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/profile_name" />
+            android:layout_below="@id/profile_name"
+ />
 
     </RelativeLayout>
 

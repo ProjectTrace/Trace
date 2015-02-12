@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cyan"
+    android:background="@color/gray_light1"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Fragment 1"
-        android:textSize="40sp" />
+    <info.hoang8f.widget.FButton
+        android:id="@+id/profile_log_out"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/add_friends"
+        fbutton:buttonColor="@color/cyan_light"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/cyan_dark"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="3dp" />
 
     <ListView
-        android:id="@+id/choose_drawing_list"
+        android:id="@+id/friend_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/gray_divider"

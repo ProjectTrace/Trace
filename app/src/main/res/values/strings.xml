@@ -95,6 +95,7 @@
     <!-- Profile -->
     <string name="friends">Friends</string>
     <string name="my_drawn_path">My Drawn Paths</string>
+    <string name="add_friends">+ Add Friend</string>
 
     <!-- Test only -->
     <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>

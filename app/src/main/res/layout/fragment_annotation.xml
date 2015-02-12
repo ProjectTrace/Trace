@@ -1,18 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/rose">
 
-    <TextView
+    <info.hoang8f.widget.FButton
         android:id="@+id/button_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:clickable="true"
+        android:gravity="center"
         android:text="@string/next"
-        android:textColor="@drawable/text_clickable" />
+        fbutton:buttonColor="@color/rose_light"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/rose_dark"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="3dp" />
 
 
     <RelativeLayout

@@ -19,6 +19,7 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -34,6 +35,7 @@ public class SignUpFragment extends Fragment {
 
     // UI references.
     private EditText emailEditText;
+    private EditText nameEditText;
     private EditText passwordEditText;
     private EditText passwordAgainEditText;
 
@@ -43,6 +45,7 @@ public class SignUpFragment extends Fragment {
 
         // Get buttons
         emailEditText = (EditText) view.findViewById(R.id.text_email);
+        nameEditText = (EditText)view.findViewById(R.id.text_name);
         passwordEditText = (EditText) view.findViewById(R.id.text_password);
         passwordAgainEditText = (EditText) view.findViewById(R.id.text_password_again);
 
@@ -66,6 +69,7 @@ public class SignUpFragment extends Fragment {
      */
     private void signUp() {
         final String email = emailEditText.getText().toString().trim();
+        String name = nameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String passwordAgain = passwordAgainEditText.getText().toString().trim();
 
@@ -76,6 +80,12 @@ public class SignUpFragment extends Fragment {
             validationError = true;
             validationErrorMessage.append(getString(R.string.error_blank_email));
         }
+
+        if (name.length() == 0) {
+            validationError = true;
+            validationErrorMessage.append(getString(R.string.error_blank_name));
+        }
+
         if (password.length() == 0) {
             if (validationError) {
                 validationErrorMessage.append(getString(R.string.error_join));
@@ -109,6 +119,7 @@ public class SignUpFragment extends Fragment {
         user.setUsername(email);
         user.setPassword(password);
         user.setEmail(email);
+        user.put(ParseConstant.KEY_FULL_NAME, name);
 
         // Call Parse sign up method
         user.signUpInBackground(new SignUpCallback() {

@@ -11,8 +11,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseNameToUserCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
 
 import java.util.ArrayList;
@@ -142,28 +143,25 @@ public class ParseDataFactory {
         });
     }
 
-    public static void convertNameToParseUser(String name, final ParseNameToUserCallback callback) {
-        // Get user query
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        Log.d(TAG, "Names : " + name.toString());
-        query.whereEqualTo("username", name);
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> parseUsers, ParseException e) {
-                if (e == null) {
-                    // Success
-                    if (parseUsers.size() > 0) {
-                        callback.nameToUserCallback(ParseConstant.SUCCESS, parseUsers.get(0));
-                    } else {
-                        callback.nameToUserCallback(ParseConstant.FAILED, null);
-                    }
-                } else {
-                    // Something went wrong.
-                    Log.e(TAG, "find users failed " + e.getMessage());
-                    callback.nameToUserCallback(ParseConstant.FAILED, null);
-                }
-            }
-        });
+    /**
+     * Adds friend for target user, see ParseAddFriendCallback for details.
+     *
+     * @param currentUser
+     * @param friendName
+     * @param func
+     */
+    public static void addFriend(ParseUser currentUser, String friendName, final ParseAddFriendCallback func) {
+
+    }
+
+    /**
+     * Retrieves friends for target user, see ParseRetrieveFriendsCallback for details.
+     *
+     * @param currentUser
+     * @param func
+     */
+    public static void retrieveFriends(ParseUser currentUser, final ParseRetrieveFriendsCallback func) {
+
     }
 
     /**

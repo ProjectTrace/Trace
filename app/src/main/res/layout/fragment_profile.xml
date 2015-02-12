@@ -5,28 +5,36 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
         android:text="Tianchi Liu"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:text="tliu24@uw.edu" />
+
 
     <android.support.v13.app.FragmentTabHost
-        android:id="@+id/tab_host"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:id="@+id/tab_host"
 
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     </android.support.v13.app.FragmentTabHost>
 
     <FrameLayout
-        android:id="@+id/tab_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    android:id="@+id/tab_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
     <!--<LinearLayout-->
     <!--android:layout_width="wrap_content"-->

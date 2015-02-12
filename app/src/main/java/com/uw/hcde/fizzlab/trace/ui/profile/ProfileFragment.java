@@ -2,11 +2,8 @@ package com.uw.hcde.fizzlab.trace.ui.profile;
 
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentTabHost;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +17,9 @@ import com.uw.hcde.fizzlab.trace.R;
  */
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
+    private static final String TAB_FRIENDS = "tab_friends";
+    private static final String TAB_DRAWN_PATH = "tab_drawn_path";
+
     private FragmentTabHost mTabHost;
 
     @Override
@@ -47,56 +47,17 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
 
-
-        // Locate android.R.id.tabhost in main_fragment.xml
         mTabHost = (FragmentTabHost) view.findViewById(R.id.tab_host);
-
-        // Create the tabs in main_fragment.xml
         mTabHost.setup(getActivity(), getActivity().getFragmentManager(), R.id.tab_content);
 
-        // Create Tab1 with a custom image in res folder
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("Tab1"),
-                FirstFragment.class, null);
+        // Create friends tab
+        mTabHost.addTab(mTabHost.newTabSpec(TAB_FRIENDS).setIndicator(getString(R.string.friends)),
+                FriendsFragment.class, null);
 
-        // Create Tab2
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Tab2"),
-                SecondFragment.class, null);
+        // Create my drawn path tab
+        mTabHost.addTab(mTabHost.newTabSpec(TAB_DRAWN_PATH).setIndicator(getString(R.string.my_drawn_path)),
+                DrawnPathsFragment.class, null);
 
         return view;
     }
-
-//    private class MyPagerAdapter extends FragmentPagerAdapter {
-//        private int NUM_ITEMS = 3;
-//
-//        public MyPagerAdapter(FragmentManager fragmentManager) {
-//            super(fragmentManager);
-//        }
-//
-//        // Returns total number of pages
-//        @Override
-//        public int getCount() {
-//            return NUM_ITEMS;
-//        }
-//
-//        // Returns the fragment to display for that page
-//        @Override
-//        public Fragment getItem(int position) {
-//            switch (position) {
-//                case 0:
-//                    return new FirstFragment();
-//                case 1:
-//                    return new SecondFragment();
-//                case 2:
-//                    return new FirstFragment();
-//                default:
-//                    return null;
-//            }
-//        }
-//
-//        // Returns the page title for the top indicator
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return "Page " + position;
-//        }
-//    }
 }

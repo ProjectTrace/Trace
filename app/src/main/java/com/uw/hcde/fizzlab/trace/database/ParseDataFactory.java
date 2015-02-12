@@ -28,55 +28,6 @@ public class ParseDataFactory {
     public static final String TAG = "ParseDataFactory";
 
     /**
-     * Retrieves annotations from cloud.
-     *
-     * @param drawings
-     * @param callback
-     */
-    public static void retrieveAnnotations(List<ParseDrawing> drawings, final ParseRetrieveDrawingCallback callback) {
-        List<ParseAnnotation> annotations = new ArrayList<ParseAnnotation>();
-        for (ParseDrawing drawing : drawings) {
-            annotations.addAll(drawing.getAnnotationList());
-        }
-
-        ParseObject.fetchAllInBackground(annotations, new FindCallback<ParseAnnotation>() {
-            @Override
-            public void done(List<ParseAnnotation> annotations, ParseException e) {
-                if (e == null) {
-                    callback.retrieveAnnotationsCallback(ParseConstant.SUCCESS);
-                } else {
-                    Log.e(TAG, "Retrieve annotations failed " + e.getMessage());
-                    callback.retrieveAnnotationsCallback(ParseConstant.FAILED);
-                }
-            }
-        });
-    }
-
-    /**
-     * Retrieves creator from cloud.
-     *
-     * @param drawings
-     * @param callback
-     */
-    public static void retrieveCreators(List<ParseDrawing> drawings, final ParseRetrieveDrawingCallback callback) {
-        List<ParseUser> creators = new ArrayList<ParseUser>();
-        for (ParseDrawing drawing : drawings) {
-            creators.add(drawing.getCreator());
-        }
-        ParseObject.fetchAllInBackground(creators, new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> parseUsers, ParseException e) {
-                if (e == null) {
-                    callback.retrieveCreatorsCallback(ParseConstant.SUCCESS);
-                } else {
-                    Log.e(TAG, "Retrieve creator failed " + e.getMessage());
-                    callback.retrieveCreatorsCallback(ParseConstant.FAILED);
-                }
-            }
-        });
-    }
-
-    /**
      * Gets list of parse drawings or empty list given user.
      *
      * @param user
@@ -86,6 +37,8 @@ public class ParseDataFactory {
         // Set up query
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, user);
+        query.include(ParseDrawing.KEY_CREATOR);
+        query.include(ParseDrawing.KEY_ANNOTATION_LIST);
 
         // Start query
         query.findInBackground(new FindCallback<ParseDrawing>() {
@@ -237,6 +190,7 @@ public class ParseDataFactory {
         parseDrawing.setYList(yList);
         parseDrawing.setReceiverList(receivers);
         parseDrawing.setAnnotationList(annotations);
+
 
         // Save
         parseDrawing.saveInBackground(new SaveCallback() {

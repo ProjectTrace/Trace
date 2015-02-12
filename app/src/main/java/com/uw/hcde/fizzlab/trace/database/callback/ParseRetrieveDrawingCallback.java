@@ -17,18 +17,4 @@ public interface ParseRetrieveDrawingCallback {
      * @param drawings
      */
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings);
-
-    /**
-     * Retrieves annotations
-     *
-     * @param returnCode
-     */
-    public void retrieveAnnotationsCallback(int returnCode);
-
-    /**
-     * Retrieves creator
-     *
-     * @param returnCode
-     */
-    public void retrieveCreatorsCallback(int returnCode);
 }

@@ -63,9 +63,9 @@ public class ProfileFragment extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec(TAB_FRIENDS).setIndicator(getString(R.string.friends)),
                 FriendsFragment.class, null);
 
-        // Create my drawn path tab
-        mTabHost.addTab(mTabHost.newTabSpec(TAB_DRAWN_PATH).setIndicator(getString(R.string.my_drawn_path)),
-                DrawnPathsFragment.class, null);
+//        // Create my drawn path tab
+//        mTabHost.addTab(mTabHost.newTabSpec(TAB_DRAWN_PATH).setIndicator(getString(R.string.my_drawn_path)),
+//                DrawnPathsFragment.class, null);
 
         return view;
     }

@@ -27,8 +27,6 @@ import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -94,62 +92,22 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
         mDrawingListView.setVisibility(View.INVISIBLE);
     }
 
-    // Retrieve drawings -> annotations -> creators
+    // Retrieve drawings
     @Override
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
         if (returnCode == ParseConstant.SUCCESS) {
-            mDrawings = drawings;
-
-            // Sorts the drawing in reverse created order
-            Collections.sort(mDrawings, new Comparator<ParseDrawing>() {
-                @Override
-                public int compare(ParseDrawing lhs, ParseDrawing rhs) {
-                    return -lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
-                }
-            });
-
-            Log.d(TAG, "drawing size: " + mDrawings.size());
-
-            if (mDrawings.isEmpty()) {
-                mProgressDialog.dismiss();
+            if (drawings.isEmpty()) {
                 setEmptyContent();
-
             } else {
-                ParseDataFactory.retrieveAnnotations(mDrawings, this);
+                mDrawings = drawings;
+                mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.list_item_choose_drawing, mDrawings);
+                mDrawingListView.setAdapter(mAdapter);
             }
         } else {
             showNetworkError();
-            mProgressDialog.dismiss();
             setEmptyContent();
         }
-    }
-
-
-    @Override
-    public void retrieveAnnotationsCallback(int returnCode) {
-        if (returnCode == ParseConstant.SUCCESS) {
-            ParseDataFactory.retrieveCreators(mDrawings, this);
-        } else {
-            showNetworkError();
-            mProgressDialog.dismiss();
-            setEmptyContent();
-        }
-    }
-
-    @Override
-    public void retrieveCreatorsCallback(int returnCode) {
-        if (returnCode == ParseConstant.SUCCESS) {
-            mProgressDialog.dismiss();
-
-            // Finished retrieving
-            mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.list_item_choose_drawing, mDrawings);
-            mDrawingListView.setAdapter(mAdapter);
-
-        } else {
-            showNetworkError();
-            mProgressDialog.dismiss();
-            setEmptyContent();
-        }
+        mProgressDialog.dismiss();
     }
 
     /**
@@ -198,7 +156,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             if (item != null) {
                 viewHolder.mTitle.setText(item.getDescription());
                 viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
-                viewHolder.mSender.setText(item.getCreator().getUsername());
+                viewHolder.mSender.setText(item.getCreator().getString(ParseConstant.KEY_FULL_NAME));
             }
             return convertView;
         }

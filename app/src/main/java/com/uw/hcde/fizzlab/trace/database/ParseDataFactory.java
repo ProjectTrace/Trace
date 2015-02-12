@@ -159,9 +159,9 @@ public class ParseDataFactory {
                 if (e == null && parseUsers.size() > 0) {
                     currentUser.addUnique(ParseConstant.KEY_FRIEND_LIST, parseUsers.get(0));
                     currentUser.saveInBackground();
-                    func.parseAddFriendCallback(ParseConstant.SUCCESS, parseUsers.get(0));
+                    func.parseAddFriendCallback(ParseConstant.SUCCESS);
                 } else {
-                    func.parseAddFriendCallback(ParseConstant.FAILED, null);
+                    func.parseAddFriendCallback(ParseConstant.FAILED);
                 }
             }
         });

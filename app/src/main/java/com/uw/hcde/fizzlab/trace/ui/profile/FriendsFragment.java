@@ -19,7 +19,6 @@ import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.drakeet.materialdialog.MaterialDialog;
@@ -146,16 +145,9 @@ public class FriendsFragment extends Fragment implements ParseRetrieveFriendsCal
 
 
     @Override
-    public void parseAddFriendCallback(int returnCode, ParseUser friend) {
+    public void parseAddFriendCallback(int returnCode) {
         if (returnCode == ParseConstant.SUCCESS) {
-            if (mAdapter == null) {
-                List<ParseUser> list = new ArrayList<ParseUser>();
-                list.add(friend);
-                mAdapter = new FriendListAdapter(mContext, R.layout.list_item_friend, list);
-                mFriendsList.setAdapter(mAdapter);
-            } else {
-                mAdapter.add(friend);
-            }
+            ParseDataFactory.retrieveFriends(ParseUser.getCurrentUser(), this);
             TraceUtil.showToast(mContext, getString(R.string.toast_success));
         } else {
             TraceUtil.showToast(mContext, getString(R.string.invalid_trace_user));

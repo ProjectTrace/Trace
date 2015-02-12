@@ -142,7 +142,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             mProgressDialog.dismiss();
 
             // Finished retrieving
-            mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.choose_drawing_item, mDrawings);
+            mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.list_item_choose_drawing, mDrawings);
             mDrawingListView.setAdapter(mAdapter);
 
         } else {
@@ -177,7 +177,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.choose_drawing_item, parent, false);
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.list_item_choose_drawing, parent, false);
 
                 viewHolder = new ViewHolder();
                 viewHolder.mTitle = (TextView) convertView.findViewById(R.id.item_title);

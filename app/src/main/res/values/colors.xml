@@ -10,14 +10,19 @@
     <color name="transparent_klein_blue2">#600033CC</color>
 
     <!-- Color for walk screen -->
-    <color name="cyan">#27B6B2</color>
+    <color name="cyan">#1eada9</color>
     <color name="cyan_light">#52C2C1</color>
-    <color name="cyan_dark">#2E8F8B</color>
+    <color name="cyan_dark">#ff1e8985</color>
+    <color name="cyan_navigation_title">#23a9a2</color>
+
+    <!-- friends list -->
+    <color name="gray">#ff5d6060</color>
     <color name="gray_light1">#DCE4E4</color>
     <color name="gray_light2">#EAEAEA</color>
+    <color name="gray_divider">#ffc3caca</color>
 
     <!-- Color for draw screen -->
     <color name="rose">#F37159</color>
-    <color name="rose_dark">#DB6650</color>
+    <color name="rose_navigation_title">#e54b49</color>
 
 </resources>

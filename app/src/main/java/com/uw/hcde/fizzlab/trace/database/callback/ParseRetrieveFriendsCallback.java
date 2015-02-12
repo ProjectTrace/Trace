@@ -13,5 +13,5 @@ public interface ParseRetrieveFriendsCallback {
      * @param returnCode ParseConstant.SUCCESS / FAIL
      * @param friends empty if no friends
      */
-    public void callback(int returnCode, List<ParseUser> friends);
+    public void parseRetrieveFriendsCallback(int returnCode, List<ParseUser> friends);
 }

@@ -163,12 +163,12 @@ public abstract class BaseActivity extends Activity {
     public void setNavigationBarType(int type) {
 
         if (type == NAVIGATION_BAR_TYPE_ROSE) {
-            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.rose));
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.rose_navigation_title));
             mButtonReport.setImageResource(R.drawable.report_rose);
             mButtonHome.setImageResource(R.drawable.home_rose);
 
         } else {
-            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.cyan));
+            mNavigationBar.setBackgroundColor(getResources().getColor(R.color.cyan_navigation_title));
             mButtonReport.setImageResource(R.drawable.report_cyan);
             mButtonHome.setImageResource(R.drawable.home_cyan);
         }

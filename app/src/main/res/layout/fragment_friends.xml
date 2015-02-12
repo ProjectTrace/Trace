@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light1"
+    android:orientation="vertical">
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/add_friend"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/add_friends"
+        fbutton:buttonColor="@color/cyan_light"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/cyan_dark"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="3dp" />
+
+    <View
+        android:id="@+id/navigation_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_divider" />
+
+    <ListView
+        android:id="@+id/friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/gray_divider"
+        android:dividerHeight="0.5dp" />
+
+</LinearLayout>

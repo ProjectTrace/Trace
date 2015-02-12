@@ -11,7 +11,6 @@ public interface ParseAddFriendCallback {
 
     /**
      * @param returnCode ParseConstant.SUCCESS / FAIL
-     * @param friend null if fail
      */
-    public void callback(int returnCode, ParseUser friend);
+    public void parseAddFriendCallback(int returnCode);
 }

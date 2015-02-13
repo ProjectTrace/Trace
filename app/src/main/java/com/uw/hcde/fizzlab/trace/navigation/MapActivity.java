@@ -72,8 +72,6 @@ public class MapActivity extends BaseActivity implements
 
     private static final double METER_TO_MILE = 0.000621371192;
 
-    private View mButtonHome;
-
     private View mButtonEndingEarly;
     private View mButtonShowDrawing;
     private View mButtonShowTrace;
@@ -87,19 +85,19 @@ public class MapActivity extends BaseActivity implements
     private LatLng mCurrentLatLng;
     LocationRequest mLocationRequest;
 
-    private List<TraceLocation> mTraceLocations;
-    private Map<LatLng, TraceAnnotation> mLatLngToAnnotation;
-    private Map<Marker, TraceAnnotation> mMarkerToAnnotation;
+
     private boolean mIsInitializing;
-    private boolean mIsTraceSuccess;
-    private boolean mIsEndingEarly;
+    private boolean mIsFinished;
     private int mTraceDistanceMeters;
 
+    private List<TraceLocation> mTraceLocations;
+    private Map<LatLng, TraceAnnotation> mLatLngToAnnotation;
+
     private int mRawSegmentsCount;
-    // Raw segments defined by trace locations -> transformed segments defined by way point distance
     private List<List<LatLng>> mHiddenSegments;
     private List<List<LatLng>> mDisplayedSegments;
     private List<LatLng> mWalkedPoints;
+
     private Marker mDirectionMarker;
     private float mDirectionBearing;
 
@@ -121,7 +119,6 @@ public class MapActivity extends BaseActivity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonHome = findViewById(R.id.navigation_button_home);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
 
@@ -147,15 +144,13 @@ public class MapActivity extends BaseActivity implements
         mLocationRequest.setSmallestDisplacement(SENSITIVITY_METER);
 
         mIsInitializing = true;
-        mIsTraceSuccess = false;
-        mIsEndingEarly = false;
+        mIsFinished = false;
         mRawSegmentsCount = 0;
         mTraceDistanceMeters = 0;
         mHiddenSegments = new LinkedList<List<LatLng>>();
         mDisplayedSegments = new LinkedList<List<LatLng>>();
         mWalkedPoints = new LinkedList<LatLng>();
         mLatLngToAnnotation = new HashMap<LatLng, TraceAnnotation>();
-        mMarkerToAnnotation = new HashMap<Marker, TraceAnnotation>();
         setupListeners();
 
         PolylineOptions line = new PolylineOptions();
@@ -188,9 +183,8 @@ public class MapActivity extends BaseActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
 
-        if (!mIsTraceSuccess) {
+        if (!mIsFinished) {
             mGoogleApiClient.connect();
         }
     }
@@ -198,9 +192,8 @@ public class MapActivity extends BaseActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
 
-        if (mIsTraceSuccess) {
+        if (mIsFinished) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -251,7 +244,7 @@ public class MapActivity extends BaseActivity implements
             fetchAllRoutingData();
 
 
-        } else if (!mIsInitializing && !mIsTraceSuccess && !mIsEndingEarly &&
+        } else if (!mIsInitializing  && !mIsFinished &&
                 SphericalUtil.computeDistanceBetween(mCurrentLatLng, latLng) > SENSITIVITY_METER) {
             Log.d(TAG, "latLng update");
 
@@ -320,7 +313,7 @@ public class MapActivity extends BaseActivity implements
         updateDisplayedPolyLine(allPath);
 
         //displayWayPoints();
-        setAllAnnotationMarkers();
+        showAllAnnotationMarkers();
     }
 
     /**
@@ -350,7 +343,7 @@ public class MapActivity extends BaseActivity implements
                 dialog.setPositiveButton(R.string.yes, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mIsEndingEarly = true;
+                        mIsFinished = true;
                         setStateEndingEarly();
                         dialog.dismiss();
                     }
@@ -411,7 +404,7 @@ public class MapActivity extends BaseActivity implements
      * Trace success.
      */
     private void traceSuccess() {
-        mIsTraceSuccess = true;
+        mIsFinished = true;
         final MaterialDialog dialog = new MaterialDialog(this);
 
         dialog.setTitle(R.string.trace_success);
@@ -513,23 +506,23 @@ public class MapActivity extends BaseActivity implements
 
     /**
      * Shows all markers.
-     * Blue maker represents trace point. Red marker represents annotation point.
      */
-    private void setAllAnnotationMarkers() {
+    private void showAllAnnotationMarkers() {
+        final Map<Marker, TraceAnnotation> markerToAnnotation = new HashMap<Marker, TraceAnnotation>();
         for (TraceLocation traceLocation : mTraceLocations) {
             if (traceLocation.annotation != null) {
                 Marker marker = displayMarker(traceLocation.latLng, MARKER_TYPE_ANNOTATION);
-                mMarkerToAnnotation.put(marker, traceLocation.annotation);
+                markerToAnnotation.put(marker, traceLocation.annotation);
             }
         }
 
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (!mMarkerToAnnotation.containsKey(marker)) {
+                if (!markerToAnnotation.containsKey(marker)) {
                     return true;
                 }
-                TraceAnnotation annotation = mMarkerToAnnotation.get(marker);
+                TraceAnnotation annotation = markerToAnnotation.get(marker);
                 showAnnotationDialog(annotation);
                 return true;
             }

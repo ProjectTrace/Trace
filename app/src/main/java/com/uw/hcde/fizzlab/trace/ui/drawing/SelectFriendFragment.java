@@ -31,6 +31,8 @@ import com.uw.hcde.fizzlab.trace.ui.FriendListAdapter;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -175,6 +177,14 @@ public class SelectFriendFragment extends Fragment implements ParseRetrieveFrien
     @Override
     public void parseRetrieveFriendsCallback(int returnCode, List<ParseUser> friends) {
         if (returnCode == ParseConstant.SUCCESS && friends.size() > 0) {
+            Collections.sort(friends, new Comparator<ParseUser>() {
+                @Override
+                public int compare(ParseUser lhs, ParseUser rhs) {
+                    String s1 = lhs.getString(ParseConstant.KEY_FULL_NAME).toLowerCase();
+                    String s2 = rhs.getString(ParseConstant.KEY_FULL_NAME).toLowerCase();
+                    return s1.compareTo(s2);
+                }
+            });
             mAdapter = new FriendListAdapter(mContext, R.layout.list_item_friend, friends, FriendListAdapter.ENABLE_CHECK_BOX);
             mFriendsList.setAdapter(mAdapter);
         }

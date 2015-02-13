@@ -74,6 +74,15 @@ public class ParseDataFactory {
     }
 
     /**
+     * Adds my self
+     * @param currentUser
+     */
+    public static void addMySelfAsFriend(final ParseUser currentUser) {
+        currentUser.addUnique(ParseConstant.KEY_FRIEND_LIST, currentUser);
+        currentUser.saveInBackground();
+    }
+
+    /**
      * Adds friend for target user, see ParseAddFriendCallback for details.
      *
      * @param currentUser

@@ -18,6 +18,7 @@ import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,6 +46,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
     @Override
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
         if (returnCode == ParseConstant.SUCCESS && drawings.size() > 0) {
+            Collections.sort(drawings);
             mAdapter = new MyDrawingAdapter(mContext, R.layout.list_item_my_drawing, drawings);
             mDrawnPathList.setAdapter(mAdapter);
         }

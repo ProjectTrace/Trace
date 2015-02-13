@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 @ParseClassName("Drawing")
-public class ParseDrawing extends ParseObject {
+public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing> {
 
     // Related table keys
     public static final String KEY_PX_X_LIST = "px_x_list";
@@ -156,5 +156,13 @@ public class ParseDrawing extends ParseObject {
      */
     public static ParseQuery<ParseDrawing> getQuery() {
         return ParseQuery.getQuery(ParseDrawing.class);
+    }
+
+    @Override
+    public int compareTo(ParseDrawing another) {
+        if (this.isDataAvailable() && another.isDataAvailable()) {
+            return -this.getCreatedAt().compareTo(another.getCreatedAt());
+        }
+        return 0;
     }
 }

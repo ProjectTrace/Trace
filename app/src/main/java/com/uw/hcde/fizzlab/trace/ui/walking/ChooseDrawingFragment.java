@@ -27,6 +27,7 @@ import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,6 +101,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                 setEmptyContent();
             } else {
                 mDrawings = drawings;
+                Collections.sort(mDrawings);
                 mAdapter = new ChooseDrawingAdapter(getActivity(), R.layout.list_item_choose_drawing, mDrawings);
                 mDrawingListView.setAdapter(mAdapter);
             }

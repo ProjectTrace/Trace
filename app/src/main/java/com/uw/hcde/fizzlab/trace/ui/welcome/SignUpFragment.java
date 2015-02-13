@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -22,7 +21,6 @@ import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
-import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -118,7 +116,7 @@ public class SignUpFragment extends Fragment {
         dialog.show();
 
         // Set up a new Parse user
-        ParseUser user = new ParseUser();
+        final ParseUser user = new ParseUser();
         user.setUsername(email);
         user.setPassword(password);
         user.setEmail(email);
@@ -170,8 +168,11 @@ public class SignUpFragment extends Fragment {
                     });
 
                     // Add default friends and drawing
-                    ParseDataFactory.addFriend(ParseUser.getCurrentUser(), ParseConstant.TRACE_TEAM_EMAIL, null);
-                    ParseDataFactory.addDefaultDrawing(ParseUser.getCurrentUser());
+                    ParseDataFactory.addFriend(user, ParseConstant.TRACE_TEAM_EMAIL, null);
+                    ParseDataFactory.addDefaultDrawing(user);
+
+                    // Add myself
+                    ParseDataFactory.addMySelfAsFriend(user);
 
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(getActivity(), DispatchActivity.class);

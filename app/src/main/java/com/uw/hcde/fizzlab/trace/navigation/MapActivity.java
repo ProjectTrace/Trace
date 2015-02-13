@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -84,6 +85,8 @@ public class MapActivity extends BaseActivity implements
     private FusedLocationProviderApi mProviderApi = LocationServices.FusedLocationApi;
     private LatLng mCurrentLatLng;
     LocationRequest mLocationRequest;
+    private int mUrlTotal;
+    private int mUrlCount;
 
 
     private boolean mIsInitializing;
@@ -93,7 +96,6 @@ public class MapActivity extends BaseActivity implements
     private List<TraceLocation> mTraceLocations;
     private Map<LatLng, TraceAnnotation> mLatLngToAnnotation;
 
-    private int mRawSegmentsCount;
     private List<List<LatLng>> mHiddenSegments;
     private List<List<LatLng>> mDisplayedSegments;
     private List<LatLng> mWalkedPoints;
@@ -103,6 +105,9 @@ public class MapActivity extends BaseActivity implements
 
     private Polyline mDisplayedPolyline;
     private Polyline mWalkedPolyline;
+
+    Map<Marker, TraceAnnotation> mMarkerToAnnotation;
+    Map<Marker, String> mMarkerToRoutingPointMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,12 +150,16 @@ public class MapActivity extends BaseActivity implements
 
         mIsInitializing = true;
         mIsFinished = false;
-        mRawSegmentsCount = 0;
         mTraceDistanceMeters = 0;
         mHiddenSegments = new LinkedList<List<LatLng>>();
         mDisplayedSegments = new LinkedList<List<LatLng>>();
         mWalkedPoints = new LinkedList<LatLng>();
         mLatLngToAnnotation = new HashMap<LatLng, TraceAnnotation>();
+        mUrlCount = 0;
+        mUrlTotal = 0;
+
+        mMarkerToAnnotation = new HashMap<Marker, TraceAnnotation>();
+        mMarkerToRoutingPointMsg = new HashMap<Marker, String>();
         setupListeners();
 
         PolylineOptions line = new PolylineOptions();
@@ -239,12 +248,12 @@ public class MapActivity extends BaseActivity implements
                 if (traceLocation.annotation != null) {
                     mLatLngToAnnotation.put(traceLocation.latLng, traceLocation.annotation);
                 }
-                mHiddenSegments.add(null);
+       //         mHiddenSegments.add(null);
             }
             fetchAllRoutingData();
 
 
-        } else if (!mIsInitializing  && !mIsFinished &&
+        } else if (!mIsInitializing && !mIsFinished && false &&
                 SphericalUtil.computeDistanceBetween(mCurrentLatLng, latLng) > SENSITIVITY_METER) {
             Log.d(TAG, "latLng update");
 
@@ -307,12 +316,13 @@ public class MapActivity extends BaseActivity implements
         mDirectionMarker.setVisible(false);
 
         // Show all future path
-        List<List<LatLng>> allPath = new LinkedList<List<LatLng>>();
-        allPath.addAll(mDisplayedSegments);
-        allPath.addAll(mHiddenSegments);
-        updateDisplayedPolyLine(allPath);
+//        List<List<LatLng>> allPath = new LinkedList<List<LatLng>>();
+//        allPath.addAll(mDisplayedSegments);
+//        allPath.addAll(mHiddenSegments);
+//        updateDisplayedPolyLine(allPath);
 
-        //displayWayPoints();
+        showRoutingPoints();
+        //showWayPoints();
         showAllAnnotationMarkers();
     }
 
@@ -375,6 +385,25 @@ public class MapActivity extends BaseActivity implements
                 }
             }
         });
+
+
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                TraceAnnotation annotation = null;
+                if (mMarkerToAnnotation != null && mMarkerToAnnotation.containsKey(marker)) {
+                    annotation = mMarkerToAnnotation.get(marker);
+                } else if (mMarkerToRoutingPointMsg != null && mMarkerToRoutingPointMsg.containsKey(marker)) {
+                    annotation = new TraceAnnotation();
+                    annotation.msg = mMarkerToRoutingPointMsg.get(marker);
+                }
+
+                if (annotation != null) {
+                    showAnnotationDialog(annotation);
+                }
+                return true;
+            }
+        });
     }
 
     /**
@@ -424,26 +453,68 @@ public class MapActivity extends BaseActivity implements
         mGoogleApiClient.disconnect();
     }
 
-
     /**
      * Gets routing data
      */
     private void fetchAllRoutingData() {
-        String url = MapUtil.getMapsApiDirectionsUrl(
-                mCurrentLatLng, mTraceLocations.get(0).latLng);
-        new FetchDirectionTask(0).execute(url);
-        for (int i = 0; i < mTraceLocations.size() - 1; i++) {
-            url = MapUtil.getMapsApiDirectionsUrl(mTraceLocations.get(i).latLng,
-                    mTraceLocations.get(i + 1).latLng);
-            new FetchDirectionTask(i + 1).execute(url);
+        int index = 0;
+        int count = 0;
+        while (index < mTraceLocations.size() - 1) {
+            mUrlTotal++;
+            Pair<String, Integer> pair = MapUtil.getMapsApiDirectionsUrl(mTraceLocations, index);
+            index = pair.second;
+            new FetchDirectionTask(count).execute(pair.first);
+            count++;
         }
+
+//
+//        String url = MapUtil.getMapsApiDirectionsUrl(
+//                mCurrentLatLng, mTraceLocations.get(0).latLng);
+//        new FetchDirectionTask(0).execute(url);
+//        for (int i = 0; i < mTraceLocations.size() - 1; i++) {
+//            url = MapUtil.getMapsApiDirectionsUrl(mTraceLocations.get(i).latLng,
+//                    mTraceLocations.get(i + 1).latLng);
+//            new FetchDirectionTask(i + 1).execute(url);
+//        }
     }
 
+    /**
+     * Displays annotation dialog.
+     *
+     * @param annotation
+     */
+    private void showAnnotationDialog(TraceAnnotation annotation) {
+        final MaterialDialog dialog = new MaterialDialog(this);
+        dialog.setTitle(R.string.message);
+        dialog.setMessage(annotation.msg);
+        dialog.setCanceledOnTouchOutside(true);
+
+        // Positive button
+        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    /**
+     * Shows all markers.
+     */
+    private void showAllAnnotationMarkers() {
+        for (TraceLocation traceLocation : mTraceLocations) {
+            if (traceLocation.annotation != null) {
+                Marker marker = displayMarker(traceLocation.latLng, MARKER_TYPE_ANNOTATION);
+                mMarkerToAnnotation.put(marker, traceLocation.annotation);
+            }
+        }
+    }
 
     /**
      * Displays way points on screen.
      */
-    private void displayWayPoints() {
+    private void showWayPoints() {
         for (List<LatLng> segment : mDisplayedSegments) {
             LatLng point = segment.get(segment.size() - 1);
             displayMarker(point, MARKER_TYPE_WAY_POINT);
@@ -454,6 +525,19 @@ public class MapActivity extends BaseActivity implements
             displayMarker(point, MARKER_TYPE_WAY_POINT);
         }
     }
+
+    /**
+     * Displays routing points.
+     */
+    private void showRoutingPoints() {
+        for (int i = 0; i < mTraceLocations.size(); i++) {
+            LatLng point = mTraceLocations.get(i).latLng;
+            Marker marker = displayMarker(point, MARKER_TYPE_ROUTING_POINT);
+            mMarkerToRoutingPointMsg.put(marker, "routing point #" + i);
+        }
+
+    }
+
 
     /**
      * Displays a marker.
@@ -483,51 +567,6 @@ public class MapActivity extends BaseActivity implements
         return mGoogleMap.addMarker(markerOption);
     }
 
-    /**
-     * Displays annotation dialog.
-     *
-     * @param annotation
-     */
-    private void showAnnotationDialog(TraceAnnotation annotation) {
-        final MaterialDialog dialog = new MaterialDialog(this);
-        dialog.setTitle(R.string.message);
-        dialog.setMessage(annotation.msg);
-        dialog.setCanceledOnTouchOutside(true);
-
-        // Positive button
-        dialog.setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
-    /**
-     * Shows all markers.
-     */
-    private void showAllAnnotationMarkers() {
-        final Map<Marker, TraceAnnotation> markerToAnnotation = new HashMap<Marker, TraceAnnotation>();
-        for (TraceLocation traceLocation : mTraceLocations) {
-            if (traceLocation.annotation != null) {
-                Marker marker = displayMarker(traceLocation.latLng, MARKER_TYPE_ANNOTATION);
-                markerToAnnotation.put(marker, traceLocation.annotation);
-            }
-        }
-
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (!markerToAnnotation.containsKey(marker)) {
-                    return true;
-                }
-                TraceAnnotation annotation = markerToAnnotation.get(marker);
-                showAnnotationDialog(annotation);
-                return true;
-            }
-        });
-    }
 
     /**
      * Updates displayed lines.
@@ -559,10 +598,10 @@ public class MapActivity extends BaseActivity implements
 
     public class FetchDirectionTask extends AsyncTask<String, Void, String> {
 
-        private int mRawSegmentIndex;
+        private int mUrlDataIndex;
 
         public FetchDirectionTask(int index) {
-            mRawSegmentIndex = index;
+            mUrlDataIndex = index;
         }
 
         @Override
@@ -588,18 +627,57 @@ public class MapActivity extends BaseActivity implements
                     points.add(position);
                 }
             }
-            mHiddenSegments.set(mRawSegmentIndex, points);
-            mRawSegmentsCount++;
 
-            if (mRawSegmentsCount == mTraceLocations.size()) {
-                mHiddenSegments = MapUtil.normalizeWayPoints(mHiddenSegments);
+            Log.d(TAG, "points size: " + points.size());
+
+            if (mUrlCount == 0) {
+                PolylineOptions option = new PolylineOptions();
+                option.color(getResources().getColor(R.color.cyan));
+                option.visible(true);
+
+
+                Polyline line = mDisplayedPolyline = mGoogleMap.addPolyline(option);
+
+
+//                List<LatLng> newP = new ArrayList<>();
+//                for (int i = 0; i< 200; i++) {
+//
+//                    newP.add(points.get(i));
+//                }
+                line.setPoints(points);
+
+            }
+
+
+            mHiddenSegments.add(mUrlDataIndex, points);
+            mUrlCount++;
+
+            if (mUrlCount == mUrlTotal) {
+                //mHiddenSegments = MapUtil.normalizeWayPoints(mHiddenSegments);
                 mProgressDialog.dismiss();
                 mIsInitializing = false;
 
-                mDisplayedSegments.add(mHiddenSegments.get(0));
-                mHiddenSegments.remove(0);
-                updateDisplayedPolyLine(mDisplayedSegments);
-                mDirectionMarker.setVisible(true);
+
+//
+//                mDisplayedSegments.add(mHiddenSegments.get(0));
+//                mHiddenSegments.remove(0);
+//                updateDisplayedPolyLine(mDisplayedSegments);
+//                mDirectionMarker.setVisible(true);
+
+
+//
+//                List<LatLng> list = new LinkedList<LatLng>();
+//                for (List<LatLng> l : mHiddenSegments) {
+//                    list.addAll(l);
+//                }
+//
+//                PolylineOptions option = new PolylineOptions();
+//                option.color(getResources().getColor(R.color.black));
+//                option.visible(true);
+//
+//                Polyline line = mDisplayedPolyline = mGoogleMap.addPolyline(option);
+//                line.setPoints(list);
+
             }
         }
 

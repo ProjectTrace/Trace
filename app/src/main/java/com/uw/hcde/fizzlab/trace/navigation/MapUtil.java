@@ -1,9 +1,11 @@
 package com.uw.hcde.fizzlab.trace.navigation;
 
 import android.location.Location;
+import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -68,6 +70,52 @@ public class MapUtil {
 
         return res;
     }
+
+    /**
+     * Process 10 points at a time, return uri and locations index after processed.
+     * start point ---- up to 8 wayponts --- end point
+     * Return index will be the index of end point
+     * Requires startIndex < locations.size() - 1
+     *
+     * @param locations
+     * @param startIndex
+     * @return Pair(Url, end index)
+     */
+    public static Pair<String, Integer> getMapsApiDirectionsUrl(List<TraceLocation> locations, int startIndex) {
+        if (startIndex >= locations.size() - 1) {
+            throw new IllegalArgumentException("get maps api directions url, startIndex out of boundary");
+        }
+
+        int endIndex = startIndex + 9;
+        if (endIndex > locations.size() - 1) {
+            endIndex = locations.size() - 1;
+        }
+
+        LatLng start = locations.get(startIndex).latLng;
+        LatLng end = locations.get(endIndex).latLng;
+        String origin = "origin=" + start.latitude + "," + start.longitude;
+        String destination = "destination=" + end.latitude + "," + end.longitude;
+        String sensor = "sensor=false&units=metric&mode=walking";
+
+        String waypoints = "";
+        if (endIndex - startIndex > 1) {
+            waypoints += "waypoints=optimize:true|";
+            for (int i = startIndex + 1; i < endIndex; i++) {
+                LatLng point = locations.get(i).latLng;
+                waypoints += point.latitude + "," + point.longitude;
+
+                if (i < endIndex - 1) {
+                    waypoints += "|";
+                }
+            }
+        }
+
+        String url = "http://maps.googleapis.com/maps/api/directions/json?" + origin + "&" + destination
+                + "&" + sensor + "&" + waypoints;
+
+        return new Pair<String, Integer>(url, endIndex);
+    }
+
 
     /**
      * Generates Google Map API request URL.

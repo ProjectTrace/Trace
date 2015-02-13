@@ -18,7 +18,7 @@ public class DrawUtil {
 
     private static final String TAG = "DrawUtil";
     private static final int SEGMENT_LENGTH_PL = 50;
-    private static final int EPSILON = 40;
+    private static final int EPSILON = 10;
 
     /**
      * Transforms raw points to normalized points that separates by SEGMENT_LENGTH_PL on path

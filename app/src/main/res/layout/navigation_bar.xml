@@ -38,6 +38,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/back"
+        android:textColor="@color/white"
         android:visibility="invisible"
         fbutton:buttonColor="@color/cyan_light"
         fbutton:cornerRadius="5dp"

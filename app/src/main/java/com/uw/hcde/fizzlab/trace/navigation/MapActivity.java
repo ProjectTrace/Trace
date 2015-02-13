@@ -302,26 +302,6 @@ public class MapActivity extends BaseActivity implements
         finish();
     }
 
-//    /**
-//     * Returns from ending early state.
-//     */
-//    private void disableStateEndingEarly() {
-//        mButtonEndingEarly.setVisibility(View.VISIBLE);
-//        mTextDistance.setVisibility(View.VISIBLE);
-//        mTextMiles.setVisibility(View.VISIBLE);
-//        mButtonShowDrawing.setVisibility(View.INVISIBLE);
-//        mButtonShowTrace.setVisibility(View.INVISIBLE);
-//        mDirectionMarker.setVisible(true);
-//
-//        // Clear annotation markers.
-//        for (Marker m : mMarkerToAnnotation.keySet()) {
-//            m.remove();
-//        }
-//        mMarkerToAnnotation.clear();
-//        mWalkedPolyline.setVisible(false);
-//        updateDisplayedPolyLine(mDisplayedSegments);
-//    }
-
     /**
      * Sets state to ending early.
      */
@@ -390,13 +370,6 @@ public class MapActivity extends BaseActivity implements
                 getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.INVISIBLE);
             }
         });
-
-//        mButtonBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                disableStateEndingEarly();
-//            }
-//        });
 
         mButtonShowTrace.setOnClickListener(new View.OnClickListener() {
             @Override

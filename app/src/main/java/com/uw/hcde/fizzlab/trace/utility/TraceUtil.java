@@ -8,12 +8,16 @@ import android.net.NetworkInfo;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.database.ParseLog;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -164,4 +168,63 @@ public class TraceUtil {
             return false;
         }
     }
+
+    public static void showTutorialDialog(final Context context, int res) {
+        final MaterialDialog dialog = new MaterialDialog(context);
+        dialog.setTitle(R.string.tutorial);
+        dialog.setMessage(context.getString(res));
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setPositiveButton(R.string.report_problem, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showReportDialog(context);
+            }
+        });
+        dialog.show();
+    }
+
+    public static void showReportDialog(final Context context) {
+        final MaterialDialog dialog = new MaterialDialog(context);
+        dialog.setTitle(R.string.report_problem);
+
+        // Set up dialog view
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.dialog_report_problem, null);
+        final EditText input = (EditText) view.findViewById(R.id.report_content);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String report = input.getText().toString();
+                if (report.length() != 0) {
+                    ParseLog log = new ParseLog();
+                    log.setUser(ParseUser.getCurrentUser());
+                    log.setMessage(report);
+                    log.saveInBackground();
+                }
+                dialog.dismiss();
+                TraceUtil.showToast(context, context.getString(R.string.thanks));
+            }
+        });
+        dialog.show();
+    }
+
+
 }

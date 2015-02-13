@@ -8,6 +8,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 /**
  * Choose walk activity that controls choose drawing and distance fragments.
@@ -40,6 +41,18 @@ public class ChooseWalkActivity extends BaseActivity {
             setNavigationTitle(R.string.walk_step_1);
         } else {
             super.handleBackButton();
+        }
+    }
+
+
+    @Override
+    protected void handleReportButton() {
+        FragmentManager fm = getFragmentManager();
+        // On draw fragment
+        if (fm.getBackStackEntryCount() == 0) {
+            TraceUtil.showTutorialDialog(this, R.string.select_drawing_instruction);
+        } else {
+            TraceUtil.showTutorialDialog(this, R.string.set_duration_instruction);
         }
     }
 }

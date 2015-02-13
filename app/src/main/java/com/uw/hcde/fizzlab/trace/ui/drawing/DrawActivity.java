@@ -3,12 +3,10 @@ package com.uw.hcde.fizzlab.trace.ui.drawing;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
-
-import me.drakeet.materialdialog.MaterialDialog;
+import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 /**
  * Activity that handles drawing and annotation.
@@ -55,36 +53,13 @@ public class DrawActivity extends BaseActivity {
     @Override
     protected void handleReportButton() {
         FragmentManager fm = getFragmentManager();
-
         // On draw fragment
         if (fm.getBackStackEntryCount() == 0) {
-
-            final MaterialDialog dialog = new MaterialDialog(DrawActivity.this);
-            dialog.setTitle(R.string.tutorial);
-            dialog.setMessage(R.string.draw_instruction);
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.setPositiveButton(R.string.report_problem, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    sendReport();
-                }
-            });
-            dialog.show();
-
+            TraceUtil.showTutorialDialog(this, R.string.draw_instruction);
+        } else if (fm.getBackStackEntryCount() == 1) {
+            TraceUtil.showTutorialDialog(this, R.string.annotation_instruction);
         } else {
-            sendReport();
+            TraceUtil.showTutorialDialog(this, R.string.send_instruction);
         }
-    }
-
-    private void sendReport() {
-        super.handleReportButton();
     }
 }

@@ -1,24 +1,16 @@
 package com.uw.hcde.fizzlab.trace.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.ParseFile;
-import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
-import com.uw.hcde.fizzlab.trace.database.ParseLog;
 import com.uw.hcde.fizzlab.trace.main.MainActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Base activity.
@@ -78,38 +70,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void handleReportButton() {
-        final MaterialDialog dialog = new MaterialDialog(BaseActivity.this);
-        dialog.setTitle(R.string.report_problem);
-
-        // Set up dialog view
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dialog_report_problem, null);
-        final EditText input = (EditText) view.findViewById(R.id.report_content);
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(true);
-
-        dialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setPositiveButton(R.string.send, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String report = input.getText().toString();
-                if (report.length() != 0) {
-                    ParseLog log = new ParseLog();
-                    log.setUser(ParseUser.getCurrentUser());
-                    log.setMessage(report);
-                    log.saveInBackground();
-                }
-                dialog.dismiss();
-                TraceUtil.showToast(BaseActivity.this, getString(R.string.thanks));
-            }
-        });
-        dialog.show();
+        TraceUtil.showReportDialog(this);
     }
 
 

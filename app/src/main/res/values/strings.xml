@@ -101,7 +101,7 @@
     <string name="please_enter_something">please enter something!</string>
     <string name="invalid_trace_user">invalid trace user!</string>
     <string name="to">To: </string>
-    
+
     <string name="draw_step_1">Step 1: Draw A Path</string>
     <string name="draw_step_2">Step 2: Touch Line To Annotate</string>
     <string name="draw_step_3">Step 3: Send</string>
@@ -113,7 +113,10 @@
     <string name="please_select_friends">please select friends</string>
 
 
-    <!-- Test only -->
-    <string name="draw_instruction"> Dear tester, the first drawing point will be used as trace starting point. Top -&gt; North, Down -&gt; South, Left -&gt; West, Right -&gt; East.</string>
+    <string name="draw_instruction">Draw anything on the screen provided. The drawing will be sent to your friend(s) to walk. Once you are done, click next.</string>
+    <string name="annotation_instruction">Click anywhere on your drawing to add a note for your friend to read while they are on their walk.</string>
+    <string name="send_instruction">Select your friend and send your drawing. Your drawing will be translated into a personalized path that they can walk.</string>
+    <string name="select_drawing_instruction">Choose a path you would like to walk by pressing on any of the drawings in the list below.</string>
+    <string name="set_duration_instruction">Set the duration of your walk by selecting one of the time options below.</string>
 
 </resources>

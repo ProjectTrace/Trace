@@ -90,7 +90,7 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/button_ending_early"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"

@@ -74,7 +74,7 @@
     <string name="enable_gps">Trace needs access to your location. Please turn on location access.</string>
     <string name="enable_network">Trace needs access to network. Please check network connection.</string>
     <string name="miles_traveled">miles traveled</string>
-    <string name="ending_early">Ending early</string>
+    <string name="ending_early">End walk</string>
     <string name="show_drawing">Show drawing</string>
     <string name="show_trace">Show trace</string>
     <string name="please_wait">please wait...</string>
@@ -95,7 +95,8 @@
     <!-- Profile -->
     <string name="friends">Friends</string>
     <string name="my_drawn_path">My Drawn Paths</string>
-    <string name="add_friends">+ Add Friend</string>
+    <string name="add_friends_plus">+ Add Friend</string>
+    <string name="add_friends">Add Friend</string>
     <string name="enter_email">enter friend email here</string>
     <string name="add">Add</string>
     <string name="please_enter_something">please enter something!</string>

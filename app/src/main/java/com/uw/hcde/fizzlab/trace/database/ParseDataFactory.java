@@ -89,9 +89,13 @@ public class ParseDataFactory {
                 if (e == null && parseUsers.size() > 0) {
                     currentUser.addUnique(ParseConstant.KEY_FRIEND_LIST, parseUsers.get(0));
                     currentUser.saveInBackground();
-                    func.parseAddFriendCallback(ParseConstant.SUCCESS);
+                    if (func != null) {
+                        func.parseAddFriendCallback(ParseConstant.SUCCESS);
+                    }
                 } else {
-                    func.parseAddFriendCallback(ParseConstant.FAILED);
+                    if (func != null) {
+                        func.parseAddFriendCallback(ParseConstant.FAILED);
+                    }
                 }
             }
         });
@@ -223,6 +227,25 @@ public class ParseDataFactory {
                     // Something went wrong.
                     Log.e(TAG, "send drawing failed " + e.getMessage());
                     callback.sendDrawingCallback(ParseConstant.FAILED);
+                }
+            }
+        });
+    }
+
+    public static void addDefaultDrawing(final ParseUser currentUser) {
+        // Set up query
+        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
+        query.whereEqualTo(ParseDrawing.KEY_TAG, ParseConstant.DEFAULT_DRAWING_TAG);
+
+        // Start query
+        query.findInBackground(new FindCallback<ParseDrawing>() {
+            public void done(List<ParseDrawing> drawingList, ParseException e) {
+                if (e == null && drawingList.size() > 0) {
+                    ParseDrawing drawing = drawingList.get(0);
+                    drawing.addUnique(ParseDrawing.KEY_RECEIVER_LIST, currentUser);
+                    drawing.saveInBackground();
+                } else {
+                    Log.e(TAG, "Add default drawings failed " + e.getMessage());
                 }
             }
         });

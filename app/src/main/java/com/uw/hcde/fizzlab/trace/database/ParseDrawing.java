@@ -31,6 +31,7 @@ public class ParseDrawing extends ParseObject {
     public static final String KEY_RECEIVER_LIST = "receiver_list";
     public static final String KEY_ANNOTATION_LIST = "annotation_list";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_TAG = "tag";
 
     /**
      * Sets x list
@@ -130,6 +131,14 @@ public class ParseDrawing extends ParseObject {
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
     }
+
+    /**
+     * Sets tag
+     */
+    public void setTag(String tag) {
+        put(KEY_TAG, tag);
+    }
+
 
     /**
      * Gets description

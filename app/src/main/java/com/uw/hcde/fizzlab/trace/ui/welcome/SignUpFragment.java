@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -20,6 +21,8 @@ import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
+import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
+import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
@@ -45,7 +48,7 @@ public class SignUpFragment extends Fragment {
 
         // Get buttons
         emailEditText = (EditText) view.findViewById(R.id.text_email);
-        nameEditText = (EditText)view.findViewById(R.id.text_name);
+        nameEditText = (EditText) view.findViewById(R.id.text_name);
         passwordEditText = (EditText) view.findViewById(R.id.text_password);
         passwordAgainEditText = (EditText) view.findViewById(R.id.text_password_again);
 
@@ -131,8 +134,6 @@ public class SignUpFragment extends Fragment {
                     TraceUtil.showToast(getActivity(), e.getMessage());
                 } else {
                     // add username to installation table
-
-
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                     installation.saveInBackground();
                     installation.put("username", email);
@@ -167,6 +168,10 @@ public class SignUpFragment extends Fragment {
                             }
                         }
                     });
+
+                    // Add default friends and drawing
+                    ParseDataFactory.addFriend(ParseUser.getCurrentUser(), ParseConstant.TRACE_TEAM_EMAIL, null);
+                    ParseDataFactory.addDefaultDrawing(ParseUser.getCurrentUser());
 
                     // Start an intent for the dispatch activity
                     Intent intent = new Intent(getActivity(), DispatchActivity.class);

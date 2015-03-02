@@ -2,21 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.uw.hcde.fizzlab.trace">
 
-    <compatible-screens>
-        <!-- all normal size screens -->
-        <screen
-            android:screenDensity="ldpi"
-            android:screenSize="normal" />
-        <screen
-            android:screenDensity="mdpi"
-            android:screenSize="normal" />
-        <screen
-            android:screenDensity="hdpi"
-            android:screenSize="normal" />
-        <screen
-            android:screenDensity="xhdpi"
-            android:screenSize="normal" />
-    </compatible-screens>
+    <!--<compatible-screens>-->
+    <!--&lt;!&ndash; all normal size screens &ndash;&gt;-->
+    <!--<screen-->
+    <!--android:screenDensity="ldpi"-->
+    <!--android:screenSize="normal" />-->
+    <!--<screen-->
+    <!--android:screenDensity="mdpi"-->
+    <!--android:screenSize="normal" />-->
+    <!--<screen-->
+    <!--android:screenDensity="hdpi"-->
+    <!--android:screenSize="normal" />-->
+    <!--<screen-->
+    <!--android:screenDensity="xhdpi"-->
+    <!--android:screenSize="normal" />-->
+    <!--</compatible-screens>-->
 
 
     <!-- ============================================ -->
@@ -41,10 +41,10 @@
       IMPORTANT: Change "com.parse.tutorials.pushnotifications.permission.C2D_MESSAGE" in the lines below
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
-    <permission android:protectionLevel="signature"
-        android:name="com.uw.hcde.fizzlab.trace.permission.C2D_MESSAGE" />
+    <permission
+        android:name="com.uw.hcde.fizzlab.trace.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
     <uses-permission android:name="com.uw.hcde.fizzlab.trace.permission.C2D_MESSAGE" />
-
 
 
     <!-- Application and activities-->
@@ -127,13 +127,15 @@
 
 
         <service android:name="com.parse.PushService" />
+
         <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -145,18 +147,10 @@
                 <category android:name="com.uw.hcde.fizzlab.trace" />
             </intent-filter>
         </receiver>
-        <!--
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
-        -->
+
         <receiver
             android:name="com.uw.hcde.fizzlab.trace.main.Receiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -165,7 +159,9 @@
         </receiver>
 
         <!--notification icon setting-->
-            <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/push_ic"/>
+        <meta-data
+            android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/push_ic" />
     </application>
 
 </manifest>

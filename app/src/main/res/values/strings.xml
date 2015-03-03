@@ -120,4 +120,9 @@
     <string name="select_drawing_instruction">Choose a path you would like to walk by pressing on any of the drawings in the list below.</string>
     <string name="set_duration_instruction">Set the duration of your walk by selecting one of the time options below.</string>
 
+    <!-- Term of service -->
+    <string name="term_of_service">Term of Service</string>
+    <string name="accept">Accept</string>
+    <string name="Decline">Decline</string>
+
 </resources>

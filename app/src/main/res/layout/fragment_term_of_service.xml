@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cyan"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Term of Service content Term of Service content Term of Service content Term of Service content" />
+
+
+    <RelativeLayout
+        android:id="@+id/button_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/button_accept"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="30dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/accept"
+                fbutton:buttonColor="@color/cyan_light"
+                fbutton:cornerRadius="5dp"
+                fbutton:shadowColor="@color/cyan_dark"
+                fbutton:shadowEnabled="true"
+                fbutton:shadowHeight="3dp" />
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/button_decline"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="15dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/decline"
+                fbutton:buttonColor="@color/cyan_light"
+                fbutton:cornerRadius="5dp"
+                fbutton:shadowColor="@color/cyan_dark"
+                fbutton:shadowEnabled="true"
+                fbutton:shadowHeight="3dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

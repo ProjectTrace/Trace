@@ -12,7 +12,7 @@ public class TraceAppPreference {
     private static final String APP_ID = "com.uw.hcde.fizzlab.trace";
     private static SharedPreferences preferences = null;
 
-    private static final String KEY = "sample key";
+    private static final String KEY_FIRST_TIME_USE = "sample key";
 
     /**
      * Lazy initialization.
@@ -25,13 +25,23 @@ public class TraceAppPreference {
         }
     }
 
-    public static float getKey(Context context) {
+    /**
+     * Is first time use the app. Set it false after called.
+     * @param context
+     * @return
+     */
+    public static boolean isFirstTimeUse(Context context) {
         initializePreferences(context);
-        return preferences.getInt(KEY, 0);
+        boolean res = preferences.getBoolean(KEY_FIRST_TIME_USE, true);
+        if (res) {
+            preferences.edit().putBoolean(KEY_FIRST_TIME_USE, false).commit();
+        }
+        return res;
     }
 
-    public static void setKey(Context context, int value) {
-        initializePreferences(context);
-        preferences.edit().putFloat(KEY, value).commit();
-    }
+
+//    public static void setKey(Context context, int value) {
+//        initializePreferences(context);
+//        preferences.edit().putFloat(KEY, value).commit();
+//    }
 }

@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.ui.TermOfServiceActivity;
+import com.uw.hcde.fizzlab.trace.ui.TermOfServiceFragment;
+import com.uw.hcde.fizzlab.trace.utility.TraceAppPreference;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 import com.uw.hcde.fizzlab.trace.ui.drawing.DrawActivity;
 import com.uw.hcde.fizzlab.trace.ui.profile.ProfileActivity;
@@ -37,7 +40,11 @@ public class MainActivity extends Activity {
         mButtonYou = findViewById(R.id.button_you);
         setupListener();
 
-
+        if (true) {
+            Log.d(TAG, "Show term of service");
+            Intent intent = new Intent(this, TermOfServiceActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -95,6 +95,13 @@ public abstract class BaseActivity extends Activity {
         mButtonBack.setVisibility(View.INVISIBLE);
     }
 
+    public void disableAllButtons() {
+        mButtonReport.setVisibility(View.INVISIBLE);
+        mButtonHome.setVisibility(View.INVISIBLE);
+        mButtonBack.setVisibility(View.INVISIBLE);
+        mButtonBack.setVisibility(View.INVISIBLE);
+    }
+
     public void enableBackButton() {
         mButtonBack.setVisibility(View.VISIBLE);
         mButtonHome.setVisibility(View.INVISIBLE);

@@ -126,6 +126,16 @@
             android:screenOrientation="portrait" />
 
 
+        <!-- ============================================ -->
+        <!-- ======= Profile related activities ============ -->
+        <!-- ============================================ -->
+        <!-- Profile activity -->
+        <activity
+            android:name=".ui.TermOfServiceActivity"
+            android:label="@string/profile"
+            android:screenOrientation="portrait" />
+
+
         <service android:name="com.parse.PushService" />
 
         <receiver android:name="com.parse.ParseBroadcastReceiver">

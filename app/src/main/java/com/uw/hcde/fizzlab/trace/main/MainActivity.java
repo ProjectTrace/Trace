@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
         mButtonYou = findViewById(R.id.button_you);
         setupListener();
 
-        if (true) {
+        if (!TraceAppPreference.isTermAccepted(this)) {
             Log.d(TAG, "Show term of service");
             Intent intent = new Intent(this, TermOfServiceActivity.class);
             startActivity(intent);

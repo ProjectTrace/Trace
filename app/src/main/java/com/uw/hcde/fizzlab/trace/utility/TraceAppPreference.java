@@ -12,7 +12,8 @@ public class TraceAppPreference {
     private static final String APP_ID = "com.uw.hcde.fizzlab.trace";
     private static SharedPreferences preferences = null;
 
-    private static final String KEY_FIRST_TIME_USE = "sample key";
+    private static final String KEY_FIRST_TIME_USE = "key_first_time_use";
+    private static final String KEY_IS_TERM_ACCEPTED = "key_is_term_accepted";
 
     /**
      * Lazy initialization.
@@ -39,9 +40,14 @@ public class TraceAppPreference {
         return res;
     }
 
+    public static boolean isTermAccepted(Context context) {
+        initializePreferences(context);
+        return preferences.getBoolean(KEY_IS_TERM_ACCEPTED, false);
+    }
 
-//    public static void setKey(Context context, int value) {
-//        initializePreferences(context);
-//        preferences.edit().putFloat(KEY, value).commit();
-//    }
+    public static void setTermAccepted(Context context) {
+        initializePreferences(context);
+        preferences.edit().putBoolean(KEY_IS_TERM_ACCEPTED, true).commit();
+    }
+
 }

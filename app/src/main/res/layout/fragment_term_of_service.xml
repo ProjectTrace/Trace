@@ -7,14 +7,18 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/button_menu"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:text="Term of Service content Term of Service content Term of Service content Term of Service content" />
+        android:text="@string/terms_of_service_content">
 
+    </TextView>
 
     <RelativeLayout
         android:id="@+id/button_menu"

@@ -2,14 +2,17 @@ package com.uw.hcde.fizzlab.trace.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.utility.TraceAppPreference;
 
 /**
- * Term of Serive fragment
+ * Term of Service fragment
  *
  * @author tianchi
  */
@@ -27,6 +30,10 @@ public class TermOfServiceFragment extends Fragment {
         mButtonAccept = view.findViewById(R.id.button_accept);
         mButtonDecline = view.findViewById(R.id.button_decline);
         setupListeners();
+
+        TextView text = (TextView) view.findViewById(R.id.content);
+        text.setMovementMethod(new ScrollingMovementMethod());
+
         return view;
     }
 
@@ -34,6 +41,7 @@ public class TermOfServiceFragment extends Fragment {
         mButtonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TraceAppPreference.setTermAccepted(getActivity());
                 getActivity().finish();
             }
         });

@@ -123,14 +123,14 @@ public class ParseDataFactory {
             return;
         }
 
-        boolean isDataAvaiable = true;
+        boolean isDataAvailable = true;
         for (ParseUser user : friendsList) {
             if (!user.isDataAvailable()) {
-                isDataAvaiable = false;
+                isDataAvailable = false;
                 break;
             }
         }
-        if (isDataAvaiable) {
+        if (isDataAvailable) {
             func.parseRetrieveFriendsCallback(ParseConstant.SUCCESS, friendsList);
             return;
         }

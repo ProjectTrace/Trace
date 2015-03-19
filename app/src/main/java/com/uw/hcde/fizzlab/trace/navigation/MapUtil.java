@@ -1,11 +1,14 @@
 package com.uw.hcde.fizzlab.trace.navigation;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceLocation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,6 +87,31 @@ public class MapUtil {
         url.append("&sensor=false&units=metric&mode=walking");
         return url.toString();
     }
+
+    /**
+     * Generates Google Map API request URL.
+     *
+     * @param latlngs
+     * @return url
+     */
+    /*
+    public static String getMapsApiDirectionsUrls(List<LatLng> latlngs) {
+        StringBuilder url = new StringBuilder();
+        url.append("http://maps.googleapis.com/maps/api/directions/json?");
+        url.append("origin=").append(latlngs.get(0).latitude).append(",").append(latlngs.get(0).longitude);
+        url.append("&destination=").append(latlngs.get(latlngs.size() - 1).latitude).append(",").append(latlngs.get(latlngs.size() - 1).longitude);
+        if (latlngs.size() > 2) {
+            url.append("&waypoints=");
+            for (int i = 1; i < latlngs.size() - 2; i++) {
+                url.append(latlngs.get(i).latitude).append(",").append(latlngs.get(i).longitude).append("|");
+            }
+            url.append(latlngs.get(latlngs.size() - 2).latitude).append(",").append(latlngs.get(latlngs.size() - 2).longitude);
+        }
+        url.append("&sensor=false&units=metric&mode=walking");
+        Log.d(TAG,url.toString());
+        return url.toString();
+    }
+    */
 
     /**
      * Converts Location to LagLng

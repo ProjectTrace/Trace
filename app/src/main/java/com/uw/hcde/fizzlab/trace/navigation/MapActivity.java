@@ -48,6 +48,8 @@ import java.util.Map;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Represents map direction screen.
  *
@@ -436,9 +438,41 @@ public class MapActivity extends BaseActivity implements
             url = MapUtil.getMapsApiDirectionsUrl(mTraceLocations.get(i).latLng,
                     mTraceLocations.get(i + 1).latLng);
             new FetchDirectionTask(i + 1).execute(url);
+            if (i % 4 == 0) {
+                try {
+                    sleep(1900);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
+    /**
+     * Gets routing data
+     */
+    /*
+    private void fetchAllRoutingData2() {
+        String url = MapUtil.getMapsApiDirectionsUrl(
+                mCurrentLatLng, mTraceLocations.get(0).latLng);
+        new FetchDirectionTask(0).execute(url);
+        List<LatLng> waypoints = null;
+        int index = 0;
+        for (int i = 0; i < mTraceLocations.size() - 1; i += 2) {
+            waypoints = new ArrayList<LatLng>();
+            if (i + 2 < mTraceLocations.size() - 1) {
+                waypoints.add(mTraceLocations.get(i).latLng);
+                waypoints.add(mTraceLocations.get(i + 1).latLng);
+                waypoints.add(mTraceLocations.get(i + 2).latLng);
+            } else if (i + 1 < mTraceLocations.size() - 1) {
+                waypoints.add(mTraceLocations.get(i).latLng);
+                waypoints.add(mTraceLocations.get(i + 1).latLng);
+            }
+            url = MapUtil.getMapsApiDirectionsUrls(waypoints);
+            new FetchDirectionTask(++index).execute(url);
+        }
+    }
+    */
 
     /**
      * Displays way points on screen.
@@ -578,7 +612,7 @@ public class MapActivity extends BaseActivity implements
             }
 
             List<LatLng> points = new LinkedList<LatLng>();
-            for (int i = 0; i < routes.size(); i++) {
+            for (int i = 0; i < (routes.size() == 0 ? 0 : 1); i++) {
                 List<HashMap<String, String>> path = routes.get(i);
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);

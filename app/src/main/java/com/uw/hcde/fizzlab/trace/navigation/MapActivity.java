@@ -72,6 +72,8 @@ public class MapActivity extends BaseActivity implements
     private static final int MARKER_TYPE_ROUTING_POINT = 2;
     private static final int MARKER_TYPE_ANNOTATION = 3;
 
+    private static final int API_REQUEST_DELAY = 1900;
+
     private static final double METER_TO_MILE = 0.000621371192;
 
     private View mButtonEndingEarly;
@@ -645,7 +647,7 @@ public class MapActivity extends BaseActivity implements
             Log.d(TAG, "FetchDirectionTask doInBackground");
             if (mRawSegmentIndex % 4 == 0) {
                 try {
-                    sleep(1900);
+                    sleep(API_REQUEST_DELAY);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

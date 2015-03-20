@@ -96,6 +96,7 @@ public class MapActivity extends BaseActivity implements
     private Map<LatLng, TraceAnnotation> mLatLngToAnnotation;
 
     private int mRawSegmentsCount;
+    private int mRawSegmentsCount2;
     private List<List<LatLng>> mHiddenSegments;
     private List<List<LatLng>> mDisplayedSegments;
     private List<LatLng> mWalkedPoints;
@@ -105,6 +106,9 @@ public class MapActivity extends BaseActivity implements
 
     private Polyline mDisplayedPolyline;
     private Polyline mWalkedPolyline;
+
+    private List<List<LatLng>> points2;
+    private List<Integer> distance2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,11 +152,17 @@ public class MapActivity extends BaseActivity implements
         mIsInitializing = true;
         mIsFinished = false;
         mRawSegmentsCount = 0;
+        mRawSegmentsCount2 = 0;
         mTraceDistanceMeters = 0;
         mHiddenSegments = new LinkedList<List<LatLng>>();
         mDisplayedSegments = new LinkedList<List<LatLng>>();
         mWalkedPoints = new LinkedList<LatLng>();
         mLatLngToAnnotation = new HashMap<LatLng, TraceAnnotation>();
+
+        points2 = new LinkedList<List<LatLng>>();
+        distance2 = new LinkedList<Integer>();
+
+
         setupListeners();
 
         PolylineOptions line = new PolylineOptions();
@@ -438,13 +448,6 @@ public class MapActivity extends BaseActivity implements
             url = MapUtil.getMapsApiDirectionsUrl(mTraceLocations.get(i).latLng,
                     mTraceLocations.get(i + 1).latLng);
             new FetchDirectionTask(i + 1).execute(url);
-            if (i % 4 == 0) {
-                try {
-                    sleep(1900);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -624,6 +627,74 @@ public class MapActivity extends BaseActivity implements
             }
             mHiddenSegments.set(mRawSegmentIndex, points);
             mRawSegmentsCount++;
+
+            if (mRawSegmentsCount == mTraceLocations.size()) {
+                mHiddenSegments = MapUtil.normalizeWayPoints(mHiddenSegments);
+                mProgressDialog.dismiss();
+                mIsInitializing = false;
+
+                mDisplayedSegments.add(mHiddenSegments.get(0));
+                mHiddenSegments.remove(0);
+                updateDisplayedPolyLine(mDisplayedSegments);
+                mDirectionMarker.setVisible(true);
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            Log.d(TAG, "FetchDirectionTask doInBackground");
+            if (mRawSegmentIndex % 4 == 0) {
+                try {
+                    sleep(1900);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                HttpConnection http = new HttpConnection();
+                return http.readUrl(urls[0]);
+            } catch (Exception e) {
+                TraceUtil.showToast(MapActivity.this, "Network error");
+                finish();
+            }
+            return null;
+        }
+    }
+
+    public class FetchDirectionTask2 extends AsyncTask<String, Void, String> {
+
+        private int mRawSegmentIndex;
+
+        public FetchDirectionTask2(int index) {
+            mRawSegmentIndex = index;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+            try {
+                jObject = new JSONObject(result);
+                routes = PathJSONParser.parse(jObject);
+            } catch (Exception e) {
+                TraceUtil.showToast(MapActivity.this, "Serializing error");
+                finish();
+            }
+
+            List<LatLng> points = new LinkedList<LatLng>();
+            for (int i = 0; i < (routes.size() == 0 ? 0 : 1); i++) {
+                List<HashMap<String, String>> path = routes.get(i);
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+            }
+            points2.add(mRawSegmentIndex, points);
+            mHiddenSegments.set(mRawSegmentIndex, points);
+            mRawSegmentsCount2++;
 
             if (mRawSegmentsCount == mTraceLocations.size()) {
                 mHiddenSegments = MapUtil.normalizeWayPoints(mHiddenSegments);

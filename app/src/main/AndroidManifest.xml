@@ -2,21 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.uw.hcde.fizzlab.trace">
 
-    <!--<compatible-screens>-->
-    <!--&lt;!&ndash; all normal size screens &ndash;&gt;-->
-    <!--<screen-->
-    <!--android:screenDensity="ldpi"-->
-    <!--android:screenSize="normal" />-->
-    <!--<screen-->
-    <!--android:screenDensity="mdpi"-->
-    <!--android:screenSize="normal" />-->
-    <!--<screen-->
-    <!--android:screenDensity="hdpi"-->
-    <!--android:screenSize="normal" />-->
-    <!--<screen-->
-    <!--android:screenDensity="xhdpi"-->
-    <!--android:screenSize="normal" />-->
-    <!--</compatible-screens>-->
+    <compatible-screens>
+    <!-- all normal size screens -->
+    <screen
+    android:screenDensity="ldpi"
+    android:screenSize="normal" />
+    <screen
+    android:screenDensity="mdpi"
+    android:screenSize="normal" />
+    <screen
+    android:screenDensity="hdpi"
+    android:screenSize="normal" />
+    <screen
+    android:screenDensity="xhdpi"
+    android:screenSize="normal" />
+    </compatible-screens>
 
 
     <!-- ============================================ -->

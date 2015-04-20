@@ -58,11 +58,11 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/button_delete"
+        android:id="@+id/myDrawing_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:src="@drawable/button_delete_clickable"
+        android:src="@drawable/delete_cyan"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -128,6 +131,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             TextView mTitle;
             TextView mDate;
             TextView mSender;
+            ImageView mDelete;
         }
 
         public ChooseDrawingAdapter(Context context, int textViewResourceId, List<ParseDrawing> items) {
@@ -143,6 +147,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                 viewHolder.mTitle = (TextView) convertView.findViewById(R.id.item_title);
                 viewHolder.mDate = (TextView) convertView.findViewById(R.id.item_date);
                 viewHolder.mSender = (TextView) convertView.findViewById(R.id.item_sender);
+                viewHolder.mDelete = (ImageView) convertView.findViewById(R.id.chooseDrawing_delete);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -151,8 +156,10 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             ParseDrawing item = getItem(position);
             if (position % 2 == 0) {
                 convertView.setBackground(getResources().getDrawable(R.color.cyan_dark));
+
             } else {
                 convertView.setBackground(getResources().getDrawable(R.color.cyan));
+
             }
 
             if (item != null) {

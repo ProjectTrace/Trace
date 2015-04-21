@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -77,8 +78,24 @@ public class ParseDataFactory {
 
 
     public static void deleteReceivedDrawing(ParseUser currentUser, ParseDrawing item) {
-        item.getReceiverList().remove(currentUser);
-        ParseObject.saveAllInBackground(item.getReceiverList(), new SaveCallback() {
+        item.fetchIfNeededInBackground();
+        List<ParseUser> receiverList = item.getReceiverList();
+        try {
+            ParseObject.fetchAllIfNeeded(receiverList);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int size = receiverList.size();
+        for (int i = 0; i < size; i++) {
+
+            if (receiverList.get(i).getUsername().equals(currentUser.getUsername())) {
+                Log.d(TAG, "Find it!!!");
+                receiverList.remove(i);
+                item.saveInBackground();
+                break;
+            }
+        }
+        item.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null)

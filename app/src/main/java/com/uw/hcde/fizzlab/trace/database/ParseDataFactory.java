@@ -7,6 +7,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
@@ -73,6 +74,21 @@ public class ParseDataFactory {
             }
         });
     }
+
+
+    public static void deleteReceivedDrawing(ParseUser currentUser, ParseDrawing item) {
+        item.getReceiverList().remove(currentUser);
+        ParseObject.saveAllInBackground(item.getReceiverList(), new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Delete received drawings failed");
+                else
+                    Log.d(TAG, "Delete received drawings success");
+            }
+        });
+    }
+
 
     /**
      * Adds my self
@@ -311,6 +327,7 @@ public class ParseDataFactory {
         }
         return tracePoints;
     }
+
 
 
 }

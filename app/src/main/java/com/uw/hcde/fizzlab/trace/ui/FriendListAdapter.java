@@ -91,6 +91,7 @@ public class FriendListAdapter extends ArrayAdapter<ParseUser>  {
             if (mCheckBoxEnabled) {
                 final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check_box);
                 checkBox.setVisibility(View.VISIBLE);
+                viewHolder.mDelete.setVisibility((View.INVISIBLE));
                 checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

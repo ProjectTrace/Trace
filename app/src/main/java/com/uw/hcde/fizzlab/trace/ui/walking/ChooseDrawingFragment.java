@@ -181,7 +181,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //ParseDataFactory.deleteReceivedDrawing(ParseUser.getCurrentUser(), items.get(position));
+                            ParseDataFactory.deleteReceivedDrawing(ParseUser.getCurrentUser(), item);
                             items.remove(position);
                             notifyDataSetChanged();
                         }

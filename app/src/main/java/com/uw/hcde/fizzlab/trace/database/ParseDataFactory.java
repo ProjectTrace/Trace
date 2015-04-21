@@ -31,6 +31,22 @@ public class ParseDataFactory {
 
     public static void retrieveMyDrawings(ParseUser user, final ParseRetrieveDrawingCallback callback) {
         // Set up query
+        List<ParseDrawing> drawingList = user.getList(ParseConstant.KEY_DRAWN_PATH);
+        try {
+            ParseObject.fetchAllIfNeeded(drawingList);
+            for (ParseDrawing path : drawingList) {
+                path.fetchIfNeededInBackground();
+                ParseDrawing.fetchAll(path.getReceiverList());
+                ParseDrawing.fetchAll(path.getAnnotationList());
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
+
+
+        /*
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_CREATOR, user);
         query.include(ParseDrawing.KEY_RECEIVER_LIST);
@@ -47,6 +63,7 @@ public class ParseDataFactory {
                 }
             }
         });
+        */
     }
 
 
@@ -272,6 +289,9 @@ public class ParseDataFactory {
         parseDrawing.setYList(yList);
         parseDrawing.setReceiverList(receivers);
         parseDrawing.setAnnotationList(annotations);
+
+        ParseUser.getCurrentUser().addUnique(ParseConstant.KEY_DRAWN_PATH, parseDrawing);
+        ParseUser.getCurrentUser().saveInBackground();
 
 
         // Save

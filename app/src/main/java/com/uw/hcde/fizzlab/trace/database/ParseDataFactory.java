@@ -31,6 +31,7 @@ public class ParseDataFactory {
 
     public static void retrieveMyDrawings(ParseUser user, final ParseRetrieveDrawingCallback callback) {
         // Set up query
+        /*
         List<ParseDrawing> drawingList = user.getList(ParseConstant.KEY_DRAWN_PATH);
         try {
             ParseObject.fetchAllIfNeeded(drawingList);
@@ -43,10 +44,12 @@ public class ParseDataFactory {
             e.printStackTrace();
         }
 
+
         callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
 
+        */
 
-        /*
+
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_CREATOR, user);
         query.include(ParseDrawing.KEY_RECEIVER_LIST);
@@ -63,7 +66,29 @@ public class ParseDataFactory {
                 }
             }
         });
+
+    }
+
+    public static void deleteMyDrawing(ParseUser user, ParseDrawing item) {
+        /*
+        if (drawingList.contains(item)) {
+            Log.d(TAG, "Find it!!!");
+            drawingList.remove(item);
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null)
+                        Log.e(TAG, "Delete received drawings failed");
+                    else
+                        Log.d(TAG, "Delete received drawings success");
+                }
+            });
+        } else {
+            Log.e(TAG, "Cannot find it");
+        }
         */
+
+
     }
 
 
@@ -108,19 +133,19 @@ public class ParseDataFactory {
             if (receiverList.get(i).getUsername().equals(currentUser.getUsername())) {
                 Log.d(TAG, "Find it!!!");
                 receiverList.remove(i);
-                item.saveInBackground();
+                item.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null)
+                            Log.e(TAG, "Delete received drawings failed");
+                        else
+                            Log.d(TAG, "Delete received drawings success");
+                    }
+                });
                 break;
             }
         }
-        item.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null)
-                    Log.e(TAG, "Delete received drawings failed");
-                else
-                    Log.d(TAG, "Delete received drawings success");
-            }
-        });
+
     }
 
 
@@ -290,8 +315,7 @@ public class ParseDataFactory {
         parseDrawing.setReceiverList(receivers);
         parseDrawing.setAnnotationList(annotations);
 
-        ParseUser.getCurrentUser().addUnique(ParseConstant.KEY_DRAWN_PATH, parseDrawing);
-        ParseUser.getCurrentUser().saveInBackground();
+        // TODO set From and To
 
 
         // Save

@@ -13,7 +13,6 @@ public class ParseConstant {
     // Key for user table
     public static final String KEY_FRIEND_LIST = "key_friend_list";
     public static final String KEY_FULL_NAME = "key_full_name";
-    public static final String KEY_DRAWN_PATH = "key_drawn_path";
 
     public static final String DEFAULT_DRAWING_TAG = "default_drawing";
     public static final String TRACE_TEAM_EMAIL = "tracelab@gmail.com";

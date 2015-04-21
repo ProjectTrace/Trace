@@ -27,8 +27,13 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
     // Related table keys
     public static final String KEY_PX_X_LIST = "px_x_list";
     public static final String KEY_PX_Y_LIST = "px_y_list";
+
+    // from and to is for record to keep track of drawing after deletion from one side
+    public static final String KEY_FROM = "from";
+    public static final String KEY_TO = "to";
     public static final String KEY_CREATOR = "creator";
     public static final String KEY_RECEIVER_LIST = "receiver_list";
+
     public static final String KEY_ANNOTATION_LIST = "annotation_list";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_TAG = "tag";

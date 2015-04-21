@@ -15,7 +15,6 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseDeleteFriendCallback;
 import com.uw.hcde.fizzlab.trace.ui.profile.FriendsFragment;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 

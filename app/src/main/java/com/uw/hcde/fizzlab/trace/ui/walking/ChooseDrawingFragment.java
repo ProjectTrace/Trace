@@ -1,9 +1,11 @@
 package com.uw.hcde.fizzlab.trace.ui.walking;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -125,6 +127,7 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
     }
 
     private class ChooseDrawingAdapter extends ArrayAdapter<ParseDrawing> {
+        private List<ParseDrawing> items;
 
         // Use view holder pattern to improve performance
         private class ViewHolder {
@@ -136,9 +139,10 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
 
         public ChooseDrawingAdapter(Context context, int textViewResourceId, List<ParseDrawing> items) {
             super(context, textViewResourceId, items);
+            this.items = items;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.list_item_choose_drawing, parent, false);
@@ -153,7 +157,9 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            ParseDrawing item = getItem(position);
+
+
+            final ParseDrawing item = getItem(position);
             if (position % 2 == 0) {
                 convertView.setBackground(getResources().getDrawable(R.color.cyan_dark));
 
@@ -161,6 +167,29 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                 convertView.setBackground(getResources().getDrawable(R.color.cyan));
 
             }
+
+            viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //TraceUtil.showToast(mContext, "Delete?");
+                    AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+                    adb.setTitle("Delete?");
+                    adb.setMessage("Are you sure you want to delete received drawing: " +
+                            item.getDescription() + " ?");
+                    adb.setNegativeButton("Cancel", null);
+                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //ParseDataFactory.deleteReceivedDrawing(ParseUser.getCurrentUser(), items.get(position));
+                            items.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    });
+                    adb.show();
+                }
+            });
+
 
             if (item != null) {
                 viewHolder.mTitle.setText(item.getDescription());

@@ -12,7 +12,6 @@ import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
-import com.uw.hcde.fizzlab.trace.database.callback.ParseDeleteFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
@@ -47,6 +46,7 @@ public class ParseDataFactory {
             }
         });
     }
+
 
     /**
      * Gets list of parse drawings or empty list given user.
@@ -311,4 +311,6 @@ public class ParseDataFactory {
         }
         return tracePoints;
     }
+
+
 }

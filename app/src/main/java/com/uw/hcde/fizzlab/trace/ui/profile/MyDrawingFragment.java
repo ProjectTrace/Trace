@@ -1,12 +1,15 @@
 package com.uw.hcde.fizzlab.trace.ui.profile;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,17 +61,20 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
     class MyDrawingAdapter extends ArrayAdapter<ParseDrawing> {
 
         private Context mContext;
+        private List<ParseDrawing> items;
 
         // Use view holder pattern to improve performance
         private class ViewHolder {
             TextView mDescription;
             TextView mReceiverName;
             TextView mDate;
+            ImageView mDelete;
         }
 
         public MyDrawingAdapter(Context context, int textViewResourceId, List<ParseDrawing> items) {
             super(context, textViewResourceId, items);
             mContext = context;
+            this.items = items;
         }
 
         @Override
@@ -81,13 +87,42 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
                 viewHolder.mDescription = (TextView) convertView.findViewById(R.id.drawing_title);
                 viewHolder.mReceiverName = (TextView) convertView.findViewById(R.id.receiver_name);
                 viewHolder.mDate = (TextView) convertView.findViewById(R.id.date);
+                viewHolder.mDelete = (ImageView) convertView.findViewById(R.id.myDrawing_delete);
                 convertView.setTag(viewHolder);
 
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            ParseDrawing item = getItem(position);
+            final ParseDrawing item = getItem(position);
+
+            viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
+
+                /*
+                    Didn't delete the drawing and annotation points in the cloud database.
+                    Since receivers may need to use them.
+                    We may have to deal with them backend deletion when there are lot of drawings.
+                 */
+                @Override
+                public void onClick(View v) {
+                    //TraceUtil.showToast(mContext, "Delete?");
+                    AlertDialog.Builder adb=new AlertDialog.Builder(getContext());
+                    adb.setTitle("Delete?");
+                    adb.setMessage("Are you sure you want to delete drawing: " +
+                            item.getDescription() +  " ?");
+                    adb.setNegativeButton("Cancel", null);
+                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            items.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    });
+                    adb.show();
+                }
+            });
+
+
             if (position % 2 == 0) {
                 convertView.setBackground(mContext.getResources().getDrawable(R.color.gray_list_item1));
             } else {

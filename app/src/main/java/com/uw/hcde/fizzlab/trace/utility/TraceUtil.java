@@ -27,7 +27,7 @@ import me.drakeet.materialdialog.MaterialDialog;
  * @author tianchi
  */
 public class TraceUtil {
-    public static final int TOAST_MESSAGE_TIME = 2000;
+    public static final int TOAST_MESSAGE_TIME = 500;
     private static Boolean sIsShowingToastMessage = false;
     private static Handler sHandler = new Handler();
 

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
@@ -191,10 +192,11 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             });
 
 
+
             if (item != null) {
                 viewHolder.mTitle.setText(item.getDescription());
                 viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
-                viewHolder.mSender.setText(item.getCreator().getString(ParseConstant.KEY_FULL_NAME));
+                viewHolder.mSender.setText(item.getCreatorRecord().getString(ParseConstant.KEY_FULL_NAME));
             }
             return convertView;
         }

@@ -29,8 +29,8 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
     public static final String KEY_PX_Y_LIST = "px_y_list";
 
     // from and to is for record to keep track of drawing after deletion from one side
-    public static final String KEY_FROM = "from";
-    public static final String KEY_TO = "to";
+    public static final String KEY_CREATOR_RECORD = "creator_record";
+    public static final String KEY_RECEIVER_RECORD = "receiver_record";
     public static final String KEY_CREATOR = "creator";
     public static final String KEY_RECEIVER_LIST = "receiver_list";
 
@@ -84,6 +84,15 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
     }
 
     /**
+     * Sets creatorRecord
+     *
+     * @param creator
+     */
+    public void setCreatorRecord(ParseUser creator) {
+        put(KEY_CREATOR_RECORD, creator);
+    }
+
+    /**
      * Gets creator
      *
      * @return creator
@@ -93,12 +102,40 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
     }
 
     /**
+     * Gets creatorRecord
+     *
+     * @return creator
+     */
+    public ParseUser getCreatorRecord() {
+        return getParseUser(KEY_CREATOR_RECORD);
+    }
+
+    /**
      * Sets receivers
      *
      * @param receivers
      */
     public void setReceiverList(List<ParseUser> receivers) {
         put(KEY_RECEIVER_LIST, receivers);
+    }
+
+
+    /**
+     * Sets receiversRecord
+     *
+     * @param receivers
+     */
+    public void setReceiverRecord(List<ParseUser> receivers) {
+        put(KEY_RECEIVER_RECORD, receivers);
+    }
+
+    /**
+     * Gets receiver Record
+     *
+     * @return
+     */
+    public List<ParseUser> getReceiverRecord() {
+        return getList(KEY_RECEIVER_RECORD);
     }
 
     /**
@@ -170,4 +207,6 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
         }
         return 0;
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.uw.hcde.fizzlab.trace.database;
 import android.graphics.Point;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -31,28 +32,9 @@ public class ParseDataFactory {
 
     public static void retrieveMyDrawings(ParseUser user, final ParseRetrieveDrawingCallback callback) {
         // Set up query
-        /*
-        List<ParseDrawing> drawingList = user.getList(ParseConstant.KEY_DRAWN_PATH);
-        try {
-            ParseObject.fetchAllIfNeeded(drawingList);
-            for (ParseDrawing path : drawingList) {
-                path.fetchIfNeededInBackground();
-                ParseDrawing.fetchAll(path.getReceiverList());
-                ParseDrawing.fetchAll(path.getAnnotationList());
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
-
-        */
-
-
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_CREATOR, user);
-        query.include(ParseDrawing.KEY_RECEIVER_LIST);
+        query.include(ParseDrawing.KEY_RECEIVER_RECORD);
         query.include(ParseDrawing.KEY_ANNOTATION_LIST);
 
         // Start query
@@ -70,25 +52,16 @@ public class ParseDataFactory {
     }
 
     public static void deleteMyDrawing(ParseUser user, ParseDrawing item) {
-        /*
-        if (drawingList.contains(item)) {
-            Log.d(TAG, "Find it!!!");
-            drawingList.remove(item);
-            user.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null)
-                        Log.e(TAG, "Delete received drawings failed");
-                    else
-                        Log.d(TAG, "Delete received drawings success");
-                }
-            });
-        } else {
-            Log.e(TAG, "Cannot find it");
-        }
-        */
-
-
+        item.remove(ParseDrawing.KEY_CREATOR);
+        item.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Delete my drawings failed");
+                else
+                    Log.d(TAG, "Delete my drawings success");
+            }
+        });
     }
 
 
@@ -102,14 +75,16 @@ public class ParseDataFactory {
         // Set up query
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
         query.whereEqualTo(ParseDrawing.KEY_RECEIVER_LIST, user);
-        query.include(ParseDrawing.KEY_CREATOR);
+        query.include(ParseDrawing.KEY_CREATOR_RECORD);
         query.include(ParseDrawing.KEY_ANNOTATION_LIST);
+
 
         // Start query
         query.findInBackground(new FindCallback<ParseDrawing>() {
             public void done(List<ParseDrawing> drawingList, ParseException e) {
                 if (e == null) {
                     callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, drawingList);
+
                 } else {
                     Log.e(TAG, "Retrieve drawings failed " + e.getMessage());
                     callback.retrieveDrawingsCallback(ParseConstant.FAILED, null);
@@ -310,12 +285,12 @@ public class ParseDataFactory {
         // Add data entry
         parseDrawing.setDescription(description);
         parseDrawing.setCreator(ParseUser.getCurrentUser());
+        parseDrawing.setCreatorRecord(ParseUser.getCurrentUser());
         parseDrawing.setXList(xList);
         parseDrawing.setYList(yList);
         parseDrawing.setReceiverList(receivers);
+        parseDrawing.setReceiverRecord(receivers);
         parseDrawing.setAnnotationList(annotations);
-
-        // TODO set From and To
 
 
         // Save
@@ -345,6 +320,7 @@ public class ParseDataFactory {
                 if (e == null && drawingList.size() > 0) {
                     ParseDrawing drawing = drawingList.get(0);
                     drawing.addUnique(ParseDrawing.KEY_RECEIVER_LIST, currentUser);
+                    drawing.addUnique(ParseDrawing.KEY_RECEIVER_RECORD, currentUser);
                     drawing.saveInBackground();
                 } else {
                     Log.e(TAG, "Add default drawings failed " + e.getMessage());

@@ -64,6 +64,23 @@ public class ParseDataFactory {
         });
     }
 
+    public static void addToWalkedUserList(ParseDrawing drawing, ParseUser currentUser) {
+        drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentUser);
+        drawing.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "add user to walked list failed");
+                else
+                    Log.d(TAG, "add user to walked list success");
+            }
+        });
+    }
+
+    public static List<ParseDrawing> retrieveMyWalkedPaths(ParseUser currentUser) {
+        return null;
+    }
+
 
     /**
      * Gets list of parse drawings or empty list given user.
@@ -365,8 +382,4 @@ public class ParseDataFactory {
         return tracePoints;
     }
 
-
-    public static List<ParseDrawing> retrieveMyWalkedPaths(ParseUser currentUser) {
-        return null;
-    }
 }

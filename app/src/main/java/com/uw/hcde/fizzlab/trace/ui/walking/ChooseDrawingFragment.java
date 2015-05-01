@@ -68,6 +68,8 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
                 TraceDataContainerReceiver.rawTracePoints = points;
                 TraceDataContainerReceiver.trimmedTracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainerReceiver.description = mDrawings.get(position).getDescription();
+                ParseDataContainer.currentUser = ParseUser.getCurrentUser();
+                ParseDataContainer.drawing = mDrawings.get(position);
                 Log.d(TAG, "trimmed trace points: " + TraceDataContainerReceiver.trimmedTracePoints.size());
 
                 // Fragment transaction

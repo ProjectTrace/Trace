@@ -17,6 +17,7 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveWalkedPathCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
 
 import java.util.ArrayList;
@@ -77,8 +78,21 @@ public class ParseDataFactory {
         });
     }
 
-    public static List<ParseDrawing> retrieveMyWalkedPaths(ParseUser currentUser) {
-        return null;
+    public static void retrieveMyWalkedPaths(ParseUser currentUser, final ParseRetrieveWalkedPathCallback callback) {
+        List<ParseDrawing> res;
+        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
+        query.whereEqualTo(ParseDrawing.KEY_WALKED_USERS_LIST, currentUser);
+        query.findInBackground(new FindCallback<ParseDrawing>() {
+            @Override
+            public void done(List<ParseDrawing> list, ParseException e) {
+                if (e == null) {
+                    callback.retrieveWalkedPathCallBack(ParseConstant.SUCCESS, list);
+                } else {
+                    Log.e(TAG, "Retrieve my walked paths failed " + e.getMessage());
+                    callback.retrieveWalkedPathCallBack(ParseConstant.FAILED, null);
+                }
+            }
+        });
     }
 
 

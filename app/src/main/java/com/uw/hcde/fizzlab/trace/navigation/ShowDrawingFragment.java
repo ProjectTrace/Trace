@@ -56,6 +56,7 @@ public class ShowDrawingFragment extends Fragment {
         ((BaseActivity) getActivity()).enableHomeButton();
     }
 
+
     /**
      * Inner class to draw the path obtained from DrawingView activity, using rawPoints.
      * TODO: possible code reuse from drawing module.

@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.ui.profile;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 
 import com.uw.hcde.fizzlab.trace.R;
@@ -25,5 +26,15 @@ public class ProfileActivity extends BaseActivity {
 
         Fragment fragment = new ProfileFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+    }
+
+    @Override
+    protected void handleBackButton() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        } else {
+            super.handleBackButton();
+        }
     }
 }

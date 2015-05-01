@@ -2,12 +2,15 @@ package com.uw.hcde.fizzlab.trace.ui.profile;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,10 +18,15 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
+import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
+import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
+import com.uw.hcde.fizzlab.trace.navigation.ShowDrawingFragment;
+import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
+import com.uw.hcde.fizzlab.trace.ui.walking.ChooseDurationFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -31,6 +39,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
 
     private static final String TAG = "DrawnPathsFragment";
     private ListView mDrawnPathList;
+    private List<ParseDrawing> mDrawings;
     private MyDrawingAdapter mAdapter;
     private Context mContext;
 
@@ -42,6 +51,25 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
         mContext = getActivity();
         mAdapter = null;
 
+        mDrawnPathList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "my drawn path on click");
+                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(position));
+                TraceDataContainerReceiver.rawTracePoints = points;
+                TraceDataContainerReceiver.trimmedTracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainerReceiver.description = mDrawings.get(position).getDescription();
+                Log.d(TAG, "trimmed trace points: " + TraceDataContainerReceiver.trimmedTracePoints.size());
+
+                // Fragment transaction
+                Fragment fragment = new ShowDrawingFragment();
+                getFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .add(R.id.fragment_container, fragment)
+                        .addToBackStack(null).commit();
+            }
+        });
+
         ParseDataFactory.retrieveMyDrawings(ParseUser.getCurrentUser(), this);
         return view;
     }
@@ -49,8 +77,9 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
     @Override
     public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
         if (returnCode == ParseConstant.SUCCESS && drawings.size() > 0) {
-            Collections.sort(drawings);
-            mAdapter = new MyDrawingAdapter(mContext, R.layout.list_item_my_drawing, drawings);
+            mDrawings = drawings;
+            Collections.sort(mDrawings);
+            mAdapter = new MyDrawingAdapter(mContext, R.layout.list_item_my_drawing, mDrawings);
             mDrawnPathList.setAdapter(mAdapter);
         }
     }
@@ -147,4 +176,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
             return convertView;
         }
     }
+
+
+
 }

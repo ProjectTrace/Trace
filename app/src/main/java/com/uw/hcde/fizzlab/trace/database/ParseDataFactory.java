@@ -168,7 +168,7 @@ public class ParseDataFactory {
             @Override
             public void done(ParseException e) {
                 if (e != null)
-                   Log.e(TAG, "deleteFriend backend failed.");
+                    Log.e(TAG, "deleteFriend backend failed.");
             }
         });
     }
@@ -366,5 +366,7 @@ public class ParseDataFactory {
     }
 
 
-
+    public static List<ParseDrawing> retrieveMyWalkedPaths(ParseUser currentUser) {
+        return null;
+    }
 }

@@ -25,8 +25,13 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private static final String TAB_FRIENDS = "tab_friends";
     private static final String TAB_DRAWN_PATH = "tab_drawn_path";
+    private static final String TAB_WALKED_PATH = "tab_walked_path";
 
     private FragmentTabHost mTabHost;
+
+    public ProfileFragment() {
+        this.mTabHost = mTabHost;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +72,9 @@ public class ProfileFragment extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec(TAB_DRAWN_PATH).setIndicator(getString(R.string.my_drawn_path)),
                 MyDrawingFragment.class, null);
 
+        // Create my walked path tab
+        mTabHost.addTab(mTabHost.newTabSpec(TAB_WALKED_PATH).setIndicator(getString(R.string.my_walked_path)),
+                MyWalkingFragment.class, null);
         return view;
     }
 }

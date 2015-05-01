@@ -57,14 +57,10 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
                 Log.d(TAG, "my drawn path on click");
                 List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(position));
                 TraceDataContainerReceiver.rawTracePoints = points;
-                TraceDataContainerReceiver.trimmedTracePoints = DrawUtil.trimPoints(points);
-                TraceDataContainerReceiver.description = mDrawings.get(position).getDescription();
-                Log.d(TAG, "trimmed trace points: " + TraceDataContainerReceiver.trimmedTracePoints.size());
 
                 // Fragment transaction
                 Fragment fragment = new ShowDrawingFragment();
-                getFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
                         .add(R.id.fragment_container, fragment)
                         .addToBackStack(null).commit();
             }

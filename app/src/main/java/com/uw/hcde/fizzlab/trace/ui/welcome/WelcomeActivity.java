@@ -35,7 +35,7 @@ public class WelcomeActivity extends BaseActivity {
             fm.popBackStack();
             disableNavigationBar();
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 

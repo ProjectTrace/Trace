@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -121,7 +122,6 @@ public class SignUpFragment extends Fragment {
         user.setPassword(password);
         user.setEmail(email);
         user.put(ParseConstant.KEY_FULL_NAME, name);
-
         // Call Parse sign up method
         user.signUpInBackground(new SignUpCallback() {
             @Override
@@ -133,7 +133,6 @@ public class SignUpFragment extends Fragment {
                 } else {
                     // add username to installation table
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                    installation.saveInBackground();
                     installation.put("username", email);
                     installation.saveInBackground(new SaveCallback() {
                         @Override
@@ -162,7 +161,7 @@ public class SignUpFragment extends Fragment {
                                     }
                                 });
                             } else {
-                                Log.e(TAG, "Failed add email to installation table");
+                                Log.e(TAG, "Failed add email to installation table" + e.getMessage());
                             }
                         }
                     });

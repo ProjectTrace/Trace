@@ -229,20 +229,25 @@ public class SelectFriendFragment extends Fragment implements ParseRetrieveFrien
             // TODO: put notification code to parse data factory file
 
             // send notification to users
-            ParseQuery pushQuery = ParseInstallation.getQuery();
-            pushQuery.whereContainedIn("username", mSelectedUsers); // Set the target email
+            ParseQuery pushQuery;
+            pushQuery = ParseInstallation.getQuery();
+            List<String> userNameLists = new ArrayList<String>();
+            for (ParseUser e : mSelectedUsers) {
+                userNameLists.add(e.getEmail());
+            }
+            pushQuery.whereContainedIn("username", userNameLists); // Set the target email
 
             // Send push notification to query by email
             ParsePush push = new ParsePush();
             push.setQuery(pushQuery);
-            push.setMessage(ParseUser.getCurrentUser().getUsername() + " send you a new drawing: " + TraceDataContainerSender.description);
+            push.setMessage(ParseUser.getCurrentUser().getString(ParseConstant.KEY_FULL_NAME) + " send you a new drawing: " + TraceDataContainerSender.description);
             push.sendInBackground(new SendCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        Log.d(TAG, "Success send welcome notification");
+                        Log.d(TAG, "Success send notification");
                     } else {
-                        Log.e(TAG, "Failed send welcome notification");
+                        Log.e(TAG, "Failed send notification");
                     }
                 }
             });

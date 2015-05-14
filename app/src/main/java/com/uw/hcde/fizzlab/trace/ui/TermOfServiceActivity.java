@@ -17,4 +17,9 @@ public class TermOfServiceActivity extends BaseActivity {
         Fragment fragment = new TermOfServiceFragment();
         getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        //STAY AT THIS SCREEN
+    }
 }

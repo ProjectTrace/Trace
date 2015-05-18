@@ -1,12 +1,21 @@
 package com.uw.hcde.fizzlab.trace.main;
 
 import android.app.Application;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.util.Base64;
+import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.uw.hcde.fizzlab.trace.database.ParseAnnotation;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
 import com.uw.hcde.fizzlab.trace.database.ParseLog;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Configures Parse.
@@ -28,5 +37,11 @@ public class TraceApplication extends Application {
         ParseObject.registerSubclass(ParseLog.class);
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
 
+
+
+
+
     }
+
+
 }

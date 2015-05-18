@@ -10,7 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -18,6 +27,8 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.main.DispatchActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Sign in screen that prompts username and password.
@@ -33,11 +44,47 @@ public class SignInFragment extends Fragment {
     private EditText mPasswordEditText;
     private View mButtonSignUp;
     private View mButtonLogin;
+    private CallbackManager callbackManager;
+    private FacebookCallback<LoginResult> mCallBack = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            AccessToken accessToken = loginResult.getAccessToken();
+            Profile profile = Profile.getCurrentProfile();
+            if (profile != null) {
+                mEmailEditText.setText("Welcome " + profile.getName());
+
+            }
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+
+        }
+    };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-
         // Sets up the login form
         mEmailEditText = (EditText) view.findViewById(R.id.text_email);
         mPasswordEditText = (EditText) view.findViewById(R.id.text_password);
@@ -47,6 +94,8 @@ public class SignInFragment extends Fragment {
         mButtonSignUp = view.findViewById(R.id.button_sign_up);
         setupListener();
 
+        LoginButton loginButton = (LoginButton)view.findViewById(R.id.facebook_login_button);
+        loginButton.registerCallback(callbackManager, mCallBack);
         return view;
     }
 
@@ -135,5 +184,26 @@ public class SignInFragment extends Fragment {
                 }
             }
         });
+    }
+
+    /**
+     * only needed when generating a new facebook hashKey
+     * use in oncreate method
+     */
+    private void generateFaceBookHash() {
+        //        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(
+//                    "com.uw.hcde.fizzlab.trace",
+//                    PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//
+//        } catch (NoSuchAlgorithmException e) {
+//
+//        }
     }
 }

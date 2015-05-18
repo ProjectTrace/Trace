@@ -127,4 +127,7 @@
     <string name="accept">Accept</string>
     <string name="Decline">Decline</string>
 
+    <!-- facebook sdk -->
+    <string name="facebook_app_id">1602130093398588</string>
+
 </resources>

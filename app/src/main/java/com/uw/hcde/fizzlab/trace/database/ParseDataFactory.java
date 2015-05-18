@@ -19,6 +19,7 @@ import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveWalkedPathCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
+import com.uw.hcde.fizzlab.trace.navigation.UserAndDistance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,8 @@ public class ParseDataFactory {
         });
     }
 
-    public static void addToWalkedUserList(ParseDrawing drawing, ParseUser currentUser) {
-        drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentUser);
+    public static void addToWalkedUserList(ParseDrawing drawing, UserAndDistance currentUserDis) {
+        drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentUserDis);
         drawing.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

@@ -166,6 +166,10 @@ public class MapActivity extends BaseActivity implements
 
 
         setupListeners();
+        if (getIntent().getStringExtra("TAG") != null
+                && getIntent().getStringExtra("TAG").equals("show")) {
+            setStateEndingEarly();
+        }
 
         PolylineOptions line = new PolylineOptions();
         line.color(getResources().getColor(R.color.transparent_klein_blue1));

@@ -79,10 +79,11 @@ public class ChooseDurationFragment extends Fragment {
                    This chuck of code may be moved to other place according to how to define "walked path"
                  */
 
+                /*
                 ParseDataFactory.addToWalkedUserList(ParseDataContainer.drawing,
                         new UserAndDistance(ParseUser.getCurrentUser(), TraceDataContainerReceiver.distance));
                 Log.d(TAG, "ready to add current user to walked list");
-
+                */
                 Intent intent = new Intent(getActivity(), MapActivity.class);
                 startActivity(intent);
             }

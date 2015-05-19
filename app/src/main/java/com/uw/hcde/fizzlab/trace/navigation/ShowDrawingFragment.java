@@ -36,10 +36,6 @@ public class ShowDrawingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_show_drawing, container, false);
 
-        // Set navigation title and back button
-        ((BaseActivity) getActivity()).setNavigationTitle(R.string.show_drawing);
-        ((BaseActivity) getActivity()).enableBackButton();
-
 
         mPoints = DrawUtil.tracePointsToPoints(TraceDataContainerReceiver.rawTracePoints);
 

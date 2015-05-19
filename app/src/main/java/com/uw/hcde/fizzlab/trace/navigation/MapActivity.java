@@ -137,6 +137,7 @@ public class MapActivity extends BaseActivity implements
 
         // Creating an instance for being able to interact with Google Map
         MapFragment fm = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        fm.getView().setVisibility(View.INVISIBLE);
         mGoogleMap = fm.getMap();
         mGoogleMap.setMyLocationEnabled(true);
 
@@ -166,6 +167,10 @@ public class MapActivity extends BaseActivity implements
 
 
         setupListeners();
+        if (getIntent().getStringExtra("TAG") != null
+                && getIntent().getStringExtra("TAG").equals("show")) {
+            setStateEndingEarly();
+        }
 
         PolylineOptions line = new PolylineOptions();
         line.color(getResources().getColor(R.color.transparent_klein_blue1));
@@ -214,14 +219,8 @@ public class MapActivity extends BaseActivity implements
 
     @Override
     protected void handleBackButton() {
-        FragmentManager fm = getFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-            setNavigationTitle(R.string.walk_step_3);
-            getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
-        } else {
-            super.handleBackButton();
-        }
+        super.handleBackButton();
+
     }
 
     @Override
@@ -375,18 +374,20 @@ public class MapActivity extends BaseActivity implements
                         .add(R.id.showing_drawing_content, fragment)
                         .addToBackStack(null).commit();
                 getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.INVISIBLE);
+
+
             }
         });
 
         mButtonShowTrace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mWalkedPoints.size() <= 2) {
-                    TraceUtil.showToast(MapActivity.this, getString(R.string.no_trace));
-                } else {
-                    mWalkedPolyline.setPoints(mWalkedPoints);
-                    mWalkedPolyline.setVisible(true);
+                FragmentManager fm = getFragmentManager();
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                    getFragmentManager().findFragmentById(R.id.map).getView().setVisibility(View.VISIBLE);
                 }
+
             }
         });
     }

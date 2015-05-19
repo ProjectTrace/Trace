@@ -109,7 +109,10 @@
     <FrameLayout
         android:id="@+id/showing_drawing_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@id/map_panel"
+        android:layout_below="@id/drawing_title">
+    </FrameLayout>
 
     <fragment
         android:id="@+id/map"
@@ -118,6 +121,16 @@
         android:layout_height="match_parent"
         android:layout_above="@id/map_panel"
         android:layout_below="@id/drawing_title" />
+
+    <!--fragment
+        android:id="@+id/fragment_container_inside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/map_panel"
+        android:layout_below="@id/drawing_title"
+        android:visibility="invisible">
+
+    </fragment-->
 
 
 </RelativeLayout>

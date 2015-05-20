@@ -118,17 +118,17 @@ public class MapActivity extends BaseActivity implements
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
         getLayoutInflater().inflate(R.layout.activity_map, frameLayout, true);
 
-        // Sets navigation title
-        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
-        enableHomeButton();
-        setNavigationTitle(R.string.walk_step_3);
-
         // Buttons
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
+
+        // Sets navigation title
+        setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
+        enableHomeButton();
+        setNavigationTitle(R.string.walk_step_3);
 
 
         // Map description

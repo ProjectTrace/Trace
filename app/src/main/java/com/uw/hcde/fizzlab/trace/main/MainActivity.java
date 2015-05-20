@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.uw.hcde.fizzlab.trace.ForFun.Main;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.TermOfServiceActivity;
 import com.uw.hcde.fizzlab.trace.ui.TermOfServiceFragment;
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Button you clicked");
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+//                Intent intent = new Intent(MainActivity.this, Main.class);
                 startActivity(intent);
             }
         });

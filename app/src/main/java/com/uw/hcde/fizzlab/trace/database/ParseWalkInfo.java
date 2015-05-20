@@ -2,6 +2,7 @@ package com.uw.hcde.fizzlab.trace.database;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 /**
@@ -28,5 +29,9 @@ public class ParseWalkInfo extends ParseObject{
 
     public int getDis() {
         return getInt(KEY_DISTANCE);
+    }
+
+    public static ParseQuery<ParseWalkInfo> getQuery() {
+        return ParseQuery.getQuery(ParseWalkInfo.class);
     }
 }

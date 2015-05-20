@@ -149,6 +149,16 @@ public class ParseDrawing extends ParseObject implements Comparable<ParseDrawing
         return getList(KEY_RECEIVER_LIST);
     }
 
+
+
+    public void setKeyWalkedUsersList(List<ParseWalkInfo> walkInfoList) {
+        put(KEY_WALKED_USERS_LIST, walkInfoList);
+    }
+
+    public List<ParseWalkInfo> getKeyWalkedUsersList() {
+        return getList(KEY_WALKED_USERS_LIST);
+    }
+
     /**
      * Sets annotations
      *

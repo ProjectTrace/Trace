@@ -15,8 +15,8 @@ import com.parse.ParseUser;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceDataContainerReceiver;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
+import com.uw.hcde.fizzlab.trace.database.ParseWalkInfo;
 import com.uw.hcde.fizzlab.trace.navigation.MapActivity;
-import com.uw.hcde.fizzlab.trace.navigation.UserAndDistance;
 import com.uw.hcde.fizzlab.trace.ui.BaseActivity;
 import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
@@ -79,11 +79,13 @@ public class ChooseDurationFragment extends Fragment {
                    This chuck of code may be moved to other place according to how to define "walked path"
                  */
 
-                /*
-                ParseDataFactory.addToWalkedUserList(ParseDataContainer.drawing,
-                        new UserAndDistance(ParseUser.getCurrentUser(), TraceDataContainerReceiver.distance));
+                ParseWalkInfo walkInfo = new ParseWalkInfo();
+                walkInfo.setUser(ParseUser.getCurrentUser());
+                walkInfo.setDis(TraceDataContainerReceiver.distance);
+                ParseDataFactory.addToWalkedUserList(ParseDataContainer.drawing, walkInfo);
+
                 Log.d(TAG, "ready to add current user to walked list");
-                */
+
                 Intent intent = new Intent(getActivity(), MapActivity.class);
                 startActivity(intent);
             }

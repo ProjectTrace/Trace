@@ -3,13 +3,10 @@ package com.uw.hcde.fizzlab.trace.database;
 import android.graphics.Point;
 import android.util.Log;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
@@ -19,7 +16,6 @@ import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveWalkedPathCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
-import com.uw.hcde.fizzlab.trace.navigation.UserAndDistance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,23 +62,25 @@ public class ParseDataFactory {
         });
     }
 
-    public static void addToWalkedUserList(ParseDrawing drawing, UserAndDistance currentUserDis) {
-        drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentUserDis);
+    public static void addToWalkedUserList(ParseDrawing drawing, final ParseWalkInfo currentWalkInfo) {
+        drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentWalkInfo);
         drawing.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null)
                     Log.e(TAG, "add user to walked list failed");
                 else
-                    Log.d(TAG, "add user to walked list success");
+                    Log.d(TAG, "add user to walked list success with distance + " + currentWalkInfo.getDis());
             }
         });
     }
 
     public static void retrieveMyWalkedPaths(ParseUser currentUser, final ParseRetrieveWalkedPathCallback callback) {
         List<ParseDrawing> res;
+        ParseQuery<ParseWalkInfo> innerQuery = ParseWalkInfo.getQuery();
+        innerQuery.whereEqualTo(ParseWalkInfo.KEY_USER, currentUser);
         ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
-        query.whereEqualTo(ParseDrawing.KEY_WALKED_USERS_LIST, currentUser);
+        query.whereMatchesQuery(ParseDrawing.KEY_WALKED_USERS_LIST, innerQuery);
         query.include(ParseDrawing.KEY_CREATOR_RECORD);
         query.findInBackground(new FindCallback<ParseDrawing>() {
             @Override

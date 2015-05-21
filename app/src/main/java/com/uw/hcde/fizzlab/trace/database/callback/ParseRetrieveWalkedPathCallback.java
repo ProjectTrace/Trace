@@ -1,6 +1,7 @@
 package com.uw.hcde.fizzlab.trace.database.callback;
 
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
+import com.uw.hcde.fizzlab.trace.database.ParseWalkInfo;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface ParseRetrieveWalkedPathCallback {
 
-    public void retrieveWalkedPathCallBack(int returnCode, List<ParseDrawing> drawings);
+    public void retrieveWalkedPathCallBack(int returnCode, List<ParseWalkInfo> drawings);
 }

@@ -80,8 +80,9 @@ public class ChooseDurationFragment extends Fragment {
                  */
 
                 ParseWalkInfo walkInfo = new ParseWalkInfo();
-                walkInfo.setUser(ParseUser.getCurrentUser());
+                walkInfo.setUser(ParseDataContainer.currentUser);
                 walkInfo.setDis(TraceDataContainerReceiver.distance);
+                walkInfo.setDrawing(ParseDataContainer.drawing);
                 ParseDataFactory.addToWalkedUserList(ParseDataContainer.drawing, walkInfo);
 
                 Log.d(TAG, "ready to add current user to walked list");

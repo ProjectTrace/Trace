@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -77,22 +78,21 @@ public class ParseDataFactory {
 
     public static void retrieveMyWalkedPaths(ParseUser currentUser, final ParseRetrieveWalkedPathCallback callback) {
         List<ParseDrawing> res;
-        ParseQuery<ParseWalkInfo> innerQuery = ParseWalkInfo.getQuery();
-        innerQuery.whereEqualTo(ParseWalkInfo.KEY_USER, currentUser);
-        ParseQuery<ParseDrawing> query = ParseDrawing.getQuery();
-        query.whereMatchesQuery(ParseDrawing.KEY_WALKED_USERS_LIST, innerQuery);
-        query.include(ParseDrawing.KEY_CREATOR_RECORD);
-        query.findInBackground(new FindCallback<ParseDrawing>() {
-            @Override
-            public void done(List<ParseDrawing> list, ParseException e) {
-                if (e == null) {
-                    callback.retrieveWalkedPathCallBack(ParseConstant.SUCCESS, list);
-                } else {
-                    Log.e(TAG, "Retrieve my walked paths failed " + e.getMessage());
-                    callback.retrieveWalkedPathCallBack(ParseConstant.FAILED, null);
-                }
-            }
-        });
+        ParseQuery<ParseWalkInfo> query = ParseWalkInfo.getQuery();
+        query.whereEqualTo(ParseWalkInfo.KEY_USER, currentUser);
+        query.include(ParseWalkInfo.KEY_DRAWING);
+        query.include(ParseWalkInfo.KEY_DRAWING + "." + ParseDrawing.KEY_CREATOR_RECORD);
+                query.findInBackground(new FindCallback<ParseWalkInfo>() {
+                    @Override
+                    public void done(List<ParseWalkInfo> list, ParseException e) {
+                        if (e == null) {
+                            callback.retrieveWalkedPathCallBack(ParseConstant.SUCCESS, list);
+                        } else {
+                            Log.e(TAG, "Retrieve my walked paths failed " + e.getMessage());
+                            callback.retrieveWalkedPathCallBack(ParseConstant.FAILED, null);
+                        }
+                    }
+                });
     }
 
 

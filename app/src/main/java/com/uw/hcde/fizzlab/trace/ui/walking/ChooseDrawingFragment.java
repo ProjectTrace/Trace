@@ -64,12 +64,13 @@ public class ChooseDrawingFragment extends Fragment implements ParseRetrieveDraw
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "drawing on click");
-                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(position));
+                ParseDrawing drawing = mDrawings.get(position);
+                List<TracePoint> points = ParseDataFactory.convertToTracePoints(drawing);
                 TraceDataContainerReceiver.rawTracePoints = points;
                 TraceDataContainerReceiver.trimmedTracePoints = DrawUtil.trimPoints(points);
                 TraceDataContainerReceiver.description = mDrawings.get(position).getDescription();
                 ParseDataContainer.currentUser = ParseUser.getCurrentUser();
-                ParseDataContainer.drawing = mDrawings.get(position);
+                ParseDataContainer.drawing = drawing;
                 Log.d(TAG, "trimmed trace points: " + TraceDataContainerReceiver.trimmedTracePoints.size());
 
                 // Fragment transaction

@@ -126,5 +126,6 @@
     <string name="term_of_service">Term of Service</string>
     <string name="accept">Accept</string>
     <string name="Decline">Decline</string>
+    <string name="my_walked_paths">My Walked Paths</string>
 
 </resources>

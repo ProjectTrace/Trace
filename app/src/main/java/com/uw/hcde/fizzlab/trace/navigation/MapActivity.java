@@ -128,7 +128,7 @@ public class MapActivity extends BaseActivity implements
         // Sets navigation title
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
         enableHomeButton();
-        setNavigationTitle(R.string.walk_step_3);
+
 
 
         // Map description
@@ -137,7 +137,7 @@ public class MapActivity extends BaseActivity implements
 
         // Creating an instance for being able to interact with Google Map
         MapFragment fm = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        fm.getView().setVisibility(View.INVISIBLE);
+        fm.getView().setVisibility(View.VISIBLE);
         mGoogleMap = fm.getMap();
         mGoogleMap.setMyLocationEnabled(true);
 
@@ -167,10 +167,6 @@ public class MapActivity extends BaseActivity implements
 
 
         setupListeners();
-        if (getIntent().getStringExtra("TAG") != null
-                && getIntent().getStringExtra("TAG").equals("show")) {
-            setStateEndingEarly();
-        }
 
         PolylineOptions line = new PolylineOptions();
         line.color(getResources().getColor(R.color.transparent_klein_blue1));
@@ -197,6 +193,18 @@ public class MapActivity extends BaseActivity implements
                 }
             }
         });
+        if (getIntent().getStringExtra("TAG") != null &&
+                getIntent().getStringExtra("TAG").equals("alreadyWalked")) {
+            setNavigationTitle(R.string.my_walked_paths);
+            mButtonEndingEarly.setVisibility(View.INVISIBLE);
+            mTextDistance.setVisibility(View.INVISIBLE);
+            mTextMiles.setVisibility(View.INVISIBLE);
+            mButtonShowDrawing.setVisibility(View.VISIBLE);
+            mButtonShowTrace.setVisibility(View.VISIBLE);
+        } else {
+            setNavigationTitle(R.string.walk_step_3);
+        }
+
     }
 
     @Override
@@ -206,6 +214,8 @@ public class MapActivity extends BaseActivity implements
         if (!mIsFinished) {
             mGoogleApiClient.connect();
         }
+
+
     }
 
     @Override
@@ -226,7 +236,6 @@ public class MapActivity extends BaseActivity implements
     @Override
     public void onConnected(Bundle connectionHint) {
         mProviderApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
     }
 
     @Override
@@ -293,6 +302,7 @@ public class MapActivity extends BaseActivity implements
                     updateDisplayedPolyLine(mDisplayedSegments);
                 }
             }
+
         }
     }
 
@@ -317,12 +327,13 @@ public class MapActivity extends BaseActivity implements
         mTextMiles.setVisibility(View.INVISIBLE);
         mButtonShowDrawing.setVisibility(View.VISIBLE);
         mButtonShowTrace.setVisibility(View.VISIBLE);
-        mDirectionMarker.setVisible(false);
+        //mDirectionMarker.setVisible(false);
 
         // Show all future path
         List<List<LatLng>> allPath = new LinkedList<List<LatLng>>();
         allPath.addAll(mDisplayedSegments);
         allPath.addAll(mHiddenSegments);
+        Log.e(TAG, "Displayed: "+ mDisplayedSegments + " + Hidden:" + mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
         //displayWayPoints();
@@ -575,13 +586,14 @@ public class MapActivity extends BaseActivity implements
     private void updateDisplayedPolyLine(List<List<LatLng>> segments) {
         List<LatLng> points = new ArrayList<LatLng>();
         for (List<LatLng> segment : segments) {
+            Log.e(TAG, "Segment: " + segments);
             points.addAll(segment);
         }
         mDisplayedPolyline.setPoints(points);
 
-        LatLng p1 = points.get(points.size() - 2);
-        LatLng p2 = points.get(points.size() - 1);
-        updateDirectionArrow(p1, p2);
+          //LatLng p1 = points.get(points.size() - 2);
+          //LatLng p2 = points.get(points.size() - 1);
+          //updateDirectionArrow(p1, p2);
     }
 
     /**
@@ -634,12 +646,17 @@ public class MapActivity extends BaseActivity implements
             if (mRawSegmentsCount == mTraceLocations.size()) {
                 mHiddenSegments = MapUtil.normalizeWayPoints(mHiddenSegments);
                 mProgressDialog.dismiss();
-                mIsInitializing = false;
-
-                mDisplayedSegments.add(mHiddenSegments.get(0));
-                mHiddenSegments.remove(0);
-                updateDisplayedPolyLine(mDisplayedSegments);
-                mDirectionMarker.setVisible(true);
+                Log.e(TAG, "SHOWED!!!");
+                if (getIntent().getStringExtra("TAG") != null
+                        && getIntent().getStringExtra("TAG").equals("alreadyWalked")) {
+                    setStateEndingEarly();
+                } else {
+                    mIsInitializing = false;
+                    mDisplayedSegments.add(mHiddenSegments.get(0));
+                    mHiddenSegments.remove(0);
+                    updateDisplayedPolyLine(mDisplayedSegments);
+                    mDirectionMarker.setVisible(true);
+                }
             }
         }
 

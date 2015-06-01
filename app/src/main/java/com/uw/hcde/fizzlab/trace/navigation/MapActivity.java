@@ -3,12 +3,16 @@ package com.uw.hcde.fizzlab.trace.navigation;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +43,7 @@ import com.uw.hcde.fizzlab.trace.utility.TraceUtil;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +84,7 @@ public class MapActivity extends BaseActivity implements
     private View mButtonEndingEarly;
     private View mButtonShowDrawing;
     private View mButtonShowTrace;
+    private View mButtonShare;
     private View mTextMiles;
     private TextView mTextDistance;
     private ProgressDialog mProgressDialog;
@@ -124,6 +130,7 @@ public class MapActivity extends BaseActivity implements
         mTextMiles = findViewById(R.id.text_miles);
         mButtonShowDrawing = findViewById(R.id.button_show_drawing);
         mButtonShowTrace = findViewById(R.id.button_show_trace);
+        mButtonShare = findViewById(R.id.button_share);
 
         // Sets navigation title
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
@@ -401,7 +408,54 @@ public class MapActivity extends BaseActivity implements
 
             }
         });
+
+        mButtonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    shareCurrentView(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
+
+    public void shareCurrentView(View v) throws IOException {
+
+        // create bitmap screen capture
+        Bitmap bitmap;
+        View v1 = findViewById(R.id.map_layout);
+        View v2 = findViewById(R.id.button_share);
+//        v2.setDrawingCacheEnabled(true);
+//        bitmap = Bitmap.createBitmap(v2.getDrawingCache());
+//        v2.setDrawingCacheEnabled(false);
+
+        bitmap = Bitmap.createBitmap(v1.getWidth(),
+                v1.getHeight(), Bitmap.Config.ARGB_8888);
+
+
+
+
+
+
+        ((ViewManager)v1).removeView(findViewById(R.id.map));
+        TextView textView = new TextView(v.getContext());
+        textView.setText("2466324");
+        ImageView imageView = new ImageView(v.getContext());
+        imageView.setImageBitmap(bitmap);
+        //imageView.setAlpha(0.3f);
+
+        RelativeLayout layout = (RelativeLayout)v1;
+        layout.addView(imageView);
+        layout.addView(textView);
+
+    }
+
+
+
+
 
     /**
      * Sets camera position.

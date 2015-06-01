@@ -25,6 +25,8 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical">
 
+
+
         <LinearLayout
 
             android:layout_width="wrap_content"
@@ -55,7 +57,7 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/button_show_drawing"
-            android:layout_width="125dp"
+            android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
@@ -73,7 +75,7 @@
 
         <info.hoang8f.widget.FButton
             android:id="@+id/button_show_trace"
-            android:layout_width="110dp"
+            android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
@@ -112,15 +114,45 @@
         android:layout_height="match_parent"
         android:layout_above="@id/map_panel"
         android:layout_below="@id/drawing_title">
+
+
     </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_above="@id/map_panel"
+        android:layout_below="@id/drawing_title">
+        <!--android:layout_alignParentBottom="true"-->
+
+
 
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/map_panel"
-        android:layout_below="@id/drawing_title" />
+        android:layout_height="match_parent"/>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/button_share"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="15dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/share"
+            fbutton:buttonColor="@color/cyan_light"
+            fbutton:cornerRadius="5dp"
+            fbutton:shadowColor="@color/cyan_dark"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="3dp"
+            />
+
+        </RelativeLayout>
 
     <!--fragment
         android:id="@+id/fragment_container_inside"

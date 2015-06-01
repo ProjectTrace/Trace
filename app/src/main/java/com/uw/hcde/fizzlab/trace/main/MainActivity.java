@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.uw.hcde.fizzlab.trace.ForFun.Main;
+//import com.uw.hcde.fizzlab.trace.ForFun.Main;
 import com.uw.hcde.fizzlab.trace.R;
 import com.uw.hcde.fizzlab.trace.ui.TermOfServiceActivity;
 import com.uw.hcde.fizzlab.trace.ui.TermOfServiceFragment;

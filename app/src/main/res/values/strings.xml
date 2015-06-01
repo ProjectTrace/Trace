@@ -75,8 +75,8 @@
     <string name="enable_network">Trace needs access to network. Please check network connection.</string>
     <string name="miles_traveled">miles traveled</string>
     <string name="ending_early">End walk</string>
-    <string name="show_drawing">Show drawing</string>
-    <string name="show_trace">Show trace</string>
+    <string name="show_drawing">Sketch</string>
+    <string name="show_trace">Map</string>
     <string name="please_wait">please wait...</string>
     <string name="google_play_required">Google play service required</string>
     <string name="enable_google_play">Trace needs access to Google play service. Please check if you installed latest version of Google play service.</string>
@@ -91,6 +91,7 @@
     <string name="thanks">thanks!</string>
     <string name="ending_early_message">If ending early, you won\'t be able to resume tracing. Are you sure?</string>
     <string name="tutorial">Tutorial</string>
+    <string name="share">Share</string>
 
     <!-- Profile -->
     <string name="friends">Friends</string>

@@ -82,6 +82,7 @@ public class ParseDataFactory {
         query.whereEqualTo(ParseWalkInfo.KEY_USER, currentUser);
         query.include(ParseWalkInfo.KEY_DRAWING);
         query.include(ParseWalkInfo.KEY_DRAWING + "." + ParseDrawing.KEY_CREATOR_RECORD);
+        query.include(ParseWalkInfo.KEY_DRAWING+ "." + ParseDrawing.KEY_ANNOTATION_LIST);
                 query.findInBackground(new FindCallback<ParseWalkInfo>() {
                     @Override
                     public void done(List<ParseWalkInfo> list, ParseException e) {

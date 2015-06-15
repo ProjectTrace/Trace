@@ -31,6 +31,7 @@
             android:clickable="true"
             android:gravity="center"
             android:text="@string/log_out"
+            android:fontFamily="sans-serif"
             fbutton:buttonColor="@color/cyan_light"
             fbutton:cornerRadius="5dp"
             fbutton:shadowColor="@color/cyan_dark"

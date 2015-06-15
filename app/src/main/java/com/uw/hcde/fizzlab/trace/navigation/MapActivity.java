@@ -256,7 +256,7 @@ public class MapActivity extends BaseActivity implements
                     .visible(false);
             mDirectionMarker = mGoogleMap.addMarker(markerOption);
 
-            mTraceLocations = DrawingToRouteFactory.getLocations(mCurrentLatLng);
+             mTraceLocations = DrawingToRouteFactory.getLocations(mCurrentLatLng);
             for (TraceLocation traceLocation : mTraceLocations) {
                 if (traceLocation.annotation != null) {
                     mLatLngToAnnotation.put(traceLocation.latLng, traceLocation.annotation);

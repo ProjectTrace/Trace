@@ -94,8 +94,8 @@
 
     <!-- Profile -->
     <string name="friends">Friends</string>
-    <string name="my_drawn_path">My Drawn Paths</string>
-    <string name="my_walked_path">My Walked Paths</string>
+    <string name="my_drawn_path">Drawn Paths</string>
+    <string name="my_walked_path">Walked Paths</string>
 
     <string name="add_friends_plus">+ Add Friend</string>
     <string name="add_friends">Add Friend</string>

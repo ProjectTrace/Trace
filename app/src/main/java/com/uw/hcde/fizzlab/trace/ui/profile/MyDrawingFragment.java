@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,14 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.ParseConstant;
 import com.uw.hcde.fizzlab.trace.database.ParseDataFactory;
 import com.uw.hcde.fizzlab.trace.database.ParseDrawing;
+import com.uw.hcde.fizzlab.trace.database.ParseWalkInfo;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawnPathCallback;
+import com.uw.hcde.fizzlab.trace.navigation.MapActivity;
 import com.uw.hcde.fizzlab.trace.navigation.ShowDrawingFragment;
 import com.uw.hcde.fizzlab.trace.ui.drawing.DrawUtil;
 import com.uw.hcde.fizzlab.trace.ui.walking.ChooseDurationFragment;
+import com.uw.hcde.fizzlab.trace.ui.walking.ParseDataContainer;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -35,11 +40,11 @@ import java.util.List;
 /**
  * @author tianchi
  */
-public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingCallback {
+public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPathCallback {
 
     private static final String TAG = "DrawnPathsFragment";
     private ListView mDrawnPathList;
-    private List<ParseDrawing> mDrawings;
+    private List<ParseWalkInfo> mWalkInfos;
     private MyDrawingAdapter mAdapter;
     private Context mContext;
 
@@ -55,27 +60,31 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "my drawn path on click");
-                List<TracePoint> points = ParseDataFactory.convertToTracePoints(mDrawings.get(position));
-                TraceDataContainerReceiver.rawTracePoints = points;
+                ParseDrawing drawing = mWalkInfos.get(position).getDrawing();
 
-                // Fragment transaction
-                Fragment fragment = new ShowDrawingFragment();
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in_backstack, R.anim.slide_out_backstack)
-                        .add(R.id.fragment_container, fragment)
-                        .addToBackStack(null).commit();
+                List<TracePoint> points = ParseDataFactory.convertToTracePoints(drawing);
+                TraceDataContainerReceiver.rawTracePoints = points;
+                TraceDataContainerReceiver.trimmedTracePoints = DrawUtil.trimPoints(points);
+                TraceDataContainerReceiver.description = drawing.getDescription();
+                ParseDataContainer.currentUser = ParseUser.getCurrentUser();
+                ParseDataContainer.drawing = drawing;
+                TraceDataContainerReceiver.distance = mWalkInfos.get(position).getDis();
+
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                intent.putExtra("TAG", "alreadyWalked");
+                startActivity(intent);
             }
         });
 
-        ParseDataFactory.retrieveMyDrawings(ParseUser.getCurrentUser(), this);
+        ParseDataFactory.retrieveMyDrawnPaths(ParseUser.getCurrentUser(), this);
         return view;
     }
 
     @Override
-    public void retrieveDrawingsCallback(int returnCode, List<ParseDrawing> drawings) {
-        if (returnCode == ParseConstant.SUCCESS && drawings.size() > 0) {
-            mDrawings = drawings;
-            Collections.sort(mDrawings);
-            mAdapter = new MyDrawingAdapter(mContext, R.layout.list_item_my_drawing, mDrawings);
+    public void retrieveDrawingsCallback(int returnCode, List<ParseWalkInfo> walkInfoList) {
+        if (returnCode == ParseConstant.SUCCESS && walkInfoList.size() > 0) {
+            mWalkInfos = walkInfoList;
+            mAdapter = new MyDrawingAdapter(mContext, R.layout.list_item_my_drawn_path, mWalkInfos);
             mDrawnPathList.setAdapter(mAdapter);
         }
     }
@@ -83,20 +92,21 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
     /**
      * @author tianchi
      */
-    class MyDrawingAdapter extends ArrayAdapter<ParseDrawing> {
+    class MyDrawingAdapter extends ArrayAdapter<ParseWalkInfo> {
 
         private Context mContext;
-        private List<ParseDrawing> items;
+        private List<ParseWalkInfo> items;
 
         // Use view holder pattern to improve performance
         private class ViewHolder {
             TextView mDescription;
             TextView mReceiverName;
+            TextView mWalkedUser;
             TextView mDate;
             ImageView mDelete;
         }
 
-        public MyDrawingAdapter(Context context, int textViewResourceId, List<ParseDrawing> items) {
+        public MyDrawingAdapter(Context context, int textViewResourceId, List<ParseWalkInfo> items) {
             super(context, textViewResourceId, items);
             mContext = context;
             this.items = items;
@@ -106,20 +116,21 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder viewHolder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.list_item_my_drawing, parent, false);
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.list_item_my_drawn_path, parent, false);
 
                 viewHolder = new ViewHolder();
                 viewHolder.mDescription = (TextView) convertView.findViewById(R.id.drawing_title);
                 viewHolder.mReceiverName = (TextView) convertView.findViewById(R.id.receiver_name);
                 viewHolder.mDate = (TextView) convertView.findViewById(R.id.date);
                 viewHolder.mDelete = (ImageView) convertView.findViewById(R.id.myDrawing_delete);
+                viewHolder.mWalkedUser = (TextView) convertView.findViewById(R.id.walked_user);
                 convertView.setTag(viewHolder);
 
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            final ParseDrawing item = getItem(position);
+            final ParseDrawing item = getItem(position).getDrawing();
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
 
@@ -139,7 +150,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ParseDataFactory.deleteMyDrawing(ParseUser.getCurrentUser(), item);
+                            ParseDataFactory.deleteMyDrawnPath(ParseUser.getCurrentUser(), items.get(position));
                             items.remove(position);
                             notifyDataSetChanged();
                         }
@@ -168,6 +179,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawingC
 
                 viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
                 viewHolder.mReceiverName.setText(sb.toString());
+                viewHolder.mWalkedUser.setText(getItem(position).getCreator().getString(ParseConstant.KEY_FULL_NAME));
             }
             return convertView;
         }

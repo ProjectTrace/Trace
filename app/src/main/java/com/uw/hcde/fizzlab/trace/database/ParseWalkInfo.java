@@ -11,6 +11,7 @@ import com.parse.ParseUser;
 @ParseClassName("WalkInfo")
 public class ParseWalkInfo extends ParseObject{
     public static final String KEY_USER = "User";
+    public static final String KEY_CREATOR = "Creator";
     public static final String KEY_DISTANCE = "Distance";
     public static final String KEY_DRAWING = "Drawing";
 
@@ -19,6 +20,9 @@ public class ParseWalkInfo extends ParseObject{
         put(KEY_USER, user);
     }
 
+    public void setCreator(ParseUser creator) {
+        put(KEY_CREATOR, creator);
+    }
     public void setDis(int distance) {
         put(KEY_DISTANCE, distance);
     }
@@ -29,6 +33,10 @@ public class ParseWalkInfo extends ParseObject{
 
     public ParseUser getUser() {
         return getParseUser(KEY_USER);
+    }
+
+    public ParseUser getCreator() {
+        return getParseUser(KEY_CREATOR);
     }
 
     public int getDis() {

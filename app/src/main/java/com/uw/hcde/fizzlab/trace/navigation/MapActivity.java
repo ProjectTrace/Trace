@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import info.hoang8f.widget.FButton;
 import me.drakeet.materialdialog.MaterialDialog;
 
 import static java.lang.Thread.sleep;
@@ -77,8 +79,8 @@ public class MapActivity extends BaseActivity implements
     private static final double METER_TO_MILE = 0.000621371192;
 
     private View mButtonEndingEarly;
-    private View mButtonShowDrawing;
-    private View mButtonShowTrace;
+    private FButton mButtonShowDrawing;
+    private FButton mButtonShowTrace;
     private View mTextMiles;
     private TextView mTextDistance;
     private ProgressDialog mProgressDialog;
@@ -122,8 +124,8 @@ public class MapActivity extends BaseActivity implements
         mButtonEndingEarly = findViewById(R.id.button_ending_early);
         mTextDistance = (TextView) findViewById(R.id.text_distance);
         mTextMiles = findViewById(R.id.text_miles);
-        mButtonShowDrawing = findViewById(R.id.button_show_drawing);
-        mButtonShowTrace = findViewById(R.id.button_show_trace);
+        mButtonShowDrawing = (FButton)findViewById(R.id.button_show_drawing);
+        mButtonShowTrace = (FButton)findViewById(R.id.button_show_trace);
 
         // Sets navigation title
         setNavigationBarType(BaseActivity.NAVIGATION_BAR_TYPE_CYAN);
@@ -195,12 +197,15 @@ public class MapActivity extends BaseActivity implements
         });
         if (getIntent().getStringExtra("TAG") != null &&
                 getIntent().getStringExtra("TAG").equals("alreadyWalked")) {
-            setNavigationTitle(R.string.my_walked_paths);
+            setNavigationTitle(R.string.my_walked_path);
             mButtonEndingEarly.setVisibility(View.INVISIBLE);
             mTextDistance.setVisibility(View.INVISIBLE);
             mTextMiles.setVisibility(View.INVISIBLE);
             mButtonShowDrawing.setVisibility(View.VISIBLE);
             mButtonShowTrace.setVisibility(View.VISIBLE);
+            mButtonShowTrace.setShadowHeight(0);
+            Log.e(TAG, "CAONIMA");
+            mButtonShowTrace.refresh();
         } else {
             setNavigationTitle(R.string.walk_step_3);
         }
@@ -333,7 +338,7 @@ public class MapActivity extends BaseActivity implements
         List<List<LatLng>> allPath = new LinkedList<List<LatLng>>();
         allPath.addAll(mDisplayedSegments);
         allPath.addAll(mHiddenSegments);
-        Log.e(TAG, "Displayed: "+ mDisplayedSegments + " + Hidden:" + mHiddenSegments);
+        Log.e(TAG, "Displayed: " + mDisplayedSegments + " + Hidden:" + mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
         //displayWayPoints();
@@ -379,6 +384,8 @@ public class MapActivity extends BaseActivity implements
         mButtonShowDrawing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mButtonShowDrawing.setShadowHeight(0);
+                mButtonShowTrace.setShadowHeight(3);
                 Fragment fragment = new ShowDrawingFragment();
                 getFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -393,6 +400,8 @@ public class MapActivity extends BaseActivity implements
         mButtonShowTrace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mButtonShowTrace.setShadowHeight(0);
+                mButtonShowDrawing.setShadowHeight(3);
                 FragmentManager fm = getFragmentManager();
                 if (fm.getBackStackEntryCount() > 0) {
                     fm.popBackStack();

@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/walkedpath_title"
+            android:id="@+id/drawing_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -32,11 +32,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
-                android:text="@string/from"
+                android:text="@string/to"
                 android:textColor="@color/gray" />
 
             <TextView
-                android:id="@+id/sender_name"
+                android:id="@+id/receiver_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="@string/walkedby"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/walked_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray" />
@@ -45,7 +65,7 @@
 
 
         <TextView
-            android:id="@+id/myDrawing_date"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -58,7 +78,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/walkedPath_delete"
+        android:id="@+id/myDrawing_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

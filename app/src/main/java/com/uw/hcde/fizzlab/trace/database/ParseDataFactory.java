@@ -3,6 +3,7 @@ package com.uw.hcde.fizzlab.trace.database;
 import android.graphics.Point;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -14,6 +15,7 @@ import com.uw.hcde.fizzlab.trace.dataContainer.TraceAnnotation;
 import com.uw.hcde.fizzlab.trace.dataContainer.TracePoint;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseAddFriendCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawingCallback;
+import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveDrawnPathCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveFriendsCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseRetrieveWalkedPathCallback;
 import com.uw.hcde.fizzlab.trace.database.callback.ParseSendDrawingCallback;
@@ -50,6 +52,30 @@ public class ParseDataFactory {
 
     }
 
+    public static void retrieveMyDrawnPaths(ParseUser currentUser, final ParseRetrieveDrawnPathCallback callback) {
+        ParseQuery<ParseWalkInfo> query = ParseWalkInfo.getQuery();
+        query.whereEqualTo(ParseWalkInfo.KEY_CREATOR, currentUser);
+        //query.include(ParseWalkInfo.KEY_DRAWING);
+        query.include(ParseWalkInfo.KEY_CREATOR);
+        query.include(ParseWalkInfo.KEY_DRAWING + "." + ParseDrawing.KEY_RECEIVER_RECORD);
+        query.include(ParseWalkInfo.KEY_DRAWING + "." + ParseDrawing.KEY_ANNOTATION_LIST);
+        query.include(ParseWalkInfo.KEY_USER);
+        query.orderByDescending("createdAt");
+        query.findInBackground(new FindCallback<ParseWalkInfo>() {
+            @Override
+            public void done(List<ParseWalkInfo> list, ParseException e) {
+                if (e == null) {
+                    callback.retrieveDrawingsCallback(ParseConstant.SUCCESS, list);
+                } else {
+                    Log.e(TAG, "Retrieve my walked paths failed " + e.getMessage());
+                    callback.retrieveDrawingsCallback(ParseConstant.FAILED, null);
+                }
+            }
+        });
+    }
+
+    // Used for delete my drawing at first version. Record by creator in ParseDRWAING table
+    @Deprecated
     public static void deleteMyDrawing(ParseUser user, ParseDrawing item) {
         item.remove(ParseDrawing.KEY_CREATOR);
         item.saveInBackground(new SaveCallback() {
@@ -62,6 +88,19 @@ public class ParseDataFactory {
             }
         });
     }
+
+    public static void deleteMyDrawnPath(ParseUser user, final ParseWalkInfo item) {
+        item.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Delete my drawn path with jobId : " + item.getObjectId() + " failed");
+                else
+                    Log.d(TAG, "Delete my drawn path with jobId : " + item.getObjectId() + " success");
+            }
+        });
+    }
+
 
     public static void addToWalkedUserList(ParseDrawing drawing, final ParseWalkInfo currentWalkInfo) {
         drawing.addUnique(ParseDrawing.KEY_WALKED_USERS_LIST, currentWalkInfo);
@@ -77,12 +116,12 @@ public class ParseDataFactory {
     }
 
     public static void retrieveMyWalkedPaths(ParseUser currentUser, final ParseRetrieveWalkedPathCallback callback) {
-        List<ParseDrawing> res;
         ParseQuery<ParseWalkInfo> query = ParseWalkInfo.getQuery();
         query.whereEqualTo(ParseWalkInfo.KEY_USER, currentUser);
-        query.include(ParseWalkInfo.KEY_DRAWING);
+        //query.include(ParseWalkInfo.KEY_DRAWING);
         query.include(ParseWalkInfo.KEY_DRAWING + "." + ParseDrawing.KEY_CREATOR_RECORD);
         query.include(ParseWalkInfo.KEY_DRAWING+ "." + ParseDrawing.KEY_ANNOTATION_LIST);
+        query.orderByDescending("createdAt");
                 query.findInBackground(new FindCallback<ParseWalkInfo>() {
                     @Override
                     public void done(List<ParseWalkInfo> list, ParseException e) {

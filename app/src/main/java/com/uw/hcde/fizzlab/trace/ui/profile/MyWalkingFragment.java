@@ -1,7 +1,9 @@
 package com.uw.hcde.fizzlab.trace.ui.profile;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -115,12 +117,39 @@ public class MyWalkingFragment extends Fragment implements ParseRetrieveWalkedPa
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            ParseDrawing item = items.get(position).getDrawing();
+            final ParseDrawing drawing = items.get(position).getDrawing();
 
-            if (item != null) {
-                viewHolder.mTitle.setText(item.getDescription());
-                viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
-                viewHolder.mSender.setText(item.getCreatorRecord().getString(ParseConstant.KEY_FULL_NAME));
+            viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
+
+                /*
+                    Didn't delete the drawing and annotation points in the cloud database.
+                    Since receivers may need to use them.
+                    We may have to deal with them backend deletion when there are lot of drawings.
+                 */
+                @Override
+                public void onClick(View v) {
+                    //TraceUtil.showToast(mContext, "Delete?");
+                    AlertDialog.Builder adb=new AlertDialog.Builder(getContext());
+                    adb.setTitle("Delete?");
+                    adb.setMessage("Are you sure you want to delete drawing: " +
+                            drawing.getDescription() +  " ?");
+                    adb.setNegativeButton("Cancel", null);
+                    adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ParseDataFactory.deleteMyWalkedPath(items.get(position));
+                            items.remove(position);
+                            notifyDataSetChanged();
+                        }
+                    });
+                    adb.show();
+                }
+            });
+
+            if (drawing != null) {
+                viewHolder.mTitle.setText(drawing.getDescription());
+                viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(drawing.getCreatedAt()));
+                viewHolder.mSender.setText(drawing.getCreatorRecord().getString(ParseConstant.KEY_FULL_NAME));
             }
             return convertView;
         }

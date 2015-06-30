@@ -89,14 +89,28 @@ public class ParseDataFactory {
         });
     }
 
-    public static void deleteMyDrawnPath(ParseUser user, final ParseWalkInfo item) {
-        item.deleteInBackground(new DeleteCallback() {
+    public static void deleteMyDrawnPath(final ParseWalkInfo item) {
+        item.remove(ParseWalkInfo.KEY_CREATOR);
+        item.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null)
-                    Log.e(TAG, "Delete my drawn path with jobId : " + item.getObjectId() + " failed");
+                    Log.e(TAG, "Delete walked path with jobId : " + item.getObjectId() + " failed");
                 else
-                    Log.d(TAG, "Delete my drawn path with jobId : " + item.getObjectId() + " success");
+                    Log.d(TAG, "Delete walked path with jobId : " + item.getObjectId() + " success");
+            }
+        });
+    }
+
+    public static void deleteMyWalkedPath(final ParseWalkInfo item) {
+        item.remove(ParseWalkInfo.KEY_USER);
+        item.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Delete walked path with jobId : " + item.getObjectId() + " failed");
+                else
+                    Log.d(TAG, "Delete walked path with jobId : " + item.getObjectId() + " success");
             }
         });
     }
@@ -435,5 +449,6 @@ public class ParseDataFactory {
         }
         return tracePoints;
     }
+
 
 }

@@ -130,7 +130,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPat
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            final ParseDrawing item = getItem(position).getDrawing();
+            final ParseDrawing drawing = getItem(position).getDrawing();
 
             viewHolder.mDelete.setOnClickListener(new View.OnClickListener() {
 
@@ -145,12 +145,12 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPat
                     AlertDialog.Builder adb=new AlertDialog.Builder(getContext());
                     adb.setTitle("Delete?");
                     adb.setMessage("Are you sure you want to delete drawing: " +
-                            item.getDescription() +  " ?");
+                            drawing.getDescription() +  " ?");
                     adb.setNegativeButton("Cancel", null);
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ParseDataFactory.deleteMyDrawnPath(ParseUser.getCurrentUser(), items.get(position));
+                            ParseDataFactory.deleteMyWalkedPath(items.get(position));
                             items.remove(position);
                             notifyDataSetChanged();
                         }
@@ -166,9 +166,9 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPat
                 convertView.setBackground(mContext.getResources().getDrawable(R.color.gray_list_item2));
             }
 
-            if (item != null) {
-                viewHolder.mDescription.setText(item.getDescription());
-                List<ParseUser> receivers = item.getReceiverRecord();
+            if (drawing != null) {
+                viewHolder.mDescription.setText(drawing.getDescription());
+                List<ParseUser> receivers = drawing.getReceiverRecord();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < receivers.size(); i++) {
                     sb.append(receivers.get(i).getString(ParseConstant.KEY_FULL_NAME));
@@ -177,9 +177,9 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPat
                     }
                 }
 
-                viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(item.getCreatedAt()));
+                viewHolder.mDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(drawing.getCreatedAt()));
                 viewHolder.mReceiverName.setText(sb.toString());
-                viewHolder.mWalkedUser.setText(getItem(position).getCreator().getString(ParseConstant.KEY_FULL_NAME));
+                viewHolder.mWalkedUser.setText(items.get(position).getCreator().getString(ParseConstant.KEY_FULL_NAME));
             }
             return convertView;
         }

@@ -204,7 +204,6 @@ public class MapActivity extends BaseActivity implements
             mButtonShowDrawing.setVisibility(View.VISIBLE);
             mButtonShowTrace.setVisibility(View.VISIBLE);
             mButtonShowTrace.setShadowHeight(0);
-            Log.e(TAG, "CAONIMA");
             mButtonShowTrace.refresh();
         } else {
             setNavigationTitle(R.string.walk_step_3);
@@ -338,7 +337,6 @@ public class MapActivity extends BaseActivity implements
         List<List<LatLng>> allPath = new LinkedList<List<LatLng>>();
         allPath.addAll(mDisplayedSegments);
         allPath.addAll(mHiddenSegments);
-        Log.e(TAG, "Displayed: " + mDisplayedSegments + " + Hidden:" + mHiddenSegments);
         updateDisplayedPolyLine(allPath);
 
         //displayWayPoints();
@@ -595,7 +593,6 @@ public class MapActivity extends BaseActivity implements
     private void updateDisplayedPolyLine(List<List<LatLng>> segments) {
         List<LatLng> points = new ArrayList<LatLng>();
         for (List<LatLng> segment : segments) {
-            Log.e(TAG, "Segment: " + segments);
             points.addAll(segment);
         }
         mDisplayedPolyline.setPoints(points);

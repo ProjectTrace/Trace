@@ -150,7 +150,7 @@ public class MyDrawingFragment extends Fragment implements ParseRetrieveDrawnPat
                     adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ParseDataFactory.deleteMyWalkedPath(items.get(position));
+                            ParseDataFactory.deleteMyDrawnPath(items.get(position));
                             items.remove(position);
                             notifyDataSetChanged();
                         }
